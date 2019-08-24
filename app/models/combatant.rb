@@ -1,0 +1,2 @@
+class Combatant < ApplicationRecord
+end
