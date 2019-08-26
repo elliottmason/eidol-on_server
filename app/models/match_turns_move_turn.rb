@@ -1,0 +1,2 @@
+class MatchTurnsMoveTurn < ApplicationRecord
+end

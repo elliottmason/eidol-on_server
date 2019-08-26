@@ -1,0 +1,2 @@
+class BoardPositionsCombatantsPlayersMatch < ApplicationRecord
+end

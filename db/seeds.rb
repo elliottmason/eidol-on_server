@@ -1,7 +1,77 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+COMBATANT_NAMES = ['Ampul', 'Helljung', 'Mainx', 'Panser']
+PLAYER_NAMES = ['Branden', 'Elliott']
+
+combatants = {}
+COMBATANT_NAMES.each do |name|
+  name_hash_key = name.downcase.to_sym
+  combatants[name_hash_key] = Combatant.create(name: name)
+end
+
+players = {}
+PLAYER_NAMES.each do |name|
+  name_hash_key = name.downcase.to_sym
+  players[name_hash_key] = Player.create(name: name)
+end
+
+combatants_players = {
+  branden: {
+    ampul: CombatantsPlayer.create({
+      combatant: combatants[:ampul],
+      player: players[:branden]
+    }),
+    panser: CombatantsPlayer.create({
+      combatant: combatants[:panser],
+      player: players[:branden]
+    })
+  },
+  elliott: {
+    helljung: CombatantsPlayer.create({
+      combatant: combatants[:helljung],
+      player: players[:elliott]
+    }),
+    mainx: CombatantsPlayer.create({
+      combatant: combatants[:mainx],
+      player: players[:elliott]
+    })
+  }
+}
+
+def create_move_move(speed:)
+  move =
+    Move.create({
+      name: 'Move',
+      description: 'to another position on the board',
+      range: 1,
+      is_diagonal: true,
+      energy_cost: 1
+    })
+
+  turn =
+    MoveTurn.new({
+      turn: 1,
+      speed: speed
+    })
+
+  move.turns << turn
+
+  turn_effect = MoveTurnEffect.new({
+      effect_type: 'relocation',
+      property: 'normal',
+      power: 0,
+      precedence: 1
+    })
+
+  turn.effects << turn_effect
+
+  move
+end
+
+ampul_move = create_move_move(speed: 35)
+helljung_move = create_move_move(speed: 75)
+mainx_move = create_move_move(speed: 120)
+panser_move = create_move_move(speed: 60)
+
+combatants_players[:branden][:ampul].moves << ampul_move
+combatants_players[:branden][:panser].moves << panser_move
+combatants_players[:elliott][:helljung].moves << helljung_move
+combatants_players[:elliott][:mainx].moves << mainx_move

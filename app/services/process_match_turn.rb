@@ -7,4 +7,11 @@ class ProcessMatchTurn < ApplicationService
   #   apply the effects of the move
   #   mark the move selection as processed
   # loop
+  # advance match turn by 1
+
+  def perform
+  end
+
+  def unprocessed_move_selections
+  end
 end

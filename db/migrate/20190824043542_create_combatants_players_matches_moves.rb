@@ -1,8 +1,6 @@
 class CreateCombatantsPlayersMatchesMoves < ActiveRecord::Migration[6.0]
   def change
-    create_table :combatants_players_matches_moves do |t|
-      t.belongs_to :combatants_players_match, index: false
-      t.belongs_to :move
+    create_join_table :combatants_players_matches, :moves do |t|
       t.timestamps
     end
   end

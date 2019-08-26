@@ -1,8 +1,9 @@
 class CreateCombatantsPlayersMatches < ActiveRecord::Migration[6.0]
   def change
-    create_table :combatants_players_matches do |t|
-      t.belongs_to :combatants_player
-      t.belongs_to :match
+    create_join_table :combatants_players, :matches do |t|
+      t.integer :defense, null: false
+      t.integer :health, null: false
+      t.integer :level, null: false
       t.timestamps
     end
   end
