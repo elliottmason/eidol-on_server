@@ -1,2 +1,0 @@
-class CombatantsPlayersMatchesMoveSelection < ApplicationRecord
-end
