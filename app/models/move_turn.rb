@@ -4,5 +4,12 @@
 # represents this and is used to establish a queue for current and future turns
 class MoveTurn < ApplicationRecord
   belongs_to :move
-  has_many :effects, class_name: 'MoveTurnEffect'
+  has_many :effects,
+           class_name: 'MoveTurnEffect',
+           dependent: :destroy
+  has_many :match_turns_move_turns,
+           dependent: :destroy
+
+  # @!attribute [rw] turn
+  #   @return [Integer]
 end

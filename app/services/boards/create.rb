@@ -5,12 +5,15 @@ module Boards
   class Create < ApplicationService
     BOARD_SIZE = 4
 
+    # @return [Board]
     attr_reader :board
 
+    # @return [Integer]
     def board_size
       BOARD_SIZE
     end
 
+    # @return [Board]
     def perform
       @board = Board.create!
 
