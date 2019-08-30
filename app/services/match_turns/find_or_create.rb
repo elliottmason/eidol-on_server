@@ -2,6 +2,9 @@
 
 module MatchTurns
   class FindOrCreate < ApplicationService
+    # @return [MatchTurn, nil]
+    attr_reader :match_turn
+
     # @param match [Match]
     # @param move_turn [MoveTurn]
     def initialize(match:, move_turn:)
@@ -11,7 +14,8 @@ module MatchTurns
 
     # @return [MatchTurn]
     def perform
-      MatchTurn.where(match: match, turn: turn_offset).first_or_create!
+      @match_turn =
+        MatchTurn.where(match: match, turn: turn_offset).first_or_create!
     end
 
     private

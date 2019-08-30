@@ -2,7 +2,7 @@
 
 module MatchTurns
   # Sort and consecutively handle each MoveTurn associated with this MatchTurn
-  class ProcessMoveTurns < ApplicationService
+  class Process < ApplicationService
     # collect unprocessed move turns for this match turn
     # order move selections by precedence
     # process the first move selection in the list
@@ -18,18 +18,20 @@ module MatchTurns
       @match_turn = match_turn
     end
 
-    # @return [Array<MatchEvent>]
-    def match_events
-      @match_events ||= []
+    # @return [Array<MatchTurnsMoveTurnsMoveTurnEffect>]
+    def match_turns_move_turns_move_turn_effect
+      @match_turns_move_turns_move_turn_effect ||= []
     end
 
-    # @return [Array<MatchEvent>]
+    # @return [void]
     def perform
-      while unprocessed_match_turns_move_turns.nonzero?
-        match_events <<
-          MatchTurnsMoveTurns::Process.for(
-            next_unprocessed_match_turns_move_turn
-          )
+      ActiveRecord::Base.transaction do
+        while unprocessed_match_turns_move_turns.size.nonzero?
+          match_turns_move_turns_move_turn_effect <<
+            MatchTurnsMoveTurns::Process.for(
+              match_turns_move_turn: next_unprocessed_match_turns_move_turn
+            )
+        end
       end
     end
 
@@ -41,8 +43,8 @@ module MatchTurns
     # @return [Array<MatchTurnsMoveTurn>]
     def sorted_unprocessed_match_turns_move_turns
       unprocessed_match_turns_move_turns.sort do |turn_a, turn_b|
-        MatchTurnsMoveTurns::CalculateSpeed.for(turn_a) <=>
-          MatchTurnsMoveTurns::CalculateSpeed.for(turn_b)
+        MatchTurnsMoveTurns::CalculateSpeed.for(turn_a).value <=>
+          MatchTurnsMoveTurns::CalculateSpeed.for(turn_b).value
       end
     end
 

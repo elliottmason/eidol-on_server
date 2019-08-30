@@ -3,7 +3,8 @@
 # The effective queue of [MoveTurn]s for a [MatchTurn], and the
 # [CombatantsPlayerMatch] that is using the move
 class MatchTurnsMoveTurn < ApplicationRecord
-  belongs_to :combatants_players_matches_move_selection
+  belongs_to :combatants_players_matches_move_selection, required: false
+  belongs_to :combatants_players_match
   belongs_to :match_turn
   belongs_to :move_turn
 
@@ -15,10 +16,6 @@ class MatchTurnsMoveTurn < ApplicationRecord
   # @!attribute move_turn
   #   @return [MoveTurn]
 
-  # @return [CombatantsPlayersMatch]
-  def combatants_player_match
-    combatants_players_matches_move_selection \
-      .combatants_players_matches_move \
-      .combatants_players_match
-  end
+  # @!attribute combatants_players_match
+  #   @return [CombatantsPlayersMatch]
 end

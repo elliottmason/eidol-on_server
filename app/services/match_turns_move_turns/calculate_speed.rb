@@ -4,6 +4,9 @@ module MatchTurnsMoveTurns
   # Calculates the effective predecence of [MatchTurnsMoveTurn]s based on
   # [MoveTurn#speed] and [CombatantsPlayersMatch#level]
   class CalculateSpeed < ApplicationService
+    # @return [Integer, nil]
+    attr_reader :value
+
     # @param match_turns_move_turn [MatchTurnsMoveTurn]
     def initialize(match_turns_move_turn)
       @match_turns_move_turn = match_turns_move_turn
@@ -11,7 +14,8 @@ module MatchTurnsMoveTurns
 
     # @return [Integer]
     def perform
-      match_turns_move_turn.move_turn.speed +
+      @value =
+        match_turns_move_turn.move_turn.speed +
         match_turns_move_turn.combatants_players_match.level
     end
 

@@ -1,17 +1,27 @@
+# frozen_string_literal: true
+
 class ApplicationService
   include ActiveSupport::Callbacks
 
   define_callbacks :perform
 
   class << self
+    # @return [self]
     def with(*args)
       new(*args).tap(&:_perform)
     end
+
+    # @return [self]
     alias between with
+
+    # @return [self]
     alias for with
+
+    # @return [self]
     alias now with
   end
 
+  # @return [void]
   def _perform
     run_callbacks :perform do
       return unless allowed?
@@ -21,6 +31,7 @@ class ApplicationService
     after_failure unless successful?
   end
 
+  # @return [void]
   def after_failure; end
 
   def allowed?
@@ -29,6 +40,7 @@ class ApplicationService
 
   def initialize(*_args); end
 
+  # @return [void]
   def perform; end
 
   def successful?
