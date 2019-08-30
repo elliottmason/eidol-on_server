@@ -78,11 +78,10 @@ def create_move_move(speed:)
     )
 
   MoveTurnEffect.create(
-    effect_type: 'relocation',
+    effect_type: 'relocation_normal',
     move_turn: move_turn,
-    property: 'normal',
     power: 0,
-    precedence: 1
+    precedence: 0
   )
   move
 end

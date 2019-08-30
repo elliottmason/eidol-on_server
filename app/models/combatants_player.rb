@@ -4,7 +4,7 @@
 class CombatantsPlayer < ApplicationRecord
   belongs_to :combatant
   belongs_to :player
-  has_many :combatants_players_matches
-  has_many :combatants_players_moves
+  has_many :combatants_players_matches, dependent: :destroy
+  has_many :combatants_players_moves, dependent: :destroy
   has_many :moves, through: :combatants_players_moves
 end

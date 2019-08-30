@@ -3,6 +3,6 @@
 class MoveTurnEffect < ApplicationRecord
   belongs_to :move_turn
 
-  # @!attribute effect_type
+  # @!attribute [rw] effect_type
   #   @return [String]
 end

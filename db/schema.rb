@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_011803) do
+ActiveRecord::Schema.define(version: 2019_08_30_171814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,16 +133,31 @@ ActiveRecord::Schema.define(version: 2019_08_29_011803) do
   end
 
   create_table "match_turns_move_turns", force: :cascade do |t|
-    t.bigint "combatants_players_match_id", null: false
+    t.bigint "combatants_players_matches_move_selection_id", null: false
     t.bigint "match_turn_id", null: false
     t.bigint "move_turn_id", null: false
     t.datetime "processed_at"
-    t.boolean "was_successful"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_players_match_id"], name: "index_match_turns_move_turns_on_combatants_players_match_id"
+    t.index ["combatants_players_matches_move_selection_id"], name: "idx_mtch_trns_mv_trns_cmbtnts_plyrs_mtchs_mv_slctn"
     t.index ["match_turn_id"], name: "index_match_turns_move_turns_on_match_turn_id"
     t.index ["move_turn_id"], name: "index_match_turns_move_turns_on_move_turn_id"
+  end
+
+  create_table "match_turns_move_turns_move_turn_effects", force: :cascade do |t|
+    t.bigint "combatant_players_match_id", null: false
+    t.bigint "board_position_id"
+    t.bigint "match_turn_move_turn_id", null: false
+    t.bigint "move_turn_effect_id", null: false
+    t.string "effect_type", null: false
+    t.integer "amount"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_position_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_brd_pstn"
+    t.index ["combatant_players_match_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_cmbtnt_plyrs_mtch"
+    t.index ["match_turn_move_turn_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_mtch_trn_mv_trn"
+    t.index ["move_turn_effect_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_mv_trn_ffct"
   end
 
   create_table "matches", force: :cascade do |t|
@@ -164,7 +179,6 @@ ActiveRecord::Schema.define(version: 2019_08_29_011803) do
   create_table "move_turn_effects", force: :cascade do |t|
     t.bigint "move_turn_id", null: false
     t.string "effect_type", null: false
-    t.string "property"
     t.integer "power", default: 0, null: false
     t.integer "precedence", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
