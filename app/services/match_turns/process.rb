@@ -43,8 +43,8 @@ module MatchTurns
     # @return [Array<MatchTurnsMoveTurn>]
     def sorted_unprocessed_match_turns_move_turns
       unprocessed_match_turns_move_turns.sort do |turn_a, turn_b|
-        MatchTurnsMoveTurns::CalculateSpeed.for(turn_a).value <=>
-          MatchTurnsMoveTurns::CalculateSpeed.for(turn_b).value
+        MatchTurnsMoveTurns::CalculateSpeed.for(turn_b).value <=>
+          MatchTurnsMoveTurns::CalculateSpeed.for(turn_a).value
       end
     end
 
