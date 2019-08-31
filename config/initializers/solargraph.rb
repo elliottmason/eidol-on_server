@@ -20,7 +20,6 @@
 #     extend ActiveRecord::Associations::ClassMethods
 #     include ActiveRecord::Persistence
 #     extend ActiveRecord::Persistence::ClassMethods
-#     include ActiveRecord::Transactions
 #     extend ActiveRecord::Transactions::ClassMethods
 #   end
 # @!override ActiveRecord::FinderMethods#find

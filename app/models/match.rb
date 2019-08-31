@@ -6,7 +6,9 @@ class Match < ApplicationRecord
   has_many :players, through: :matches_players
   has_many :turns, class_name: 'MatchTurn', dependent: :destroy
 
-  # @!attribute turns
+  # @!attribute [rw] board
+  #   @return [Board]
+  # @!attribute [rw] turns
   #   @return [ActiveRecord::Associations::CollectionProxy]
 
   # @return [MatchTurn]

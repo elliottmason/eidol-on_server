@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Abstract service that wraps #perform in callbacks
 class ApplicationService
   include ActiveSupport::Callbacks
 

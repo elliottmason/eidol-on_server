@@ -47,9 +47,8 @@ module MatchTurnsMoveTurns
     # @param move_turn [MoveTurn]
     # @return [MatchTurnsMoveTurn]
     def create_match_turns_move_turn(move_turn)
-      # @param [MatchTurn]
       match_turn =
-        MatchTurns::FindOrCreate \
+        MatchTurns::FindOrCreateForMoveTurn \
         .for(match: match, move_turn: move_turn).match_turn
 
       MatchTurnsMoveTurn.create!(

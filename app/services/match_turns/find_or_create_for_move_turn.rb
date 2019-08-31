@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MatchTurns
-  class FindOrCreate < ApplicationService
+  class FindOrCreateForMoveTurn < ApplicationService
     # @return [MatchTurn, nil]
     attr_reader :match_turn
 
@@ -15,7 +15,7 @@ module MatchTurns
     # @return [MatchTurn]
     def perform
       @match_turn =
-        MatchTurn.where(match: match, turn: turn_offset).first_or_create!
+        MatchTurn.where(match: match, turn: turn_number).first_or_create!
     end
 
     private
@@ -27,7 +27,7 @@ module MatchTurns
     attr_reader :move_turn
 
     # @return [Integer]
-    def turn_offset
+    def turn_number
       match.current_turn.turn + move_turn.turn - 1
     end
   end
