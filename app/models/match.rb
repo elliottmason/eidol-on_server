@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Encompasses a unique Match between two or more [Player]s, their
+# [MatchCombatant], and the [MatchTurn]s during which [MoveTurn]s take place
 class Match < ApplicationRecord
   belongs_to :board
   has_many :match_combatants, dependent: :destroy
@@ -9,9 +13,9 @@ class Match < ApplicationRecord
   # @!attribute [rw] board
   #   @return [Board]
   # @!attribute [rw] match_combatants
-  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatant>]
+  #   @return [ActiveRecord::Associations::CollectionProxy]
   # @!attribute [rw] turns
-  #   @return [ActiveRecord::Associations::CollectionProxy<MatchTurn>]
+  #   @return [ActiveRecord::Associations::CollectionProxy]
 
   # @return [MatchTurn, nil]
   def current_turn

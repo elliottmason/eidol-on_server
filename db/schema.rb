@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_31_224953) do
+ActiveRecord::Schema.define(version: 2019_08_31_224332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,17 +22,6 @@ ActiveRecord::Schema.define(version: 2019_08_31_224953) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["board_id"], name: "index_board_positions_on_board_id"
-  end
-
-  create_table "board_positions_match_combatants", force: :cascade do |t|
-    t.bigint "board_position_id", null: false
-    t.bigint "match_combatant_id", null: false
-    t.bigint "match_event_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_position_id"], name: "index_board_positions_match_combatants_on_board_position_id"
-    t.index ["match_combatant_id"], name: "index_board_positions_match_combatants_on_match_combatant_id"
-    t.index ["match_event_id"], name: "index_board_positions_match_combatants_on_match_event_id"
   end
 
   create_table "boards", force: :cascade do |t|
@@ -47,8 +36,9 @@ ActiveRecord::Schema.define(version: 2019_08_31_224953) do
   end
 
   create_table "match_combatant_statuses", force: :cascade do |t|
+    t.bigint "board_position_id"
     t.bigint "match_combatant_id", null: false
-    t.bigint "match_event_id", null: false
+    t.bigint "match_event_id"
     t.integer "defense", null: false
     t.integer "level", null: false
     t.integer "maximum_energy", null: false
@@ -58,6 +48,7 @@ ActiveRecord::Schema.define(version: 2019_08_31_224953) do
     t.string "availability", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_position_id"], name: "index_match_combatant_statuses_on_board_position_id"
     t.index ["match_combatant_id"], name: "index_match_combatant_statuses_on_match_combatant_id"
     t.index ["match_event_id"], name: "index_match_combatant_statuses_on_match_event_id"
   end

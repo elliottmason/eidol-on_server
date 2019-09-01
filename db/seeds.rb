@@ -86,6 +86,7 @@ def create_move_move(speed:)
   move
 end
 
+# @param speed [Integer]
 # @return [Move]
 def create_bolt_move(speed: 70)
   ActiveRecord::Base.transaction do
@@ -131,7 +132,7 @@ panser_move_move = create_move_move(speed: 60)
 
 helljung_bolt = create_bolt_move(speed: 70)
 
-helljung_moves = [helljung_move_move] #, helljung_bolt]
+helljung_moves = [helljung_move_move] # helljung_bolt]
 
 player_combatants[:branden][:ampul].moves << ampul_move_move
 player_combatants[:branden][:panser].moves << panser_move_move
@@ -147,40 +148,54 @@ board = match.board
 # @type [MatchTurn]
 match_turn = match.current_turn
 
-BoardPositionsMatchCombatant.create!(
+MatchCombatants::Deploy.with(
   board_position: BoardPosition.where(board: board, x: 1, y: 1).first,
   match_combatant: match.match_combatants.first
 )
 
-BoardPositionsMatchCombatant.create!(
+MatchCombatants::Deploy.with(
   board_position: BoardPosition.where(board: board, x: 1, y: 2).first,
   match_combatant: match.match_combatants.offset(1).first
 )
 
-BoardPositionsMatchCombatant.create!(
+MatchCombatants::Deploy.with(
   board_position: BoardPosition.where(board: board, x: 2, y: 2).first,
   match_combatant: match.match_combatants.offset(2).first
 )
 
-BoardPositionsMatchCombatant.create!(
+MatchCombatants::Deploy.with(
   board_position: BoardPosition.where(board: board, x: 2, y: 3).first,
   match_combatant: match.match_combatants.offset(3).first
 )
 
-Matches::AdvanceTurn.for(match: match)
+puts MatchCombatant.last.current_position.inspect
 
-match_turn = match.current_turn
+Matches::AdvanceTurn.for(match: match)
 
 (0..3).each do |offset|
   MatchCombatantsMoves::Select.with(
     board_position:
-      BoardPosition.where(board: board, x: rand(4), y: rand(4)).first,
+      BoardPosition.where(board: board, x: 1, y: 1).first,
     match_combatants_move:
       MatchCombatantsMove.offset(offset).first,
-    match_turn: match_turn,
+    match_turn: match.current_turn,
     source_board_position:
       MatchCombatant.offset(offset).first.current_position
   )
 end
 
-MatchTurns::Process.for(match_turn: match_turn)
+MatchTurns::Process.for(match_turn: match.current_turn)
+
+(0..3).each do |offset|
+  MatchCombatantsMoves::Select.with(
+    board_position:
+      BoardPosition.where(board: board, x: 1, y: 2).first,
+    match_combatants_move:
+      MatchCombatantsMove.offset(offset).first,
+    match_turn: match.current_turn,
+    source_board_position:
+      MatchCombatant.offset(offset).first.current_position
+  )
+end
+
+# MatchTurns::Process.for(match_turn: match.current_turn)

@@ -8,7 +8,7 @@ module MatchCombatants
     attr_reader :match_combatant
 
     # @param match [Match]
-    # @param match_combatant [PlayerCombatant]
+    # @param player_combatant [PlayerCombatant]
     def initialize(match:, player_combatant:)
       @match = match
       @player_combatant = player_combatant
@@ -18,6 +18,7 @@ module MatchCombatants
     def perform
       ActiveRecord::Base.transaction do
         copy_combatant
+        create_combatant_status
         copy_moves
       end
     end
@@ -29,7 +30,6 @@ module MatchCombatants
 
     # @return [PlayerCombatant]
     attr_reader :player_combatant
-
 
     # @return [MatchCombatant]
     def copy_combatant
@@ -52,6 +52,20 @@ module MatchCombatants
           move: move
         )
       end
+    end
+
+    def create_combatant_status
+      health = match_combatant.health
+      MatchCombatantStatus.create!(
+        match_combatant: match_combatant,
+        defense: match_combatant.defense,
+        level: match_combatant.level,
+        maximum_energy: 15,
+        maximum_health: health,
+        remaining_energy: 2,
+        remaining_health: health,
+        availability: 'benched'
+      )
     end
   end
 end
