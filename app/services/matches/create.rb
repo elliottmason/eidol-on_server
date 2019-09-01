@@ -33,11 +33,11 @@ module Matches
       @board = board_creator.board
     end
 
-    # @return [Array<CombatantsPlayersMatch>]
+    # @return [Array<MatchCombatant>]
     def create_combatants
-      players.map(&:combatants_players).flatten.each do |combatants_player|
-        CombatantsPlayersMatches::Create.with(
-          combatants_player: combatants_player,
+      players.map(&:player_combatants).flatten.each do |player_combatant|
+        MatchCombatants::Create.with(
+          player_combatant: player_combatant,
           match: match
         )
       end

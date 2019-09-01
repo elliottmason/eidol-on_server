@@ -9,8 +9,8 @@ module Matches
 
     def perform
       ActiveRecord::Base.transaction do
-        current_match_turn.update!(processed_at: Time.now.utc)
         MatchTurn.where(match: match, turn: next_turn_number).first_or_create!
+        current_turn.update!(processed_at: Time.now.utc)
       end
     end
 
@@ -20,13 +20,13 @@ module Matches
     attr_reader :match
 
     # @return [MatchTurn]
-    def current_match_turn
+    def current_turn
       match.current_turn
     end
 
     # @return [Integer]
     def next_turn_number
-      @next_turn_number ||= current_match_turn.turn + 1
+      current_turn.turn + 1
     end
   end
 end

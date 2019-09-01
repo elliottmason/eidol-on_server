@@ -7,7 +7,7 @@ class MoveTurn < ApplicationRecord
   has_many :effects,
            class_name: 'MoveTurnEffect',
            dependent: :destroy
-  has_many :match_turns_move_turns,
+  has_many :match_move_turns,
            dependent: :destroy
 
   # @!attribute [rw] turn

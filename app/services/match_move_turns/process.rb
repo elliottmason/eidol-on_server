@@ -1,43 +1,43 @@
 # frozen_string_literal: true
 
-module MatchTurnsMoveTurns
+module MatchMoveTurns
   class Process < ApplicationService
     # @type [Hash<Symbol: ApplicationService>]
     ACTIONS_MAP = {
-      relocation_normal: CombatantsPlayersMatches::Relocate
+      relocation_normal: MatchCombatants::Relocate
     }.freeze
 
-    # @param match_turns_move_turn [MatchTurnsMoveTurn]
-    def initialize(match_turns_move_turn:)
-      @match_turns_move_turn = match_turns_move_turn
+    # @param match_move_turn [MatchMoveTurn]
+    def initialize(match_move_turn:)
+      @match_move_turn = match_move_turn
     end
 
-    # @return [Array<MatchTurnsMoveTurnsMoveTurnEffect>]
+    # @return [Array<MatchEvent>]
     def perform
       ActiveRecord::Base.transaction do
         process_move_turn_effects
-        match_turns_move_turn.update!(processed_at: Time.now.utc)
+        match_move_turn.update!(processed_at: Time.now.utc)
       end
     end
 
     private
 
-    # @return [MatchTurnsMoveTurn]
-    attr_reader :match_turns_move_turn
+    # @return [MatchMoveTurn]
+    attr_reader :match_move_turn
 
     # @return [BoardPosition]
     def board_position
-      match_turns_move_turn.board_position
+      match_move_turn.board_position
     end
 
-    # @return [CombatantsPlayersMatch]
-    def combatants_players_match
-      match_turns_move_turn.combatants_players_match
+    # @return [MatchCombatant]
+    def match_combatant
+      match_move_turn.match_combatant
     end
 
     # @return [MatchTurn]
     def match_turn
-      match_turns_move_turn.match_turn
+      match_move_turn.match_turn
     end
 
     # @return [Array<MoveTurnEffect>]
@@ -47,7 +47,7 @@ module MatchTurnsMoveTurns
 
     # @return [MoveTurn]
     def move_turn
-      match_turns_move_turn.move_turn
+      match_move_turn.move_turn
     end
 
     # @return [void]
@@ -69,9 +69,9 @@ module MatchTurnsMoveTurns
     def process_move_turn_effect(move_turn_effect:, service:)
       service.for(
         board_position: board_position,
-        combatants_players_match: combatants_players_match,
+        match_combatant: match_combatant,
         match_turn: match_turn,
-        match_turns_move_turn: match_turns_move_turn,
+        match_move_turn: match_move_turn,
         move_turn_effect: move_turn_effect
       )
     end

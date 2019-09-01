@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_30_171814) do
+ActiveRecord::Schema.define(version: 2019_08_31_224953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,25 +24,15 @@ ActiveRecord::Schema.define(version: 2019_08_30_171814) do
     t.index ["board_id"], name: "index_board_positions_on_board_id"
   end
 
-  create_table "board_positions_combatants_players_matches", force: :cascade do |t|
+  create_table "board_positions_match_combatants", force: :cascade do |t|
     t.bigint "board_position_id", null: false
-    t.bigint "combatants_players_match_id", null: false
-    t.bigint "match_turn_id", null: false
+    t.bigint "match_combatant_id", null: false
+    t.bigint "match_event_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_position_id"], name: "idx_board_positions_combatants_players_matches_board_position"
-    t.index ["combatants_players_match_id"], name: "idx_brd_pstns_cmbtnts_plyrs_mtchs_combatants_players_match"
-    t.index ["match_turn_id"], name: "index_board_positions_combatants_players_matches_match_turn_id"
-  end
-
-  create_table "board_positions_match_turns", force: :cascade do |t|
-    t.bigint "board_position_id", null: false
-    t.bigint "match_turn_id", null: false
-    t.string "availability", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_position_id"], name: "index_board_positions_match_turns_on_board_position_id"
-    t.index ["match_turn_id"], name: "index_board_positions_match_turns_on_match_turn_id"
+    t.index ["board_position_id"], name: "index_board_positions_match_combatants_on_board_position_id"
+    t.index ["match_combatant_id"], name: "index_board_positions_match_combatants_on_match_combatant_id"
+    t.index ["match_event_id"], name: "index_board_positions_match_combatants_on_match_event_id"
   end
 
   create_table "boards", force: :cascade do |t|
@@ -56,71 +46,85 @@ ActiveRecord::Schema.define(version: 2019_08_30_171814) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "combatants_players", force: :cascade do |t|
-    t.bigint "combatant_id", null: false
-    t.bigint "player_id", null: false
+  create_table "match_combatant_statuses", force: :cascade do |t|
+    t.bigint "match_combatant_id", null: false
+    t.bigint "match_event_id", null: false
+    t.integer "defense", null: false
+    t.integer "level", null: false
+    t.integer "maximum_energy", null: false
+    t.integer "maximum_health", null: false
+    t.integer "remaining_energy", null: false
+    t.integer "remaining_health", null: false
+    t.string "availability", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatant_id"], name: "index_combatants_players_on_combatant_id"
-    t.index ["player_id"], name: "index_combatants_players_on_player_id"
+    t.index ["match_combatant_id"], name: "index_match_combatant_statuses_on_match_combatant_id"
+    t.index ["match_event_id"], name: "index_match_combatant_statuses_on_match_event_id"
   end
 
-  create_table "combatants_players_matches", force: :cascade do |t|
-    t.bigint "combatants_player_id", null: false
-    t.bigint "match_id"
+  create_table "match_combatants", force: :cascade do |t|
+    t.bigint "match_id", null: false
+    t.bigint "player_combatant_id", null: false
     t.integer "defense", null: false
     t.integer "health", null: false
     t.integer "level", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_player_id"], name: "index_combatants_players_matches_on_combatants_player_id"
-    t.index ["match_id"], name: "index_combatants_players_matches_on_match_id"
+    t.index ["match_id"], name: "index_match_combatants_on_match_id"
+    t.index ["player_combatant_id"], name: "index_match_combatants_on_player_combatant_id"
   end
 
-  create_table "combatants_players_matches_match_turns", force: :cascade do |t|
-    t.bigint "combatants_players_match_id", null: false
-    t.bigint "match_event_id", null: false
-    t.bigint "match_turn_id", null: false
-    t.integer "level", null: false
-    t.integer "remaining_health", null: false
-    t.integer "defense", null: false
-    t.string "availability", null: false
+  create_table "match_combatants_moves", force: :cascade do |t|
+    t.bigint "match_combatant_id", null: false
+    t.bigint "move_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_players_match_id"], name: "idx_cmbtnts_plyrs_mtchs_match_turns_combatants_players_match"
-    t.index ["match_event_id"], name: "index_combatants_players_matches_match_turns_on_match_event_id"
-    t.index ["match_turn_id"], name: "index_combatants_players_matches_match_turns_on_match_turn_id"
+    t.index ["match_combatant_id"], name: "index_match_combatants_moves_on_match_combatant_id"
+    t.index ["move_id"], name: "index_match_combatants_moves_on_move_id"
   end
 
-  create_table "combatants_players_matches_move_selections", force: :cascade do |t|
+  create_table "match_events", force: :cascade do |t|
     t.bigint "board_position_id"
-    t.bigint "combatants_players_matches_move_id", null: false
+    t.bigint "match_combatant_id", null: false
+    t.bigint "match_move_turn_id", null: false
+    t.bigint "move_turn_effect_id", null: false
+    t.string "effect_type", null: false
+    t.integer "amount"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_position_id"], name: "index_match_events_on_board_position_id"
+    t.index ["match_combatant_id"], name: "index_match_events_on_match_combatant_id"
+    t.index ["match_move_turn_id"], name: "index_match_events_on_match_move_turn_id"
+    t.index ["move_turn_effect_id"], name: "index_match_events_on_move_turn_effect_id"
+  end
+
+  create_table "match_move_selections", force: :cascade do |t|
+    t.bigint "board_position_id"
+    t.bigint "match_combatants_move_id", null: false
     t.bigint "match_turn_id", null: false
+    t.bigint "source_board_position_id", null: false
     t.datetime "processed_at"
-    t.boolean "was_successful"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_position_id"], name: "index_combatants_players_matches_move_selections_board_position"
-    t.index ["combatants_players_matches_move_id"], name: "idx_cmbtnts_plyrs_mtchs_mv_slctns_cmbtnts_plyrs_mtchs_mv"
-    t.index ["match_turn_id"], name: "index_combatants_players_matches_move_selections_match_turn"
+    t.index ["board_position_id"], name: "index_match_move_selections_on_board_position_id"
+    t.index ["match_combatants_move_id"], name: "index_match_move_selections_on_match_combatants_move_id"
+    t.index ["match_turn_id"], name: "index_match_move_selections_on_match_turn_id"
+    t.index ["source_board_position_id"], name: "index_match_move_selections_on_source_board_position_id"
   end
 
-  create_table "combatants_players_matches_moves", force: :cascade do |t|
-    t.bigint "combatants_players_match_id", null: false
-    t.bigint "move_id", null: false
+  create_table "match_move_turns", force: :cascade do |t|
+    t.bigint "match_combatant_id", null: false
+    t.bigint "match_move_selection_id"
+    t.bigint "match_turn_id", null: false
+    t.bigint "move_turn_id", null: false
+    t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_players_match_id"], name: "idx_combatants_players_matches_moves_combatants_players_match"
-    t.index ["move_id"], name: "index_combatants_players_matches_moves_on_move_id"
-  end
-
-  create_table "combatants_players_moves", force: :cascade do |t|
-    t.bigint "combatants_player_id", null: false
-    t.bigint "move_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_player_id"], name: "index_combatants_players_moves_on_combatants_player_id"
-    t.index ["move_id"], name: "index_combatants_players_moves_on_move_id"
+    t.index ["match_combatant_id"], name: "index_match_move_turns_on_match_combatant_id"
+    t.index ["match_move_selection_id"], name: "index_match_move_turns_on_match_move_selection_id"
+    t.index ["match_turn_id"], name: "index_match_move_turns_on_match_turn_id"
+    t.index ["move_turn_id"], name: "index_match_move_turns_on_move_turn_id"
   end
 
   create_table "match_turns", force: :cascade do |t|
@@ -130,36 +134,6 @@ ActiveRecord::Schema.define(version: 2019_08_30_171814) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["match_id"], name: "index_match_turns_on_match_id"
-  end
-
-  create_table "match_turns_move_turns", force: :cascade do |t|
-    t.bigint "combatants_players_matches_move_selection_id"
-    t.bigint "combatants_players_match_id", null: false
-    t.bigint "match_turn_id", null: false
-    t.bigint "move_turn_id", null: false
-    t.datetime "processed_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["combatants_players_match_id"], name: "index_match_turns_move_turns_on_combatants_players_match_id"
-    t.index ["combatants_players_matches_move_selection_id"], name: "idx_mtch_trns_mv_trns_cmbtnts_plyrs_mtchs_mv_slctn"
-    t.index ["match_turn_id"], name: "index_match_turns_move_turns_on_match_turn_id"
-    t.index ["move_turn_id"], name: "index_match_turns_move_turns_on_move_turn_id"
-  end
-
-  create_table "match_turns_move_turns_move_turn_effects", force: :cascade do |t|
-    t.bigint "combatants_players_match_id", null: false
-    t.bigint "board_position_id"
-    t.bigint "match_turns_move_turn_id", null: false
-    t.bigint "move_turn_effect_id", null: false
-    t.string "effect_type", null: false
-    t.integer "amount"
-    t.string "status"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["board_position_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_brd_pstn"
-    t.index ["combatants_players_match_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_cmbtnts_plyrs_mtch"
-    t.index ["match_turns_move_turn_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_mtch_trns_mv_trn"
-    t.index ["move_turn_effect_id"], name: "idx_mtch_trns_mv_trns_mv_trn_ffcts_mv_trns_ffct"
   end
 
   create_table "matches", force: :cascade do |t|
@@ -205,6 +179,24 @@ ActiveRecord::Schema.define(version: 2019_08_30_171814) do
     t.boolean "is_diagonal", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_combatants", force: :cascade do |t|
+    t.bigint "combatant_id", null: false
+    t.bigint "player_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["combatant_id"], name: "index_player_combatants_on_combatant_id"
+    t.index ["player_id"], name: "index_player_combatants_on_player_id"
+  end
+
+  create_table "player_combatants_moves", force: :cascade do |t|
+    t.bigint "move_id", null: false
+    t.bigint "player_combatant_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["move_id"], name: "index_player_combatants_moves_on_move_id"
+    t.index ["player_combatant_id"], name: "index_player_combatants_moves_on_player_combatant_id"
   end
 
   create_table "players", force: :cascade do |t|

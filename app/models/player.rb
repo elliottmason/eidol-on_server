@@ -1,5 +1,5 @@
 class Player < ApplicationRecord
-  has_many :combatants_players
+  has_many :player_combatants
 
   # @param args [Hash]
   # @return [Player]

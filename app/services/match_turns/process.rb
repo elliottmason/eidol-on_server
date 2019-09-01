@@ -18,18 +18,18 @@ module MatchTurns
       @match_turn = match_turn
     end
 
-    # @return [Array<MatchTurnsMoveTurnsMoveTurnEffect>]
-    def match_turns_move_turns_move_turn_effect
-      @match_turns_move_turns_move_turn_effect ||= []
+    # @return [Array<MatchEvent>]
+    def match_events
+      @match_events ||= []
     end
 
     # @return [void]
     def perform
       ActiveRecord::Base.transaction do
-        while unprocessed_match_turns_move_turns.size.nonzero?
-          match_turns_move_turns_move_turn_effect <<
-            MatchTurnsMoveTurns::Process.for(
-              match_turns_move_turn: next_unprocessed_match_turns_move_turn
+        while unprocessed_match_move_turns.size.nonzero?
+          match_events <<
+            MatchMoveTurns::Process.for(
+              match_move_turn: next_unprocessed_match_move_turn
             )
         end
       end
@@ -40,22 +40,22 @@ module MatchTurns
     # @return [MatchTurn]
     attr_reader :match_turn
 
-    # @return [Array<MatchTurnsMoveTurn>]
-    def sorted_unprocessed_match_turns_move_turns
-      unprocessed_match_turns_move_turns.sort do |turn_a, turn_b|
-        MatchTurnsMoveTurns::CalculateSpeed.for(turn_b).value <=>
-          MatchTurnsMoveTurns::CalculateSpeed.for(turn_a).value
+    # @return [Array<MatchMoveTurn>]
+    def sorted_unprocessed_match_move_turns
+      unprocessed_match_move_turns.sort do |turn_a, turn_b|
+        MatchMoveTurns::CalculateSpeed.for(turn_b).value <=>
+          MatchMoveTurns::CalculateSpeed.for(turn_a).value
       end
     end
 
-    # @return [MatchTurnsMoveTurn]
-    def next_unprocessed_match_turns_move_turn
-      sorted_unprocessed_match_turns_move_turns.first
+    # @return [MatchMoveTurn]
+    def next_unprocessed_match_move_turn
+      sorted_unprocessed_match_move_turns.first
     end
 
-    # @return [Array<MatchTurnsMoveTurn>]
-    def unprocessed_match_turns_move_turns
-      MatchTurnsMoveTurn.where(match_turn: match_turn, processed_at: nil).all
+    # @return [Array<MatchMoveTurn>]
+    def unprocessed_match_move_turns
+      MatchMoveTurn.where(match_turn: match_turn, processed_at: nil).all
     end
   end
 end
