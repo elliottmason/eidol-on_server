@@ -28,7 +28,7 @@ module MatchTurns
 
     # @return [Integer]
     def turn_number
-      match.current_turn.turn + move_turn.turn - 1
+      match.turn.turn + move_turn.turn - 1
     end
   end
 end

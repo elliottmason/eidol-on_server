@@ -18,7 +18,7 @@ class Match < ApplicationRecord
   #   @return [ActiveRecord::Associations::CollectionProxy]
 
   # @return [MatchTurn, nil]
-  def current_turn
+  def turn
     turns.where(processed_at: nil).order('turn ASC').first
   end
 end

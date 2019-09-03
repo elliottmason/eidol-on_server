@@ -5,7 +5,7 @@ class BoardPosition < ApplicationRecord
   belongs_to :board
 
   # Get the [MatchCombatant]s whose most recent status has this [BoardPosition]
-  # @return [Array<MatchCombatant>]
+  # @return [MatchCombatant::ActiveRecord_Relation]
   def occupants
     MatchCombatant \
       .joins(

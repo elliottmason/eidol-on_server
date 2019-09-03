@@ -5,7 +5,7 @@ module MatchMoveTurns
     # @type [Hash<Symbol: ApplicationService>]
     ACTIONS_MAP = {
       relocation_normal: MatchCombatants::Relocate,
-      damage_electric: MatchCombatants::ApplyDamage
+      damage_electric: Matches::CalculateAndApplyDamage
     }.freeze
 
     # @param match_move_turn [MatchMoveTurn]
@@ -73,7 +73,7 @@ module MatchMoveTurns
         board_position: board_position,
         match_combatant: match_combatant,
         match_move_turn: match_move_turn,
-        move_turn_effect: move_turn_effect,
+        move_turn_effect: move_turn_effect
       )
     end
   end

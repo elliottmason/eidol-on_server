@@ -1,36 +1,31 @@
+# frozen_string_literal: true
+
 module MatchCombatants
+  # Insert a new [MatchCombatantStatus] for the given [MatchCombatant] that has
+  # a #remaining_health value reduced by the provided amount
   class ApplyDamage < ApplicationService
-    # @param board_position [BoardPosition]
-    # @param match_combatant [MatchCombatant]
-    # @param match_move_turn [MatchMoveTurn]
-    # @param move_turn_effect [MoveTurnEffect]
+    # @param amount [Integer]
+    # @param combatant [MatchCombatant]
     def initialize(
-      board_position:,
-      match_combatant:,
-      match_move_turn:,
-      move_turn_effect:
+      amount:,
+      combatant:
     )
-      @board_position = board_position
-      @match_combatant = match_combatant
-      @match_move_turn = match_move_turn
-      @move_turn_effect = move_turn_effect
+      @amount = amount
+      @combatant = combatant
     end
 
     def perform
-      board_position.occupants.each do |target_combatant|
-        MoveTurnEffects::CalculateDamage.for(
-          move_turn_effect: move_turn_effect,
-          target_combatant: target_combatant
-        )
-      end
+      new_status = combatant.status.dup
+      new_status.remaining_health -= amount
+      new_status.save!
     end
 
     private
 
-    # @return [BoardPosition]
-    attr_reader :board_position
+    # @return [Integer]
+    attr_reader :amount
 
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
+    # @return [MatchCombatant]
+    attr_reader :combatant
   end
 end

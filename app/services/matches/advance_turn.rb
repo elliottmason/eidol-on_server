@@ -21,7 +21,7 @@ module Matches
 
     # @return [MatchTurn]
     def current_turn
-      match.current_turn
+      match.turn
     end
 
     # @return [Integer]

@@ -12,12 +12,12 @@ class MatchCombatant < ApplicationRecord
   has_many :statuses, class_name: 'MatchCombatantStatus', dependent: :destroy
 
   # @return [BoardPosition]
-  def current_position
-    current_status.board_position
+  def position
+    status.board_position
   end
 
   # @return [MatchCombatantStatus]
-  def current_status
+  def status
     statuses.order('created_at DESC').first
   end
 end

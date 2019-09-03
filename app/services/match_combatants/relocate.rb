@@ -45,7 +45,7 @@ module MatchCombatants
 
     # @return [MatchCombatantStatus]
     def update_match_combatant_status
-      new_status = match_combatant.current_status.dup
+      new_status = match_combatant.status.dup
       new_status.board_position = board_position
       new_status.match_event = match_event
       new_status.save!
