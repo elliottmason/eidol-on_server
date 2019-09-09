@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 ruby '2.6.3'
 
@@ -5,6 +7,9 @@ gem 'rails', '~> 6.0.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+
+# Use Jb for JSON templates
+gem 'jb', '~> 0.7'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
@@ -25,6 +30,19 @@ end
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
+
+  # Use Pry as our Ruby shell
+  gem 'pry-rails'
+
+  # Use Reek to detect code smells
+  gem 'reek'
+
+  # Use RuboCop to analyze our code
+  gem 'rubocop', require: false
+  gem 'rubocop-rails'
+
+  # Use Solargraph as a Ruby language server
+  gem 'solargraph'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
