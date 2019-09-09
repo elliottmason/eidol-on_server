@@ -2,6 +2,8 @@
 
 module Matches
   class AdvanceTurn < ApplicationService
+    attr_reader :match_turn
+
     # @param match [Match]
     def initialize(match:)
       @match = match
@@ -9,7 +11,8 @@ module Matches
 
     def perform
       ActiveRecord::Base.transaction do
-        MatchTurn.where(match: match, turn: next_turn_number).first_or_create!
+        @match_turn =
+          MatchTurn.where(match: match, turn: next_turn_number).first_or_create!
         current_turn.update!(processed_at: Time.now.utc)
       end
     end

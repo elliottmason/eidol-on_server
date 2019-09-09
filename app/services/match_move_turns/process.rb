@@ -4,8 +4,9 @@ module MatchMoveTurns
   class Process < ApplicationService
     # @type [Hash<Symbol: ApplicationService>]
     ACTIONS_MAP = {
-      relocation_normal: MatchCombatants::Relocate,
-      damage_electric: Matches::CalculateAndApplyDamage
+      damage: Matches::ProcessDamage,
+      relocation: Matches::ProcessRelocation,
+      status_effect_chance: Matches::ProcessStatusEffectChance
     }.freeze
 
     # @param match_move_turn [MatchMoveTurn]
@@ -56,7 +57,7 @@ module MatchMoveTurns
       # @param move_turn_effect [MoveTurnEffect]
       move_turn_effects.map do |move_turn_effect|
         # @type [Symbol]
-        action_key = move_turn_effect.effect_type.to_sym
+        action_key = move_turn_effect.category.to_sym
         # @type [ApplicationService, nil]
         if (service, = ACTIONS_MAP[action_key])
           process_move_turn_effect(move_turn_effect: move_turn_effect,

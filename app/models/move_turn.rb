@@ -6,9 +6,9 @@ class MoveTurn < ApplicationRecord
   belongs_to :move
   has_many :effects,
            class_name: 'MoveTurnEffect',
-           dependent: :destroy
+           dependent: :restrict_with_exception
   has_many :match_move_turns,
-           dependent: :destroy
+           dependent: :restrict_with_exception
 
   # @!attribute [rw] turn
   #   @return [Integer]

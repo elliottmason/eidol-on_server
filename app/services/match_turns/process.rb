@@ -3,16 +3,6 @@
 module MatchTurns
   # Sort and consecutively handle each MoveTurn associated with this MatchTurn
   class Process < ApplicationService
-    # collect unprocessed move turns for this match turn
-    # order move selections by precedence
-    # process the first move selection in the list
-    #   determine the effects of the selected move
-    #   store the effects of the move
-    #   apply the effects of the move
-    #   mark the move selection as processed
-    # loop
-    # advance match turn by 1
-
     # @param match_turn [MatchTurn]
     def initialize(match_turn:)
       @match_turn = match_turn
@@ -32,6 +22,8 @@ module MatchTurns
               match_move_turn: next_unprocessed_match_move_turn
             )
         end
+
+        Matches::AdvanceTurn.for(match: match)
       end
     end
 
@@ -39,6 +31,10 @@ module MatchTurns
 
     # @return [MatchTurn]
     attr_reader :match_turn
+
+    def match
+      match_turn.match
+    end
 
     # @return [Array<MatchMoveTurn>]
     def sorted_unprocessed_match_move_turns

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Calculate the damage output of a [MoveTurnEffect] based on its properties and
-# the attacking/defending [MatchCombatant]s
 module MoveTurnEffects
+  # Calculate the damage output of a [MoveTurnEffect] based on its properties
+  # and the attacking/defending [MatchCombatant]s
   class CalculateDamage < ApplicationService
     # @return [Integer]
     attr_reader :value
@@ -12,7 +12,7 @@ module MoveTurnEffects
     # @param target_combatant [MatchCombatant]
     def initialize(
       move_turn_effect:,
-      source_combatant: source_combatant,
+      source_combatant:,
       target_combatant:
     )
       @move_turn_effect = move_turn_effect

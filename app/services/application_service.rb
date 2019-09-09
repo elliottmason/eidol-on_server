@@ -20,6 +20,9 @@ class ApplicationService
 
     # @return [self]
     alias now with
+
+    # @!method for()
+    #   @return [ApplicationService]
   end
 
   # @return [void]

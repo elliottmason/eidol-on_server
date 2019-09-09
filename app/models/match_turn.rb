@@ -6,8 +6,9 @@ class MatchTurn < ApplicationRecord
   belongs_to :match
   has_many :move_selections,
            class_name: 'MatchMoveSelection',
-           dependent: :destroy
+           dependent: :restrict_with_exception
   has_many :match_move_turns,
-           dependent: :destroy
+           dependent: :restrict_with_exception
+  has_many :match_events, through: :match_move_turns
   has_many :move_turns, through: :match_move_turns
 end

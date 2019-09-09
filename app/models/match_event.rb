@@ -3,4 +3,5 @@ class MatchEvent < ApplicationRecord
   belongs_to :match_combatant
   belongs_to :match_move_turn
   belongs_to :move_turn_effect
+  has_one :match_turn, through: :match_move_turn
 end

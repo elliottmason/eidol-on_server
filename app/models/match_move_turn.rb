@@ -7,6 +7,8 @@ class MatchMoveTurn < ApplicationRecord
   belongs_to :match_combatant
   belongs_to :match_turn
   belongs_to :move_turn
+  has_one :match, through: :match_turn
+  has_many :match_events, dependent: :restrict_with_exception
 
   delegate :board_position, to: :match_move_selection
 

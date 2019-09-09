@@ -14,8 +14,13 @@ module MatchCombatants
       @combatant = combatant
     end
 
+    # @return [MatchCombatantStatus]
+    def new_status
+      # @type [MatchCombatantStatus]
+      @new_status ||= combatant.status.dup
+    end
+
     def perform
-      new_status = combatant.status.dup
       new_status.remaining_health -= amount
       new_status.save!
     end

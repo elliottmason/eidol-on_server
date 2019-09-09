@@ -5,6 +5,6 @@
 class PlayerCombatant < ApplicationRecord
   belongs_to :combatant
   belongs_to :player
-  has_many :player_combatants_moves, dependent: :destroy
+  has_many :player_combatants_moves, dependent: :restrict_with_exception
   has_many :moves, through: :player_combatants_moves
 end

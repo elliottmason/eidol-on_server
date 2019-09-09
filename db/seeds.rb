@@ -61,29 +61,31 @@ player_combatants = {
 # @param speed [Integer]
 # @return [Move]
 def create_move_move(speed:)
-  move =
-    Move.create!(
-      name: 'Move',
-      description: 'to another position on the board',
-      range: 1,
-      is_diagonal: true,
-      energy_cost: 1
-    )
+  ActiveRecord::Base.transaction do
+    move =
+      Move.create!(
+        name: 'Move',
+        description: 'to another position on the board',
+        range: 1,
+        is_diagonal: true,
+        energy_cost: 1
+      )
 
-  move_turn =
-    MoveTurn.new(
-      move: move,
-      turn: 1,
-      speed: speed
-    )
+    move_turn =
+      MoveTurn.new(
+        move: move,
+        turn: 1,
+        speed: speed
+      )
 
-  MoveTurnEffect.create(
-    effect_type: 'relocation_normal',
-    move_turn: move_turn,
-    power: 0,
-    precedence: 0
-  )
-  move
+    MoveTurnEffect.create(
+      category: 'relocation',
+      move_turn: move_turn,
+      power: 0,
+      property: 'normal'
+    )
+    move
+  end
 end
 
 # @param speed [Integer]
@@ -108,36 +110,70 @@ def create_bolt_move(speed: 70)
       )
 
     MoveTurnEffect.create!(
-      effect_type: 'damage_electric',
+      category: 'damage',
       move_turn: move_turn,
       power: 50,
-      precedence: 0
-    )
-
-    MoveTurnEffect.create!(
-      effect_type: 'status_effect_chance_paralysis',
-      move_turn: move_turn,
-      power: 15,
-      precedence: 0
+      property: 'electric'
     )
 
     break move
   end
 end
 
-ampul_move_move = create_move_move(speed: 35)
-helljung_move_move = create_move_move(speed: 75)
-mainx_move_move = create_move_move(speed: 120)
-panser_move_move = create_move_move(speed: 60)
+# @param speed [Integer]
+# @return [Move]
+def create_bite_move(speed: 75)
+  ActiveRecord::Base.transaction do
+    move =
+      Move.create!(
+        name: 'Bite',
+        description: 'Sink your teeth into your foe',
+        range: 1,
+        is_diagonal: true,
+        energy_cost: 2
+      )
 
-helljung_bolt = create_bolt_move(speed: 70)
+    move_turn =
+      MoveTurn.create!(
+        move: move,
+        turn: 1,
+        speed: speed
+      )
 
-helljung_moves = [helljung_bolt, helljung_move_move]
+    MoveTurnEffect.create!(
+      move_turn: move_turn,
+      category: 'damage',
+      power: 25,
+      property: 'cutting'
+    )
 
-player_combatants[:branden][:ampul].moves << ampul_move_move
-player_combatants[:branden][:panser].moves << panser_move_move
-player_combatants[:elliott][:helljung].moves << helljung_moves
-player_combatants[:elliott][:mainx].moves << mainx_move_move
+    MoveTurnEffect.create!(
+      move_turn: move_turn,
+      category: 'damage',
+      power: 25,
+      property: 'crushing'
+    )
+
+    MoveTurnEffect.create!(
+      move_turn: move_turn,
+      category: 'status_effect_chance',
+      power: 25,
+      property: 'poison'
+    )
+
+    move
+  end
+end
+
+ampul_moves = { move: create_move_move(speed: 35) }
+helljung_moves = { move: create_move_move(speed: 75), bolt: create_bolt_move }
+mainx_moves = { move: create_move_move(speed: 120) }
+panser_moves = { move: create_move_move(speed: 60), bite: create_bite_move }
+
+player_combatants[:branden][:ampul].moves = ampul_moves.values
+player_combatants[:branden][:panser].moves = panser_moves.values
+player_combatants[:elliott][:helljung].moves = helljung_moves.values
+player_combatants[:elliott][:mainx].moves = mainx_moves.values
 
 # @type [Matches::Create]
 match_creator = Matches::Create.for(players: players.values)
@@ -145,8 +181,6 @@ match_creator = Matches::Create.for(players: players.values)
 match = match_creator.match
 # @type [Board]
 board = match.board
-# @type [MatchTurn]
-match_turn = match.turn
 
 MatchCombatants::Deploy.with(
   board_position: BoardPosition.where(board: board, x: 1, y: 1).first,
@@ -168,11 +202,12 @@ MatchCombatants::Deploy.with(
   match_combatant: match.match_combatants.offset(3).first
 )
 
-Matches::AdvanceTurn.for(match: match)
+Matches::AdvanceTurn.for(match: match).match_turn
 
 (0..3).each do |offset|
   MatchCombatantsMoves::Select.with(
-    board_position: BoardPosition.where(board: board, x: 1, y: 1).first,
+    board_position:
+      BoardPosition.where(board: board, x: rand(0..3), y: rand(0..3)).first,
     match_combatants_move: MatchCombatantsMove.offset(offset).first,
     match_turn: match.turn,
     source_board_position: MatchCombatant.offset(offset).first.position
@@ -183,7 +218,8 @@ MatchTurns::Process.for(match_turn: match.turn)
 
 (0..3).each do |offset|
   MatchCombatantsMoves::Select.with(
-    board_position: BoardPosition.where(board: board, x: 1, y: 2).first,
+    board_position:
+      BoardPosition.where(board: board, x: rand(0..3), y: rand(0..3)).first,
     match_combatants_move: MatchCombatantsMove.offset(offset).first,
     match_turn: match.turn,
     source_board_position: MatchCombatant.offset(offset).first.position

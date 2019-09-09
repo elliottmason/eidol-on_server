@@ -79,7 +79,8 @@ ActiveRecord::Schema.define(version: 2019_08_31_224332) do
     t.bigint "match_combatant_id", null: false
     t.bigint "match_move_turn_id", null: false
     t.bigint "move_turn_effect_id", null: false
-    t.string "effect_type", null: false
+    t.string "category", null: false
+    t.string "property", null: false
     t.integer "amount"
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
@@ -145,9 +146,9 @@ ActiveRecord::Schema.define(version: 2019_08_31_224332) do
 
   create_table "move_turn_effects", force: :cascade do |t|
     t.bigint "move_turn_id", null: false
-    t.string "effect_type", null: false
+    t.string "category", null: false
+    t.string "property", null: false
     t.integer "power", default: 0, null: false
-    t.integer "precedence", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["move_turn_id"], name: "index_move_turn_effects_on_move_turn_id"

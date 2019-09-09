@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 module Matches
-  class CalculateAndApplyDamage < ApplicationService
+  # Processes a single [MoveTurnEffect] relative to the [MatchCombatant] that
+  # it's coming from and which [BoardPosition] it targets
+  class ProcessDamage < ApplicationService
     # @param board_position [BoardPosition]
+    # @param match_combatant [MatchCombatant]
     # @param match_move_turn [MatchMoveTurn]
     # @param move_turn_effect [MoveTurnEffect]
-    # @param source_combatant [MatchCombatant]
     def initialize(
       board_position:,
       match_combatant:,
@@ -16,10 +20,13 @@ module Matches
       @source_combatant = match_combatant
     end
 
+    # @return [MatchEvent]
     def perform
       ActiveRecord::Base.transaction do
+        # @param target_combatant [MatchCombatant]
         targets.each do |target_combatant|
-          amount =
+          # @type [Integer]
+          amount ||=
             MoveTurnEffects::CalculateDamage.for(
               move_turn_effect: move_turn_effect,
               source_combatant: source_combatant,
@@ -44,6 +51,9 @@ module Matches
     # @return [BoardPosition]
     attr_reader :board_position
 
+    # @return [Match]
+    attr_reader :match
+
     # @return [MatchMoveTurn]
     attr_reader :match_move_turn
 
@@ -53,19 +63,22 @@ module Matches
     # @return [MatchCombatant]
     attr_reader :source_combatant
 
+    # @param amount [Integer]
+    # @param combatant [MatchCombatant]
     # @return [MatchEvent]
     def create_match_event(amount:, combatant:)
       MatchEvent.create!(
         match_combatant: combatant,
         match_move_turn: match_move_turn,
         move_turn_effect: move_turn_effect,
-        effect_type: 'damage',
         amount: amount,
+        category: 'damage',
+        property: 'normal',
         status: 'successful'
       )
     end
 
-    # @return [MatchCombatant::ActiveRecord_Relation]
+    # @return [ActiveRecord::Relation]
     def targets
       board_position.occupants
     end
