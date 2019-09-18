@@ -64,6 +64,7 @@ module Matches
           match_move_turn: match_move_turn,
           move_turn_effect: move_turn_effect,
           category: 'relocation',
+          property: 'normal',
           status: 'successful'
         )
     end
