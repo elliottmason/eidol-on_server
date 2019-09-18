@@ -37,8 +37,8 @@ module MatchCombatants
         MatchCombatant.create!(
           player_combatant: player_combatant,
           match: match,
-          defense: 1,
-          health: 1,
+          defense: 15,
+          health: 50,
           level: 1
         )
     end
