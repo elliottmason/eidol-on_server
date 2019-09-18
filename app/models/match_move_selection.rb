@@ -7,5 +7,4 @@ class MatchMoveSelection < ApplicationRecord
   belongs_to :board_position
   belongs_to :match_combatants_move
   belongs_to :match_turn
-  belongs_to :source_board_position, class_name: 'BoardPosition'
 end
