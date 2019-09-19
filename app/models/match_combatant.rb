@@ -14,8 +14,14 @@ class MatchCombatant < ApplicationRecord
   has_one :combatant, through: :player_combatant
   has_one :player, through: :player_combatant
 
+  # @!method match_combatants_moves()
+  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
+
+  # @!method player()
+  #   @return [Player]
+
   # @!method statuses()
-  #   @return [String]
+  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantStatus>]
 
   # @return [BoardPosition]
   def position

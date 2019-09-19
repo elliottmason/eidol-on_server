@@ -5,4 +5,10 @@
 class MatchCombatantsMove < ApplicationRecord
   belongs_to :match_combatant
   belongs_to :move
+
+  # @!method id()
+  #   @return [Integer]
+
+  # @!method move()
+  #   @return [Move]
 end
