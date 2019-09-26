@@ -6,10 +6,10 @@ class MatchesChannel < ApplicationCable::Channel
     # @type [Match]
     return unless (match = Match.find(params['room']))
 
-    broadcasting = "match_#{match.id}"
-    stream_from broadcasting
+    player = Player.all.sample
 
-    player = Player.first
+    broadcasting = "match_#{match.id}_player_#{player.id}"
+    stream_from broadcasting
 
     response =
       Matches::GenerateObjectForClient.with(match: match, player: player).object

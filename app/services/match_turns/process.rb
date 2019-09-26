@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module MatchTurns
-  # Sort and consecutively handle each MoveTurn associated with this MatchTurn
+  # Queue the [MatchMoveTurn[s based on this [MatchTurn]'s [MatchMoveSelection]s
+  # Sort and consecutively handle each [MatchMoveTurn]
   class Process < ApplicationService
     # @param match_turn [MatchTurn]
     def initialize(match_turn:)

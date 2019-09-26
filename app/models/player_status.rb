@@ -1,0 +1,2 @@
+class PlayerStatus < ApplicationRecord
+end

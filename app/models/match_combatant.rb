@@ -14,6 +14,24 @@ class MatchCombatant < ApplicationRecord
   has_one :combatant, through: :player_combatant
   has_one :player, through: :player_combatant
 
+  def self.available
+    availability = 'available'
+
+    joins(
+      <<-SQL
+        INNER JOIN match_combatant_statuses mcs ON (
+          mcs.id = (
+            SELECT mcs1.id
+            FROM match_combatant_statuses AS mcs1
+            WHERE mcs1.match_combatant_id = match_combatants.id
+            ORDER BY mcs1.id DESC
+            LIMIT 1
+          )
+        )
+      SQL
+    ).where(mcs: { availability: availability }).distinct
+  end
+
   # @!method match_combatants_moves()
   #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
 

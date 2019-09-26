@@ -12,7 +12,7 @@ module MatchCombatants
       ActiveRecord::Base.transaction do
         new_status = match_combatant.status.dup
         new_status.board_position = board_position
-        new_status.availability = 'deployed'
+        new_status.availability = 'available'
         new_status.save!
       end
     end

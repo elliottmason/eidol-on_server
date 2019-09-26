@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_31_224332) do
+ActiveRecord::Schema.define(version: 2019_09_26_213203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,14 +95,15 @@ ActiveRecord::Schema.define(version: 2019_08_31_224332) do
     t.bigint "board_position_id"
     t.bigint "match_combatants_move_id", null: false
     t.bigint "match_turn_id", null: false
-    t.bigint "source_board_position_id", null: false
+    t.bigint "player_id"
+    t.boolean "was_system_selected", default: false, null: false
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["board_position_id"], name: "index_match_move_selections_on_board_position_id"
     t.index ["match_combatants_move_id"], name: "index_match_move_selections_on_match_combatants_move_id"
     t.index ["match_turn_id"], name: "index_match_move_selections_on_match_turn_id"
-    t.index ["source_board_position_id"], name: "index_match_move_selections_on_source_board_position_id"
+    t.index ["player_id"], name: "index_match_move_selections_on_player_id"
   end
 
   create_table "match_move_turns", force: :cascade do |t|
@@ -189,6 +190,16 @@ ActiveRecord::Schema.define(version: 2019_08_31_224332) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["move_id"], name: "index_player_combatants_moves_on_move_id"
     t.index ["player_combatant_id"], name: "index_player_combatants_moves_on_player_combatant_id"
+  end
+
+  create_table "player_statuses", force: :cascade do |t|
+    t.bigint "match_turn_id", null: false
+    t.bigint "player_id", null: false
+    t.string "availability", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["match_turn_id"], name: "index_player_statuses_on_match_turn_id"
+    t.index ["player_id"], name: "index_player_statuses_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|

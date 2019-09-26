@@ -4,7 +4,14 @@
 # the player who owns the [MatchCombatant] is definitely the one who selected
 # the move
 class MatchMoveSelection < ApplicationRecord
-  belongs_to :board_position
+  belongs_to :board_position, optional: true
   belongs_to :match_combatants_move
   belongs_to :match_turn
+  belongs_to :player, optional: true
+
+  delegate :match_combatant, to: :match_combatants_move
+
+  # @!method move()
+  #   @return [Move]
+  delegate :move, to: :match_combatants_move
 end

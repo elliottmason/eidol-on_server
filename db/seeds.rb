@@ -205,7 +205,7 @@ MatchCombatants::Deploy.with(
 Matches::AdvanceTurn.for(match: match).match_turn
 
 (0..3).each do |offset|
-  MatchCombatantsMoves::Select.with(
+  MatchMoveSelections::Create.with(
     board_position:
       BoardPosition.where(board: board, x: rand(0..3), y: rand(0..3)).first,
     match_combatants_move: MatchCombatantsMove.offset(offset).first,
@@ -213,10 +213,11 @@ Matches::AdvanceTurn.for(match: match).match_turn
   )
 end
 
+MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
 MatchTurns::Process.for(match_turn: match.turn)
 
 (0..3).each do |offset|
-  MatchCombatantsMoves::Select.with(
+  MatchMoveSelections::Create.with(
     board_position:
       BoardPosition.where(board: board, x: rand(0..3), y: rand(0..3)).first,
     match_combatants_move: MatchCombatantsMove.offset(offset).first,
@@ -224,4 +225,5 @@ MatchTurns::Process.for(match_turn: match.turn)
   )
 end
 
+MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
 MatchTurns::Process.for(match_turn: match.turn)

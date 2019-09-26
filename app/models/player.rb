@@ -1,8 +1,4 @@
 class Player < ApplicationRecord
   has_many :player_combatants
-
-  # @param args [Hash]
-  # @return [Player]
-  def create(*args)
-  end
+  has_many :statuses, class_name: 'PlayerStatus'
 end
