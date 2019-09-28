@@ -7,17 +7,15 @@ module Matches
     # @return [Hash, NilClass]
     attr_reader :object
 
-    # @param match [Match]
     # @param player [Player]
-    def initialize(match:, player:)
-      @match = match
+    def initialize(player:)
       @player = player
     end
 
     def perform
       @object = {
         id: id,
-        board: board,
+        boardPositions: board_positions,
         combatants: combatants,
         events: events,
         players: players,
@@ -30,24 +28,22 @@ module Matches
     # @return [Player]
     attr_reader :player
 
-    # @return [Match]
-    attr_reader :match
+    # @return [Account]
+    def account
+      player.account
+    end
 
     # @return [Hash]
-    def board
-      return @board if @board
+    def board_positions
 
-      @board = {
-        positions:
-          # @param position [BoardPosition]
-          @match.board.positions.map do |position|
-            {
-              id: position.id.to_s,
-              x: position.x,
-              y: position.y
-            }
-          end
-      }
+      # @param position [BoardPosition]
+      @match.board_positions.map do |position|
+        {
+          id: position.id.to_s,
+          x: position.x,
+          y: position.y
+        }
+      end
     end
 
     # @return [Array]
@@ -59,8 +55,7 @@ module Matches
             id: match_combatant.id.to_s,
             moves: match_combatant_moves(match_combatant),
             name: match_combatant.combatant.name,
-            playerId: match_combatant.player_combatant.player_id.to_s,
-            updatedAt: match_combatant.updated_at
+            playerId: match_combatant.player_id.to_s
           }.merge(match_combatant_status(match_combatant))
         end
     end
@@ -88,10 +83,15 @@ module Matches
       match.id.to_s
     end
 
+    # @return [Match]
+    def match
+      @match ||= player.match
+    end
+
     # @param match_combatant [MatchCombatant]
     # @return [Array<Hash>]
     def match_combatant_moves(match_combatant)
-      return [] unless match_combatant.player == player
+      return [] unless match_combatant.account == account
 
       # @param match_combatants_move [MatchCombatantsMove]
       match_combatant.match_combatants_moves.map do |match_combatants_move|
@@ -138,10 +138,13 @@ module Matches
     def players
       @players ||=
         # @param player [Player]
-        match.players.map do |player|
+        match.players.map do |match_player|
+          is_local_player = match_player.account_id == player.account_id
+
           {
-            id: player.id.to_s,
-            name: player.name
+            id: match_player.id.to_s,
+            isLocalPlayer: is_local_player,
+            name: match_player.name
           }
         end
     end

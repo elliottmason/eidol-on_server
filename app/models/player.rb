@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 class Player < ApplicationRecord
-  has_many :player_combatants
+  belongs_to :account
+  belongs_to :match
   has_many :statuses, class_name: 'PlayerStatus'
 end

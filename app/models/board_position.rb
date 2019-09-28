@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# Unique position on a Board with x and y coordinates
+# Unique positions on a [Match]'s board with x and y coordinates
 class BoardPosition < ApplicationRecord
-  belongs_to :board
+  belongs_to :match
 
   # Get the [MatchCombatant]s whose most recent status has this [BoardPosition]
-  # @return [MatchCombatant::ActiveRecord_Relation]
+  # @return [ActiveRecord::Relation<MatchCombatant>]
   def occupants
     MatchCombatant \
       .joins(
@@ -20,6 +20,6 @@ class BoardPosition < ApplicationRecord
         )
         SQL
       ) \
-      .where('mcs.board_position_id = ?', self.id)
+      .where('mcs.board_position_id = ?', id)
   end
 end

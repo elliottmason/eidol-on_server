@@ -6,13 +6,13 @@ class MatchesChannel < ApplicationCable::Channel
     # @type [Match]
     return unless (match = Match.find(params['room']))
 
-    player = Player.all.sample
+    player = Player.where(match: match, account: account).first
 
     broadcasting = "match_#{match.id}_player_#{player.id}"
     stream_from broadcasting
 
     response =
-      Matches::GenerateObjectForClient.with(match: match, player: player).object
+      Matches::GenerateObjectForClient.with(player: player).object
 
     ActionCable.server.broadcast(broadcasting, response)
   end
