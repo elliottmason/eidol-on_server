@@ -16,6 +16,7 @@ class MatchMoveSelectionsController < ApplicationController
     if remaining_combatants.size.zero?
       MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
       MatchTurns::Process.for(match_turn: match.turn)
+      MatchesChannel.broadcast_match(match)
     else
       Rails.logger.debug("#{remaining_combatants.size} combatants not queued")
     end

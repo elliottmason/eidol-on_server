@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
   def create
     account = Account.find_by_email_address(params[:email_address])
-    cookies.signed[:account_id] = { value: account.id, expires: 1.hour }
+    cookies.signed[:account_id] = { value: account.id, expires: 3.days }
 
     Rails.logger.debug(cookies.signed[:account_id])
 

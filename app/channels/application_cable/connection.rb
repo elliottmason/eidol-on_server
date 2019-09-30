@@ -12,7 +12,6 @@ module ApplicationCable
 
     # @return [Account]
     def find_account
-      Rails.logger.debug cookies.signed[:account_id]
       Account.find(cookies.signed[:account_id])
     rescue ActiveRecord::RecordNotFound
       reject_unauthorized_connection
