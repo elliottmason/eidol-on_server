@@ -7,6 +7,9 @@ class MatchCombatantStatus < ApplicationRecord
   belongs_to :match_combatant
   belongs_to :match_event, optional: true
 
-  # @!method remaining_health()
+  # @!attribute [rw] maximum_health
+  #   @return [Integer]
+
+  # @!attribute [rw] remaining_health
   #   @return [Integer]
 end

@@ -120,16 +120,35 @@ module Matches
       }
 
       if match_combatant.player == player
+        remaining_health =
+          if status.remaining_health > 0
+            status.remaining_health
+          else
+            0
+          end
+
         return base.merge(
           defense: status.defense,
           isFriendly: true,
           maximumHealth: status.maximum_health,
-          remainingHealth: status.remaining_health,
+          remainingHealth: remaining_health,
+        )
+      else
+        remaining_health =
+          if status.remaining_health > 0
+            (status.remaining_health / status.maximum_health.to_f * 100).ceil
+          else
+            0
+          end
+
+        return base.merge(
+          isFriendly: false,
+          maximumHealth: 100,
+          remainingHealth: remaining_health,
         )
       end
 
       base.merge(
-        remainingHealthPercentage: 100,
         statusEffects: []
       )
     end

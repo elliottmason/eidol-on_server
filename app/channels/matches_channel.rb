@@ -8,13 +8,15 @@ class MatchesChannel < ApplicationCable::Channel
     # @param player [Player]
     match.players.each do |player|
       broadcasting = "match_#{match.id}_player_#{player.id}"
-      response =
+      match_json =
         Matches::GenerateObjectForClient.with(player: player).object
-      ActionCable.server.broadcast(broadcasting, response)
+      response_json = { match: match_json, kind: 'update' }
+      ActionCable.server.broadcast(broadcasting, response_json)
     end
   end
 
   def subscribed
+    Rails.logger.debug(params.inspect)
     # @type [Match]
     return unless (match = Match.find(params['room']))
 
@@ -24,8 +26,9 @@ class MatchesChannel < ApplicationCable::Channel
     broadcasting = "match_#{match.id}_player_#{player.id}"
     stream_from broadcasting
 
-    response =
+    match_json =
       Matches::GenerateObjectForClient.with(player: player).object
-    ActionCable.server.broadcast(broadcasting, response)
+    response_json = { match: match_json, kind: 'initial' }
+    ActionCable.server.broadcast(broadcasting, response_json)
   end
 end
