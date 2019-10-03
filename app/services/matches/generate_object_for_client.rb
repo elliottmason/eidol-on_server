@@ -64,9 +64,22 @@ module Matches
       @events ||=
         # @param event [MatchEvent]
         match.events.order('id ASC').map do |event|
+          if event.category == "damage" &&
+             event.match_combatant.player != player
+            amount =
+              (
+                (
+                  event.amount /
+                  event.match_combatant.status.maximum_health.to_f
+                ) * 100
+              ).ceil
+          else
+            amount = event.amount
+          end
+
           {
             id: event.id.to_s,
-            amount: event.amount,
+            amount: amount,
             boardPositionId: event.board_position_id&.to_s,
             category: event.category,
             createdAt: event.created_at,
