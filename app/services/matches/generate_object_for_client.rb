@@ -72,7 +72,7 @@ module Matches
                   event.amount /
                   event.match_combatant.status.maximum_health.to_f
                 ) * 100
-              ).ceil
+              ).round
           else
             amount = event.amount
           end
