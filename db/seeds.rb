@@ -104,9 +104,16 @@ def create_bite_move(speed: 75)
   end
 end
 
+ActiveRecord::Base.establish_connection
+ActiveRecord::Base.connection.tables.each do |table|
+  next if table == 'schema_migrations'
+
+  ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
+end
+
 accounts = {
   branden: Account.create!(
-    email_address: 'bwig@dicks.org',
+    email_address: 'bwieg@gmail.org',
     username: 'BeWiegland420'
   ),
   elliott: Account.create!(
@@ -157,53 +164,53 @@ account_combatants[:elliott][:helljung].moves = helljung_moves.values
 account_combatants[:elliott][:mainx].moves = mainx_moves.values
 
 # @type [Matches::Create]
-match_creator = Matches::Create.for(accounts: accounts.values)
-# @type [Match]
-match = match_creator.match
+Matches::Create.for(accounts: accounts.values)
 
+# # @type [Match]
+# match = match_creator.match
 
-MatchCombatants::Deploy.with(
-  board_position: BoardPosition.where(match: match, x: 1, y: 1).first,
-  match_combatant: match.match_combatants.first
-)
+# MatchCombatants::Deploy.with(
+#   board_position: BoardPosition.where(match: match, x: 1, y: 1).first,
+#   match_combatant: match.match_combatants.first
+# )
 
-MatchCombatants::Deploy.with(
-  board_position: BoardPosition.where(match: match, x: 1, y: 2).first,
-  match_combatant: match.match_combatants.offset(1).first
-)
+# MatchCombatants::Deploy.with(
+#   board_position: BoardPosition.where(match: match, x: 1, y: 2).first,
+#   match_combatant: match.match_combatants.offset(1).first
+# )
 
-MatchCombatants::Deploy.with(
-  board_position: BoardPosition.where(match: match, x: 2, y: 2).first,
-  match_combatant: match.match_combatants.offset(2).first
-)
+# MatchCombatants::Deploy.with(
+#   board_position: BoardPosition.where(match: match, x: 2, y: 2).first,
+#   match_combatant: match.match_combatants.offset(2).first
+# )
 
-MatchCombatants::Deploy.with(
-  board_position: BoardPosition.where(match: match, x: 2, y: 3).first,
-  match_combatant: match.match_combatants.offset(3).first
-)
+# MatchCombatants::Deploy.with(
+#   board_position: BoardPosition.where(match: match, x: 2, y: 3).first,
+#   match_combatant: match.match_combatants.offset(3).first
+# )
 
-Matches::AdvanceTurn.for(match: match).match_turn
+# Matches::AdvanceTurn.for(match: match).match_turn
 
-(0..3).each do |offset|
-  MatchMoveSelections::Create.with(
-    board_position:
-      BoardPosition.where(match: match, x: rand(0..3), y: rand(0..3)).first,
-    match_combatants_move: MatchCombatantsMove.offset(offset).first,
-    match_turn: match.turn
-  )
-end
+# (0..3).each do |offset|
+#   MatchMoveSelections::Create.with(
+#     board_position:
+#       BoardPosition.where(match: match, x: rand(0..3), y: rand(0..3)).first,
+#     match_combatants_move: MatchCombatantsMove.offset(offset).first,
+#     match_turn: match.turn
+#   )
+# end
 
-MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
-MatchTurns::Process.for(match_turn: match.turn)
+# MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
+# MatchTurns::Process.for(match_turn: match.turn)
 
-(0..3).each do |offset|
-  MatchMoveSelections::Create.with(
-    board_position:
-      BoardPosition.where(match: match, x: rand(0..3), y: rand(0..3)).first,
-    match_combatants_move: MatchCombatantsMove.offset(offset).first,
-    match_turn: match.turn
-  )
-end
+# (0..3).each do |offset|
+#   MatchMoveSelections::Create.with(
+#     board_position:
+#       BoardPosition.where(match: match, x: rand(0..3), y: rand(0..3)).first,
+#     match_combatants_move: MatchCombatantsMove.offset(offset).first,
+#     match_turn: match.turn
+#   )
+# end
 
-MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
-MatchTurns::Process.for(match_turn: match.turn)
+# MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
+# MatchTurns::Process.for(match_turn: match.turn)
