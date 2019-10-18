@@ -6,18 +6,12 @@ module MatchMoveSelections
   class Create < ApplicationService
     # @param board_position [BoardPosition, NilClass]
     # @param match_combatants_move [MatchCombatantsMove]
-    # @param match_turn [MatchTurn, NilClass]
-    # @param player [Player, NilClass]
     def initialize(
       board_position: nil,
-      match_combatants_move:,
-      match_turn: nil,
-      player: nil
+      match_combatants_move:
     )
       @board_position = board_position
       @match_combatants_move = match_combatants_move
-      @match_turn = match_turn
-      @player = player
     end
 
     # @return [Boolean]
@@ -31,8 +25,6 @@ module MatchMoveSelections
       MatchMoveSelection.create!(
         board_position: board_position,
         match_combatants_move: match_combatants_move,
-        match_turn: match_turn,
-        player: player,
         was_system_selected: was_system_selected?
       )
     end

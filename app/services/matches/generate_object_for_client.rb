@@ -127,7 +127,7 @@ module Matches
       status = match_combatant.status
 
       base = {
-        boardPositionId: status.board_position_id.to_s,
+        boardPositionId: status.board_position_id&.to_s,
         isFriendly: false,
         statusEffects: []
       }
@@ -149,7 +149,7 @@ module Matches
       else
         remaining_health =
           if status.remaining_health > 0
-            (status.remaining_health / status.maximum_health.to_f * 100).ceil
+            (status.remaining_health / status.maximum_health.to_f * 100).round
           else
             0
           end
