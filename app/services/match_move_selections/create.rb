@@ -25,6 +25,7 @@ module MatchMoveSelections
       MatchMoveSelection.create!(
         board_position: board_position,
         match_combatants_move: match_combatants_move,
+        match_turn: match_turn,
         was_system_selected: was_system_selected?
       )
     end

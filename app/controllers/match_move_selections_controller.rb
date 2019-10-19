@@ -2,9 +2,7 @@
 
 class MatchMoveSelectionsController < ApplicationController
   def create
-    MatchMoveSelections::CreateFromParamsArray.with(
-      create_params[:match_move_selections]
-    )
+    MatchMoveSelections::CreateFromParamsArray.with(create_params)
 
     # TODO: we can do better than this
     # We need to determine if both players have submitted their selections so
