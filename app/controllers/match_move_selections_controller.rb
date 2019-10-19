@@ -7,7 +7,9 @@ class MatchMoveSelectionsController < ApplicationController
     )
 
     # TODO: we can do better than this
-    match = Match.last
+    # We need to determine if both players have submitted their selections so
+    # that we can process the match turn and update their clients
+    match = Match.last # TODO: this certainly won't hold up
     available_combatants = MatchCombatant.where(match: match).available.all.to_a
     selected_combatants =
       MatchMoveSelection.where(match_turn: match.turn).all.map(&:match_combatant)
@@ -24,9 +26,11 @@ class MatchMoveSelectionsController < ApplicationController
 
   private
 
+  # @return [ActionController::Parameters]
   def create_params
-    params.permit(
-      match_move_selections: %i[board_position_id match_combatants_move_id]
-    )
+    # @param param [ActionController::Parameters]
+    params.require(:match_move_selections).map do |param|
+      param.permit(:board_position_id, :match_combatants_move_id)
+    end
   end
 end

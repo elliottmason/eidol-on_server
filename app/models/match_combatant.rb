@@ -31,6 +31,22 @@ class MatchCombatant < ApplicationRecord
     ).where(mcs: { availability: availability }).distinct
   end
 
+  def self.deployed
+    joins(
+      <<-SQL
+        INNER JOIN match_combatant_statuses mcs ON (
+          mcs.id = (
+            SELECT mcs1.id
+            FROM match_combatant_statuses AS mcs1
+            WHERE mcs1.match_combatant_id = match_combatants.id
+            ORDER BY mcs1.id DESC
+            LIMIT 1
+          )
+        )
+      SQL
+    ).where.not(mcs: { board_position_id: nil }).distinct
+  end
+
   # @!method match_combatants_moves()
   #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
 
