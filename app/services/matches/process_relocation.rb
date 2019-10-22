@@ -23,7 +23,7 @@ module Matches
 
     # @return [Boolean]
     def allowed?
-      true
+      match_combatant.status.availability == 'available'
     end
 
     # @return [MatchEvent]
