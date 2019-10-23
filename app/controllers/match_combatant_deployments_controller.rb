@@ -9,7 +9,8 @@ class MatchCombatantDeploymentsController < ApplicationController
     # that we can update the clients with the new positions
 
     match = Match.last # TODO: this is non-logic
-    deployed_combatants = MatchCombatant.where(match: match).deployed.all.to_a
+    deployed_combatants = MatchCombatant.where(match: match).deployed.all
+    available_combatants = MatchCombatant.where(match: match).available.all
 
     if deployed_combatants.size == 4 ||
       deployed_combatants.size == available_combatants.size

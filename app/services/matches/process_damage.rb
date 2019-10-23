@@ -20,6 +20,10 @@ module Matches
       @source_combatant = match_combatant
     end
 
+    def allowed?
+      source_combatant.available?
+    end
+
     # @return [MatchEvent]
     def perform
       ActiveRecord::Base.transaction do

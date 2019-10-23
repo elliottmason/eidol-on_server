@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module MatchCombatants
   class Deploy < ApplicationService
+    # @param board_position [BoardPosition]
+    # @param match_combatant [MatchCombatant]
     def initialize(
       board_position:,
       match_combatant:
@@ -8,12 +12,18 @@ module MatchCombatants
       @match_combatant = match_combatant
     end
 
+    # @return [Boolean]
+    def allowed?
+      match_combatant.benched?
+    end
+
     def perform
       ActiveRecord::Base.transaction do
         new_status = match_combatant.status.dup
-        new_status.board_position = board_position
-        new_status.availability = 'available'
-        new_status.save!
+        new_status.update!(
+          availability: 'available',
+          board_position: board_position
+        )
       end
     end
 

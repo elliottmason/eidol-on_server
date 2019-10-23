@@ -130,7 +130,7 @@ module Matches
         boardPositionId: status.board_position_id&.to_s,
         isFriendly: false,
         statusEffects: []
-      }
+      }.compact
 
       if match_combatant.player == player
         remaining_health =
@@ -141,6 +141,7 @@ module Matches
           end
 
         return base.merge(
+          availability: status.availability,
           defense: status.defense,
           isFriendly: true,
           maximumHealth: status.maximum_health,

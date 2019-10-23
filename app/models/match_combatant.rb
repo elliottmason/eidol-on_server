@@ -47,16 +47,20 @@ class MatchCombatant < ApplicationRecord
     ).where.not(mcs: { board_position_id: nil }).distinct
   end
 
+  # @return [Account]
+  delegate :account, to: :account_combatant
+
+  # @return [Boolean]
+  delegate :available?, to: :status
+
+  # @!attribute [rw] match
+  #   @return [Match]
+
   # @!method match_combatants_moves()
   #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
 
   # @!method statuses()
   #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantStatus>]
-
-  # @return [Account]
-  def account
-    account_combatant.account
-  end
 
   # @return [Player]
   def player
