@@ -4,14 +4,20 @@
 # [Match]
 class MatchCombatant < ApplicationRecord
   belongs_to :account_combatant
-  belongs_to :match
-  has_many :board_positions, through: :statuses
-  has_many :match_combatants_moves, dependent: :restrict_with_exception
-  has_many :moves, through: :match_combatants_moves
+  belongs_to :player
+  has_many :board_positions,
+           through: :statuses
+  has_many :match_combatants_moves,
+           dependent: :restrict_with_exception
+  has_many :moves,
+           through: :match_combatants_moves
   has_many :statuses,
            class_name: 'MatchCombatantStatus',
            dependent: :restrict_with_exception
-  has_one :combatant, through: :account_combatant
+  has_one :combatant,
+          through: :account_combatant
+  has_one :match,
+          through: :player
 
   def self.available
     availability = 'available'

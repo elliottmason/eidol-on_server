@@ -4,9 +4,15 @@
 class Player < ApplicationRecord
   belongs_to :account
   belongs_to :match
+  has_many :combatants,
+           class_name: 'MatchCombatant',
+           dependent: :restrict_with_exception
   has_many :statuses,
            class_name: 'PlayerStatus',
            dependent: :restrict_with_exception
+
+  # @!attribute [rw] account
+  #   @return [Account]
 
   # @!attribute [w] id
   #   @return [Integer]

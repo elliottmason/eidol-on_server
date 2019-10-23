@@ -1,5 +1,15 @@
+# frozen_string_literal: true
+
+# A registered entity that may own [Combatant]s and participate in [Match]es
 class Account < ApplicationRecord
-  has_many :account_combatants
-  has_many :players
-  has_many :matches, through: :players
+  has_many :combatants,
+           class_name: 'AccountCombatant',
+           dependent: :restrict_with_exception
+  has_many :players,
+           dependent: :restrict_with_exception
+  has_many :matches,
+           through: :players
+
+  # @!attribute [rw] combatants
+  #   @return [ActiveRecord::Relation<AccountCombatant>]
 end

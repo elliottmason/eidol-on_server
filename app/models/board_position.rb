@@ -4,6 +4,9 @@
 class BoardPosition < ApplicationRecord
   belongs_to :match
 
+  # @!attribute [r] id
+  #   @return [Integer]
+
   # Get the [MatchCombatant]s whose most recent status has this [BoardPosition]
   # @return [ActiveRecord::Relation<MatchCombatant>]
   def occupants
