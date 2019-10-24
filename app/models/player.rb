@@ -14,6 +14,9 @@ class Player < ApplicationRecord
   # @!attribute [rw] account
   #   @return [Account]
 
+  # @!attribute [rw] combatants
+  #   @return [ActiveRecord::Relation<MatchCombatant>]
+
   # @!attribute [w] id
   #   @return [Integer]
 
