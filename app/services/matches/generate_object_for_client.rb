@@ -49,14 +49,14 @@ module Matches
     # @return [Array]
     def combatants
       @combatants ||=
-        # @param match_combatant [MatchCombatant]
-        match.match_combatants.map do |match_combatant|
+        # @param combatant [MatchCombatant]
+        match.combatants.map do |combatant|
           {
-            id: match_combatant.id.to_s,
-            moves: match_combatant_moves(match_combatant),
-            name: match_combatant.combatant.name,
-            playerId: match_combatant.player_id.to_s
-          }.merge(match_combatant_status(match_combatant))
+            id: combatant.id.to_s,
+            moves: match_combatant_moves(combatant),
+            name: combatant.combatant.name,
+            playerId: combatant.player_id.to_s
+          }.merge(match_combatant_status(combatant))
         end
     end
 

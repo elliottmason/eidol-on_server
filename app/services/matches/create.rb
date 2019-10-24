@@ -16,7 +16,6 @@ module Matches
         create_match
         create_board
         create_players
-        create_combatants
       end
     end
 
@@ -31,12 +30,13 @@ module Matches
       @board = board_creator.board
     end
 
+    # @param player [Player]
     # @return [Array<MatchCombatant>]
-    def create_combatants
-      accounts.map(&:account_combatants).flatten.each do |account_combatant|
+    def create_match_combatants(player)
+      player.account.combatants.each do |account_combatant|
         MatchCombatants::Create.with(
           account_combatant: account_combatant,
-          match: match
+          player: player
         )
       end
     end
@@ -51,11 +51,13 @@ module Matches
     # @return [Array<Player>]
     def create_players
       accounts.map do |account|
-        Player.create!(
-          account: account,
-          match: match,
-          name: account.username
-        )
+        player =
+          Player.create!(
+            account: account,
+            match: match,
+            name: account.username
+          )
+        create_match_combatants(player)
       end
     end
   end

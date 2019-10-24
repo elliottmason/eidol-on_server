@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 module MatchCombatants
-  # Creates a copy of a Player's Combatant that can be manipulated in the
+  # Creates a copy of an [Account]'s [Combatant] that can be manipulated in the
   # context of a Match
   class Create < ApplicationService
     # @return [MatchCombatant]
     attr_reader :match_combatant
 
-    # @param match [Match]
     # @param account_combatant [AccountCombatant]
-    def initialize(match:, account_combatant:)
-      @match = match
+    # @param player [Player]
+    def initialize(
+      account_combatant:,
+      player:
+    )
       @account_combatant = account_combatant
+      @player = player
     end
 
     # TODO: create real stats
@@ -25,21 +28,21 @@ module MatchCombatants
 
     private
 
-    # @return [Match]
-    attr_reader :match
-
     # @return [AccountCombatant]
     attr_reader :account_combatant
+
+    # @return [Player]
+    attr_reader :player
 
     # @return [MatchCombatant]
     def copy_combatant
       @match_combatant =
         MatchCombatant.create!(
           account_combatant: account_combatant,
-          match: match,
           defense: 15,
           health: 50,
-          level: 1
+          level: 1,
+          player: player
         )
     end
 
@@ -66,6 +69,11 @@ module MatchCombatants
         remaining_health: health,
         availability: 'benched'
       )
+    end
+
+    # @return [Match]
+    def match
+      player.match
     end
   end
 end
