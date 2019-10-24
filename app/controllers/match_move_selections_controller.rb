@@ -8,7 +8,7 @@ class MatchMoveSelectionsController < ApplicationController
     # We need to determine if both players have submitted their selections so
     # that we can process the match turn and update their clients
     match = Match.last # TODO: this certainly won't hold up
-    available_combatants = MatchCombatant.where(match: match).available.all.to_a
+    available_combatants = match.combatants.available.all.to_a
     selected_combatants =
       MatchMoveSelection.where(match_turn: match.turn).all.map(&:match_combatant)
     remaining_combatants = available_combatants.clone - selected_combatants

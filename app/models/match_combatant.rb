@@ -19,6 +19,27 @@ class MatchCombatant < ApplicationRecord
   has_one :match,
           through: :player
 
+  # @return [Account]
+  delegate :account, to: :account_combatant
+
+  # @return [Boolean]
+  delegate :available?, to: :status
+
+  # @return [Boolean]
+  delegate :benched?, to: :status
+
+  # @return [Boolean]
+  delegate :knocked_out?, to: :status
+
+  # @!attribute [rw] match
+  #   @return [Match]
+
+  # @!method match_combatants_moves()
+  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
+
+  # @!method statuses()
+  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantStatus>]
+
   def self.available
     availability = 'available'
 
@@ -52,21 +73,6 @@ class MatchCombatant < ApplicationRecord
       SQL
     ).where.not(mcs: { board_position_id: nil }).distinct
   end
-
-  # @return [Account]
-  delegate :account, to: :account_combatant
-
-  # @return [Boolean]
-  delegate :available?, to: :status
-
-  # @!attribute [rw] match
-  #   @return [Match]
-
-  # @!method match_combatants_moves()
-  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantsMove>]
-
-  # @!method statuses()
-  #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantStatus>]
 
   # @return [Player]
   def player
