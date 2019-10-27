@@ -86,6 +86,7 @@ module Matches
             description: '',
             matchCombatantId: event.match_combatant_id&.to_s,
             property: event.property,
+            status: event.status,
             turn: event.match_turn.turn
           }
         end
