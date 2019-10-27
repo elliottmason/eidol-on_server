@@ -10,11 +10,15 @@ class MatchCombatantStatus < ApplicationRecord
   enum availability: {
     available: 'available',
     benched: 'benched',
-    knocked_out: 'knocked_out'
+    knocked_out: 'knocked_out',
+    queued: 'queued',
   }
 
   # @!attribute [rw] availability
   #   @return [String]
+
+  # @!attribute [rw] board_position
+  #   @return [BoardPosition]
 
   # @!attribute [rw] maximum_health
   #   @return [Integer]
@@ -40,9 +44,9 @@ class MatchCombatantStatus < ApplicationRecord
   # @!method knocked_out?
   #   @return [Boolean]
 
-  # @!method unavailable!
+  # @!method queued!
   #   @return [Boolean]
 
-  # @!method unavailable?
+  # @!method queued?
   #   @return [Boolean]
 end

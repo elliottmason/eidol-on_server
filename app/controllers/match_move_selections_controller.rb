@@ -8,18 +8,16 @@ class MatchMoveSelectionsController < ApplicationController
     # We need to determine if both players have submitted their selections so
     # that we can process the match turn and update their clients
     match = Match.last # TODO: this certainly won't hold up
-    available_combatants = match.combatants.available.all.to_a
-    selected_combatants =
-      MatchMoveSelection.where(match_turn: match.turn).all.map(&:match_combatant)
-    remaining_combatants = available_combatants.clone - selected_combatants
+    available_combatants = match.combatants.available.all
 
-    if remaining_combatants.size.zero?
-      MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match.turn)
-      MatchTurns::Process.for(match_turn: match.turn)
+    if available_combatants.empty?
+      match_turn = match.turn
+      MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match_turn)
+      MatchTurns::Process.for(match_turn: match_turn)
       Matches::Arbitrate.for(match)
       MatchesChannel.broadcast_match(match)
     else
-      Rails.logger.debug("#{remaining_combatants.size} combatants not queued")
+      Rails.logger.debug("#{available_combatants.size} combatants not queued")
     end
   end
 

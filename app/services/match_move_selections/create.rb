@@ -22,12 +22,15 @@ module MatchMoveSelections
 
     # @return [MatchMoveSelection]
     def perform
-      MatchMoveSelection.create!(
-        board_position: board_position,
-        match_combatants_move: match_combatants_move,
-        match_turn: match_turn,
-        was_system_selected: was_system_selected?
-      )
+      ActiveRecord::Base.transaction do
+        MatchMoveSelection.create!(
+          board_position: board_position,
+          match_combatants_move: match_combatants_move,
+          match_turn: match_turn,
+          was_system_selected: was_system_selected?
+        )
+        match_combatant.queued!
+      end
     end
 
     private
@@ -44,6 +47,11 @@ module MatchMoveSelections
     # @return [Match]
     def match
       @match ||= match_combatants_move.match
+    end
+
+    # @return [MatchCombatant]
+    def match_combatant
+      @match_combatant ||= match_combatants_move.match_combatant
     end
 
     # @return [MatchTurn]

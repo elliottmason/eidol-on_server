@@ -23,13 +23,28 @@ class MatchCombatant < ApplicationRecord
   delegate :account, to: :account_combatant
 
   # @return [Boolean]
+  delegate :available!, to: :status
+
+  # @return [Boolean]
   delegate :available?, to: :status
+
+  # @return [Boolean]
+  delegate :benched!, to: :status
 
   # @return [Boolean]
   delegate :benched?, to: :status
 
   # @return [Boolean]
+  delegate :knocked_out!, to: :status
+
+  # @return [Boolean]
   delegate :knocked_out?, to: :status
+
+  # @return [Boolean]
+  delegate :queued!, to: :status
+
+  # @return [Boolean]
+  delegate :queued?, to: :status
 
   # @!attribute [rw] match
   #   @return [Match]
