@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  root to: redirect('sign_in', status: 302)
   get 'sign_in', to: 'sessions#new', as: 'sign_in'
   post 'sign_in', to: 'sessions#create'
 
