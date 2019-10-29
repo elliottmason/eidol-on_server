@@ -19,8 +19,7 @@ module MatchMoveTurns
       ActiveRecord::Base.transaction do
         process_move_turn_effects
         match_move_turn.update!(processed_at: Time.now.utc)
-        MatchCombatants::UpdateAvailability \
-          .with(match_combatant: match_combatant)
+        MatchCombatants::UpdateAvailability.for(match_combatant)
       end
     end
 

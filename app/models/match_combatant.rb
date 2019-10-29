@@ -44,6 +44,7 @@ class MatchCombatant < ApplicationRecord
   # @!method statuses()
   #   @return [ActiveRecord::Associations::CollectionProxy<MatchCombatantStatus>]
 
+  # @return [ActiveRecord::Relation<MatchCombatant>]
   def self.available
     availability = 'available'
 
@@ -62,7 +63,7 @@ class MatchCombatant < ApplicationRecord
     ).where(mcs: { availability: availability }).distinct
   end
 
-  # @return [ActiveRelation<MatchCombatant>]
+  # @return [ActiveRecord::Relation<MatchCombatant>]
   def self.deployed
     joins(
       <<-SQL

@@ -23,13 +23,18 @@ module MatchMoveSelections
     # @return [MatchMoveSelection]
     def perform
       ActiveRecord::Base.transaction do
-        MatchMoveSelection.create!(
-          board_position: board_position,
-          match_combatants_move: match_combatants_move,
-          match_turn: match_turn,
-          was_system_selected: was_system_selected?
+        selection =
+          MatchMoveSelection.create!(
+            board_position: board_position,
+            match_combatants_move: match_combatants_move,
+            match_turn: match_turn,
+            was_system_selected: was_system_selected?
+          )
+        MatchMoveTurns::QueueFromMoveSelection.for(
+          match_move_selection: selection,
+          match_turn: match_turn
         )
-        match_combatant.queued!
+        MatchCombatants::UpdateAvailability.for(match_combatant)
       end
     end
 

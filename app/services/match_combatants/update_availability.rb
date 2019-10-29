@@ -5,7 +5,7 @@ module MatchCombatants
   # when their remaining_health drops too low by inserting a new status
   class UpdateAvailability < ApplicationService
     # @param match_combatant [MatchCombatant]
-    def initialize(match_combatant:)
+    def initialize(match_combatant)
       @match_combatant = match_combatant
     end
 
@@ -17,6 +17,8 @@ module MatchCombatants
       if combatant_out_of_health?
         new_status.board_position = nil
         new_status.knocked_out!
+      elsif combatant_now_queued?
+        new_status.queued!
       elsif combatant_now_available?
         new_status.available!
       end
@@ -33,7 +35,12 @@ module MatchCombatants
 
     # @return [Boolean]
     def combatant_now_available?
-      status.queued? && match_combatant.match_move_turns.unprocessed.empty?
+      status.queued? && unprocessed_match_move_turns.blank?
+    end
+
+    # @return [Boolean]
+    def combatant_now_queued?
+      unprocessed_match_move_turns.present?
     end
 
     # @return [Boolean]
@@ -44,6 +51,11 @@ module MatchCombatants
     # @return [MatchCombatantStatus]
     def new_status
       @new_status ||= status.dup
+    end
+
+    # @return [ActiveRecord::Relation<MatchMoveTurn>]
+    def unprocessed_match_move_turns
+      match_combatant.match_move_turns.unprocessed
     end
   end
 end

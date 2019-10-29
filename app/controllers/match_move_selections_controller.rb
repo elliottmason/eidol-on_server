@@ -10,9 +10,9 @@ class MatchMoveSelectionsController < ApplicationController
     match = Match.last # TODO: this certainly won't hold up
     available_combatants = match.combatants.available.all
 
+    match_turn = match.turn
+
     if available_combatants.empty?
-      match_turn = match.turn
-      MatchMoveTurns::QueueFromMoveSelections.for(match_turn: match_turn)
       MatchTurns::Process.for(match_turn: match_turn)
       Matches::Arbitrate.for(match)
       MatchesChannel.broadcast_match(match)
