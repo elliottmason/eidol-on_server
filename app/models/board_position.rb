@@ -7,6 +7,18 @@ class BoardPosition < ApplicationRecord
   # @!attribute [r] id
   #   @return [Integer]
 
+  # @!attribute [rw] x
+  #   @return [Integer]
+
+  # @!attribute [rw] y
+  #   @return [Integer]
+
+  # @param match [Match]
+  # @return [ActiveRecord::Relation]
+  def self.for_match(match)
+    where(match: match)
+  end
+
   # Get the [MatchCombatant]s whose most recent status has this [BoardPosition]
   # @return [ActiveRecord::Relation<MatchCombatant>]
   def occupants

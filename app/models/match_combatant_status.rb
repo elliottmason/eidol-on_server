@@ -11,14 +11,17 @@ class MatchCombatantStatus < ApplicationRecord
     available: 'available',
     benched: 'benched',
     knocked_out: 'knocked_out',
-    queued: 'queued',
+    queued: 'queued'
   }
 
   # @!attribute [rw] availability
   #   @return [String]
 
   # @!attribute [rw] board_position
-  #   @return [BoardPosition]
+  #   @return [BoardPosition, nil]
+
+  # @!attribute [rw] board_position_id
+  #   @return [Integer]
 
   # @!attribute [rw] maximum_health
   #   @return [Integer]
@@ -49,4 +52,9 @@ class MatchCombatantStatus < ApplicationRecord
 
   # @!method queued?
   #   @return [Boolean]
+
+  # @return [Boolean]
+  def deployed?
+    board_position_id.present?
+  end
 end

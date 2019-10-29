@@ -54,9 +54,8 @@ module Matches
       end
     end
 
-    # @return [nil]
+    # @return [void]
     def after_failure
-      Rails.logger.debug(' --- FAILED --- ')
       create_match_event('failed')
     end
 

@@ -12,6 +12,12 @@ class MatchMoveTurn < ApplicationRecord
 
   delegate :board_position, to: :match_move_selection
 
+
+  # @return [ActiveRecord::Relation<MatchMoveTurn>]
+  def self.unprocessed
+    where(processed_at: nil)
+  end
+
   # @!attribute [rw] match_move_selection
   #   @return [MatchMoveSelection]
 

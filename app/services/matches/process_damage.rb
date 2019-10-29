@@ -42,8 +42,6 @@ module Matches
             combatant: target_combatant
           )
 
-          MatchCombatants::UpdateAvailability.with(combatant: target_combatant)
-
           create_match_event(
             amount: amount,
             combatant: target_combatant

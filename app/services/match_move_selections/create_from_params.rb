@@ -30,13 +30,13 @@ module MatchMoveSelections
 
     # @return [BoardPosition]
     def board_position
-      @board_position ||= BoardPosition.find(board_position_id)
+      @board_position ||= BoardPosition.find_by(id: board_position_id)
     end
 
     # @return [MatchCombatantsMove]
     def match_combatants_move
       @match_combatants_move ||=
-        MatchCombatantsMove.find(match_combatants_move_id)
+        MatchCombatantsMove.find_by(id: match_combatants_move_id)
     end
   end
 end

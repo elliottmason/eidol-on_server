@@ -9,6 +9,8 @@ class MatchCombatant < ApplicationRecord
            through: :statuses
   has_many :match_combatants_moves,
            dependent: :restrict_with_exception
+  has_many :match_move_turns,
+           dependent: :restrict_with_exception
   has_many :moves,
            through: :match_combatants_moves
   has_many :statuses,
@@ -22,29 +24,16 @@ class MatchCombatant < ApplicationRecord
   # @return [Account]
   delegate :account, to: :account_combatant
 
-  # @return [Boolean]
-  delegate :available!, to: :status
+  DELEGATE_METHODS_TO_STATUS = %i[
+    available?
+    benched?
+    deployed?
+    knocked_out?
+    queued?
+  ].freeze
 
   # @return [Boolean]
-  delegate :available?, to: :status
-
-  # @return [Boolean]
-  delegate :benched!, to: :status
-
-  # @return [Boolean]
-  delegate :benched?, to: :status
-
-  # @return [Boolean]
-  delegate :knocked_out!, to: :status
-
-  # @return [Boolean]
-  delegate :knocked_out?, to: :status
-
-  # @return [Boolean]
-  delegate :queued!, to: :status
-
-  # @return [Boolean]
-  delegate :queued?, to: :status
+  delegate(*DELEGATE_METHODS_TO_STATUS, to: :status)
 
   # @!attribute [rw] match
   #   @return [Match]
@@ -73,6 +62,7 @@ class MatchCombatant < ApplicationRecord
     ).where(mcs: { availability: availability }).distinct
   end
 
+  # @return [ActiveRelation<MatchCombatant>]
   def self.deployed
     joins(
       <<-SQL

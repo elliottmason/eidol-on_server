@@ -25,7 +25,7 @@ class ApplicationService
     #   @return [ApplicationService]
   end
 
-  # @return [nil]
+  # @return [void]
   def _perform
     run_callbacks :perform do
       break unless allowed?
@@ -48,6 +48,6 @@ class ApplicationService
     @successful || false
   end
 
-  # @return [nil]
+  # @return [void]
   def after_failure; end
 end
