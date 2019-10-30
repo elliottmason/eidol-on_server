@@ -104,6 +104,49 @@ def create_bite_move(speed: 75)
   end
 end
 
+def create_solarbeam_move
+  ActiveRecord::Base.transaction do
+    move =
+      Move.create!(
+        name: 'Solarbeam',
+        description: 'I stole this from Pokémon',
+        range: 4,
+        is_diagonal: false,
+        energy_cost: 2
+      )
+
+    move_turn_1 =
+      MoveTurn.create!(
+        move: move,
+        turn: 1,
+        speed: 50
+      )
+
+    MoveTurnEffect.create!(
+      move_turn: move_turn_1,
+      category: 'charge',
+      power: 25,
+      property: 'normal'
+    )
+
+    move_turn_2 =
+      MoveTurn.create!(
+        move: move,
+        turn: 2,
+        speed: 100
+      )
+
+    MoveTurnEffect.create!(
+      move_turn: move_turn_2,
+      category: 'damage',
+      power: 90,
+      property: 'cutting'
+    )
+
+    move
+  end
+end
+
 ActiveRecord::Base.establish_connection
 ActiveRecord::Base.connection.tables.each do |table|
   next if table == 'schema_migrations'
@@ -153,15 +196,24 @@ account_combatants = {
   }
 }
 
-ampul_moves = { move: create_move_move(speed: 35) }
-helljung_moves = { move: create_move_move(speed: 75), bolt: create_bolt_move }
-mainx_moves = { move: create_move_move(speed: 120) }
-panser_moves = { move: create_move_move(speed: 60), bite: create_bite_move }
+account_combatants[:branden][:ampul].moves = [
+  create_move_move(speed: 35),
+  create_solarbeam_move
+]
 
-account_combatants[:branden][:ampul].moves = ampul_moves.values
-account_combatants[:branden][:panser].moves = panser_moves.values
-account_combatants[:elliott][:helljung].moves = helljung_moves.values
-account_combatants[:elliott][:mainx].moves = mainx_moves.values
+account_combatants[:branden][:panser].moves = [
+  create_move_move(speed: 75),
+  create_bite_move
+]
+
+account_combatants[:elliott][:helljung].moves = [
+  create_move_move(speed: 120),
+  create_bolt_move
+]
+
+account_combatants[:elliott][:mainx].moves = [
+  create_move_move(speed: 60)
+]
 
 # @type [Matches::Create]
 Matches::Create.for(accounts: accounts.values)

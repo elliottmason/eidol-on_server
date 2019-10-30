@@ -21,7 +21,7 @@ module Matches
     end
 
     def allowed?
-      source_combatant.available?
+      source_combatant.queued?
     end
 
     # @return [MatchEvent]
