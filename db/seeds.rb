@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# @return [Array<String>]
-COMBATANT_NAMES = %w[Ampul Helljung Mainx Panser].freeze
-
 def create_move_move(speed:)
   ActiveRecord::Base.transaction do
     move =
@@ -148,6 +145,7 @@ def create_solarbeam_move
 end
 
 ActiveRecord::Base.establish_connection
+# @param table [String]
 ActiveRecord::Base.connection.tables.each do |table|
   next if table == 'schema_migrations'
 
@@ -167,14 +165,38 @@ accounts = {
 
 combatants = {}
 
-COMBATANT_NAMES.each do |name|
-  name_hash_key = name.downcase.to_sym
-  combatants[name_hash_key] = Combatant.create!(name: name)
-end
+combatants[:ampul] =
+  Combatant.create!(
+    name: 'Ampul',
+    base_defense: 101,
+    base_health: 117
+  )
+
+combatants[:helljung] =
+  Combatant.create!(
+    name: 'Helljung',
+    base_defense: 47,
+    base_health: 61
+  )
+
+combatants[:mainx] =
+  Combatant.create!(
+    name: 'Mainx',
+    base_defense: 68,
+    base_health: 76
+  )
+
+combatants[:panser] =
+  Combatant.create!(
+    name: 'Panser',
+    base_defense: 109,
+    base_health: 98
+  )
+
 
 account_combatants = {
   branden: {
-    ampul: AccountCombatant.create!(
+    ampul: AccountCombatants::Create.with(
       account: accounts[:branden],
       combatant: combatants[:ampul]
     ),

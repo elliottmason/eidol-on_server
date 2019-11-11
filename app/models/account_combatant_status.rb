@@ -1,0 +1,2 @@
+class AccountCombatantStatus < ApplicationRecord
+end

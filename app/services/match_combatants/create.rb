@@ -34,6 +34,7 @@ module MatchCombatants
     # @return [Player]
     attr_reader :player
 
+    # TODO: These are fake stats tho
     # @return [MatchCombatant]
     def copy_combatant
       @match_combatant =

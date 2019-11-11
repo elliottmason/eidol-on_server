@@ -16,14 +16,17 @@ class Match < ApplicationRecord
            through: :match_move_turns,
            source: :match_events
 
+  # @!attribute [rw] combatants
+  #   @return [ActiveRecord::Relation<MatchCombatant>]
+
   # @!attribute [r] id
   #   @return [Integer]
 
   # @!attribute [rw] players
-  #   @return [ActiveRecord::Associations::CollectionProxy<Player>]
+  #   @return [ActiveRecord::Relation<Player>]
 
   # @!attribute [rw] turns
-  #   @return [ActiveRecord::Associations::CollectionProxy<MatchTurn>]
+  #   @return [ActiveRecord::Relation<MatchTurn>]
 
   # @return [MatchTurn, nil]
   def turn

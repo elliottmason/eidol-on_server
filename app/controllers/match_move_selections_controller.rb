@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class MatchMoveSelectionsController < ApplicationController
+  # @return [void]
   def create
     MatchMoveSelections::CreateFromParamsArray.with(create_params)
 
