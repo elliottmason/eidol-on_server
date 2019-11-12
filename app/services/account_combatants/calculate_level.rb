@@ -8,7 +8,17 @@ module AccountCombatants
     end
 
     def perform
-      @value = 1
+      @value = (exp ** (1/3.0)).round
+    end
+
+    private
+
+    # @return [AccountCombatant]
+    attr_reader :account_combatant
+
+    # @return [Integer]
+    def exp
+      account_combatant.status.exp
     end
   end
 end

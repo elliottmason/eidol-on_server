@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
 module AccountCombatants
-  class CalculateHealth < ApplicationService
+  class CalculateDefense < ApplicationService
     MAX_BASE = 255
 
-    MAX_HEALTH = 999
+    MAX_DEFENSE = 999
 
     MAX_IV = 31
 
-    MAX_LEVEL = 25
-
     # @type [Integer]
-    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_BASE
+    MULTIPLIER = (MAX_DEFENSE - MAX_IV) / MAX_BASE
 
     # @param account_combatant [AccountCombatant]
     def initialize(account_combatant)
@@ -20,9 +18,7 @@ module AccountCombatants
 
     # @return [void]
     def perform
-      @value =
-        ((((MULTIPLIER * base_health) + iv) * level) / MAX_LEVEL) +
-        low_level_bonus + level
+      @value = ((MULTIPLIER * base_defense) + iv) * level
     end
 
     private
@@ -30,29 +26,25 @@ module AccountCombatants
     # @return [AccountCombatant]
     attr_reader :account_combatant
 
-    # @!method combatant
-    #   @return [Combatant]
-    delegate :combatant, to: :account_combatant
-
     # @return [Integer]
-    def base_health
-      @base_health ||= combatant.base_health
+    def base_defense
+      combatant.base_defense
+    end
+
+    # @return [Combatant]
+    def combatant
+      @combatant ||= account_combatant.combatant
     end
 
     # @return [Integer]
     def iv
-      @iv ||= account_combatant.individual_health
+      account_combatant.individual_defense
     end
 
     # @return [Integer]
     def level
       @level ||=
         AccountCombatants::CalculateLevel.with(account_combatant).value
-    end
-
-    # @return [Integer]
-    def low_level_bonus
-      (MAX_LEVEL - level) / MAX_LEVEL
     end
   end
 end
