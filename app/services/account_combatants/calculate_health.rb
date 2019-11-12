@@ -11,7 +11,7 @@ module AccountCombatants
     MAX_LEVEL = 25
 
     # @type [Integer]
-    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_BASE
+    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_BASE.to_f
 
     # @param account_combatant [AccountCombatant]
     def initialize(account_combatant)
@@ -21,8 +21,10 @@ module AccountCombatants
     # @return [void]
     def perform
       @value =
-        ((((MULTIPLIER * base_health) + iv) * level) / MAX_LEVEL) +
-        low_level_bonus + level
+        (
+          (((MULTIPLIER * base_health) + iv) * (level + low_level_bonus)) /
+          MAX_LEVEL.to_f
+        ) + level + low_level_bonus
     end
 
     private
