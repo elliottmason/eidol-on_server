@@ -21,7 +21,8 @@ class MatchCombatant < ApplicationRecord
   has_one :match,
           through: :player
 
-  # @return [Account]
+  # @!attribute [r] account
+  #   @return [Account]
   delegate :account, to: :account_combatant
 
   DELEGATE_METHODS_TO_STATUS = %i[
@@ -86,10 +87,9 @@ class MatchCombatant < ApplicationRecord
       Player.where(account: account, match: match).select(:id).first
   end
 
-  # @return [Integer]
-  def player_id
-    player.id
-  end
+  # @!attribute [r] player_id
+  #   @return [Integer]
+  delegate :id, to: :player, prefix: true
 
   # @return [BoardPosition]
   def position
