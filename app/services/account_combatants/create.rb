@@ -1,14 +1,19 @@
+# frozen_string_literal: true
+
 module AccountCombatants
   class Create < ApplicationService
     class << self
       # @return [Integer]
       def random_individual_value
-        Math.rand(0..31)
+        rand(0..31)
       end
 
       # @return [Integer]
       alias random_iv random_individual_value
     end
+
+    # @return [AccountCombatant]
+    attr_reader :account_combatant
 
     # @param account [Account]
     # @param combatant [Combatant]
@@ -33,9 +38,6 @@ module AccountCombatants
     # @return [Account]
     attr_reader :account
 
-    # @return [AccountCombatant]
-    attr_reader :account_combatant
-
     # @return [Combatant]
     attr_reader :combatant
 
@@ -59,11 +61,7 @@ module AccountCombatants
     def create_combatant_status
       AccountCombatantStatus.create!(
         account_combatant: account_combatant,
-        exp: 0,
-        defense:
-          AccountCombatants::CalculateDefense.for(account_combatant),
-        health:
-          AccountCombatants::CalculateHealth.for(account_combatant)
+        exp: 0
       )
     end
   end

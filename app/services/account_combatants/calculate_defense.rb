@@ -2,14 +2,16 @@
 
 module AccountCombatants
   class CalculateDefense < ApplicationService
-    MAX_BASE = 255
+    MAX_IV = AccountCombatant::MAX_IV
 
-    MAX_DEFENSE = 999
+    MAX_DEFENSE = AccountCombatant::MAX_DEFENSE
 
-    MAX_IV = 31
+    MAX_LEVEL = AccountCombatant::MAX_LEVEL
 
-    # @type [Integer]
-    MULTIPLIER = (MAX_DEFENSE - MAX_IV) / MAX_BASE
+    MULTIPLIER = (MAX_DEFENSE - MAX_IV - 5) / MAX_DEFENSE
+
+    # @return [Integer]
+    attr_reader :value
 
     # @param account_combatant [AccountCombatant]
     def initialize(account_combatant)
@@ -18,7 +20,7 @@ module AccountCombatants
 
     # @return [void]
     def perform
-      @value = ((MULTIPLIER * base_defense) + iv) * level
+      @value = ((MULTIPLIER * base_defense) + individual_defense) * level
     end
 
     private
@@ -37,7 +39,7 @@ module AccountCombatants
     end
 
     # @return [Integer]
-    def iv
+    def individual_defense
       account_combatant.individual_defense
     end
 

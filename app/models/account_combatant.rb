@@ -3,6 +3,13 @@
 # An [Account]'s unique instance of a [Combatant] with its own progression and
 # stats
 class AccountCombatant < ApplicationRecord
+  MAX_BASE = 255.to_f
+  MAX_IV = 31.to_f
+  MAX_LEVEL = 25.to_f
+  MAX_STAT = 999.to_f
+  MAX_DEFENSE = MAX_STAT
+  MAX_HEALTH = MAX_STAT
+
   belongs_to :account
   belongs_to :combatant
   has_many :account_combatants_moves, dependent: :restrict_with_exception

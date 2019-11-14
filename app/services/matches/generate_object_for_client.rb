@@ -70,7 +70,7 @@ module Matches
               (
                 (
                   event.amount /
-                  event.match_combatant.status.maximum_health.to_f
+                  event.match_combatant.health.to_f
                 ) * 100
               ).round
           else
@@ -143,15 +143,15 @@ module Matches
 
         return base.merge(
           availability: status.availability,
-          defense: status.defense,
+          defense: match_combatant.defense,
           isFriendly: true,
-          maximumHealth: status.maximum_health,
+          maximumHealth: match_combatant.health,
           remainingHealth: remaining_health,
         )
       else
         remaining_health =
           if status.remaining_health > 0
-            (status.remaining_health / status.maximum_health.to_f * 100).round
+            (status.remaining_health / match_combatant.health.to_f * 100).round
           else
             0
           end

@@ -40,9 +40,12 @@ module MatchCombatants
       @match_combatant =
         MatchCombatant.create!(
           account_combatant: account_combatant,
-          defense: 15,
-          health: 50,
-          level: 1,
+          defense:
+            AccountCombatants::CalculateDefense.with(account_combatant).value,
+          health:
+            AccountCombatants::CalculateHealth.with(account_combatant).value,
+          level:
+            AccountCombatants::CalculateLevel.with(account_combatant).value,
           player: player
         )
     end
@@ -62,11 +65,6 @@ module MatchCombatants
       health = match_combatant.health
       MatchCombatantStatus.create!(
         match_combatant: match_combatant,
-        defense: match_combatant.defense,
-        level: match_combatant.level,
-        maximum_energy: 15,
-        maximum_health: health,
-        remaining_energy: 2,
         remaining_health: health,
         availability: 'benched'
       )

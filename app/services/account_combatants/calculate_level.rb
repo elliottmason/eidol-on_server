@@ -2,23 +2,22 @@
 
 module AccountCombatants
   class CalculateLevel < ApplicationService
+    EXPONENT = (1.0 / 3)
+
+    attr_reader :value
+
     # @param account_combatant [AccountCombatant]
     def initialize(account_combatant)
-      @account_combatnat = account_combatant
+      @exp = account_combatant.status.exp
     end
 
     def perform
-      @value = (exp ** (1/3.0)).round
+      @value = (exp ** EXPONENT).round
     end
 
     private
 
-    # @return [AccountCombatant]
-    attr_reader :account_combatant
-
     # @return [Integer]
-    def exp
-      account_combatant.status.exp
-    end
+    attr_reader :exp
   end
 end

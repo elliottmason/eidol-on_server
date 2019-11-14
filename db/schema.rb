@@ -10,14 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_27_212417) do
+ActiveRecord::Schema.define(version: 2019_11_11_062002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "account_combatant_statuses", force: :cascade do |t|
+    t.bigint "account_combatant_id", null: false
+    t.integer "exp", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_combatant_id"], name: "index_account_combatant_statuses_on_account_combatant_id"
+  end
+
   create_table "account_combatants", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "combatant_id", null: false
+    t.integer "individual_defense", null: false
+    t.integer "individual_health", null: false
+    t.integer "individual_power", null: false
+    t.integer "individual_speed", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_account_combatants_on_account_id"
@@ -52,6 +64,8 @@ ActiveRecord::Schema.define(version: 2019_09_27_212417) do
 
   create_table "combatants", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "base_defense", null: false
+    t.integer "base_health", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -60,11 +74,6 @@ ActiveRecord::Schema.define(version: 2019_09_27_212417) do
     t.bigint "board_position_id"
     t.bigint "match_combatant_id", null: false
     t.bigint "match_event_id"
-    t.integer "defense", null: false
-    t.integer "level", null: false
-    t.integer "maximum_energy", null: false
-    t.integer "maximum_health", null: false
-    t.integer "remaining_energy", null: false
     t.integer "remaining_health", null: false
     t.string "availability", null: false
     t.datetime "created_at", precision: 6, null: false

@@ -6,8 +6,6 @@ class CreateMatchCombatants < ActiveRecord::Migration[6.0]
       t.integer :defense, null: false
       t.integer :health, null: false
       t.integer :level, null: false
-      t.integer :power, null: false
-      t.integer :speed, null: false
       t.timestamps
     end
   end

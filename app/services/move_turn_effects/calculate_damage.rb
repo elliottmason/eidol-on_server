@@ -42,11 +42,6 @@ module MoveTurnEffects
     attr_reader :target_combatant
 
     # @return [Integer]
-    def attack
-      source_combatant.attack
-    end
-
-    # @return [Integer]
     def defense
       source_combatant.defense
     end
@@ -75,7 +70,7 @@ module MoveTurnEffects
 
     # @return [Float]
     def power_quotient
-      power * (attack / defense.to_f) / 50.0
+      (power + 1.0) / (defense + 1.0)
     end
   end
 end

@@ -23,9 +23,6 @@ class MatchCombatantStatus < ApplicationRecord
   # @!attribute [rw] board_position_id
   #   @return [Integer]
 
-  # @!attribute [rw] maximum_health
-  #   @return [Integer]
-
   # @!attribute [rw] remaining_health
   #   @return [Integer]
 

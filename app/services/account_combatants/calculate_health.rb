@@ -2,16 +2,16 @@
 
 module AccountCombatants
   class CalculateHealth < ApplicationService
-    MAX_BASE = 255
+    MAX_HEALTH = AccountCombatant::MAX_HEALTH
 
-    MAX_HEALTH = 999
+    MAX_IV = AccountCombatant::MAX_IV
 
-    MAX_IV = 31
+    MAX_LEVEL = AccountCombatant::MAX_LEVEL
 
-    MAX_LEVEL = 25
+    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_HEALTH
 
-    # @type [Integer]
-    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_BASE.to_f
+    # @return [Integer]
+    attr_reader :value
 
     # @param account_combatant [AccountCombatant]
     def initialize(account_combatant)
@@ -22,9 +22,11 @@ module AccountCombatants
     def perform
       @value =
         (
-          (((MULTIPLIER * base_health) + iv) * (level + low_level_bonus)) /
-          MAX_LEVEL.to_f
-        ) + level + low_level_bonus
+          (
+            ((MULTIPLIER * base_health) + individual_health) *
+            effective_level
+          ) / MAX_LEVEL
+        ) + effective_level
     end
 
     private
@@ -42,8 +44,13 @@ module AccountCombatants
     end
 
     # @return [Integer]
-    def iv
-      @iv ||= account_combatant.individual_health
+    def effective_level
+      level + low_level_bonus
+    end
+
+    # @return [Integer]
+    def individual_health
+      @individual_health ||= account_combatant.individual_health
     end
 
     # @return [Integer]

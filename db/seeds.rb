@@ -199,22 +199,22 @@ account_combatants = {
     ampul: AccountCombatants::Create.with(
       account: accounts[:branden],
       combatant: combatants[:ampul]
-    ),
-    panser: AccountCombatant.create!(
+    ).account_combatant,
+    panser: AccountCombatants::Create.with(
       account: accounts[:branden],
       combatant: combatants[:panser]
-    )
+    ).account_combatant
   },
 
   elliott: {
-    helljung: AccountCombatant.create!(
+    helljung: AccountCombatants::Create.with(
       account: accounts[:elliott],
       combatant: combatants[:helljung]
-    ),
-    mainx: AccountCombatant.create!(
+    ).account_combatant,
+    mainx: AccountCombatants::Create.with(
       account: accounts[:elliott],
       combatant: combatants[:mainx]
-    )
+    ).account_combatant
   }
 }
 
