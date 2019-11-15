@@ -61,7 +61,7 @@ module AccountCombatants
     def create_combatant_status
       AccountCombatantStatus.create!(
         account_combatant: account_combatant,
-        exp: 0
+        exp: 1_000
       )
     end
   end

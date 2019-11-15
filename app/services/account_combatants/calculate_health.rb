@@ -2,13 +2,14 @@
 
 module AccountCombatants
   class CalculateHealth < ApplicationService
+    include LevelBonus
+
+    MAX_BASE = AccountCombatant::MAX_BASE
     MAX_HEALTH = AccountCombatant::MAX_HEALTH
-
     MAX_IV = AccountCombatant::MAX_IV
-
     MAX_LEVEL = AccountCombatant::MAX_LEVEL
-
-    MULTIPLIER = (MAX_HEALTH - MAX_LEVEL - MAX_IV) / MAX_HEALTH
+    MULTIPLIER =
+      (MAX_HEALTH - MAX_LEVEL - 9) / ((MAX_BASE + MAX_IV) * MAX_LEVEL)
 
     # @return [Integer]
     attr_reader :value
@@ -20,13 +21,9 @@ module AccountCombatants
 
     # @return [void]
     def perform
-      @value =
-        (
-          (
-            ((MULTIPLIER * base_health) + individual_health) *
-            effective_level
-          ) / MAX_LEVEL
-        ) + effective_level
+      raw_value =
+        (MULTIPLIER * effective_base * effective_level) + effective_level + 9
+      @value = raw_value.round
     end
 
     private
@@ -44,8 +41,8 @@ module AccountCombatants
     end
 
     # @return [Integer]
-    def effective_level
-      level + low_level_bonus
+    def effective_base
+      base_health + individual_health
     end
 
     # @return [Integer]
@@ -57,11 +54,6 @@ module AccountCombatants
     def level
       @level ||=
         AccountCombatants::CalculateLevel.with(account_combatant).value
-    end
-
-    # @return [Integer]
-    def low_level_bonus
-      (MAX_LEVEL - level) / MAX_LEVEL
     end
   end
 end

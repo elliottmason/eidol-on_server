@@ -6,9 +6,8 @@ class AccountCombatant < ApplicationRecord
   MAX_BASE = 255.to_f
   MAX_IV = 31.to_f
   MAX_LEVEL = 25.to_f
-  MAX_STAT = 999.to_f
-  MAX_DEFENSE = MAX_STAT
-  MAX_HEALTH = MAX_STAT
+  MAX_DEFENSE = 999.to_f
+  MAX_HEALTH = 500.to_f
 
   belongs_to :account
   belongs_to :combatant
