@@ -3,7 +3,7 @@
 module AccountCombatants
   # Helps prevent us from multiplying by zero by adding as much as 1 and as
   # little as 0 to the Combatant's true level
-  module LevelBonus
+  module EffectiveLevel
     MAX_LEVEL = AccountCombatant::MAX_LEVEL
 
     # Use this value in most calculations involving level to avoid multiplying

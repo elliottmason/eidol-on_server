@@ -2,7 +2,7 @@
 
 module AccountCombatants
   class CalculateDefense < ApplicationService
-    include LevelBonus
+    include EffectiveLevel
 
     MAX_BASE = AccountCombatant::MAX_BASE
     MAX_IV = AccountCombatant::MAX_IV

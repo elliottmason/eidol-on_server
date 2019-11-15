@@ -168,8 +168,8 @@ combatants = {}
 combatants[:ampul] =
   Combatant.create!(
     name: 'Ampul',
-    base_defense: 255,
-    base_health: 255
+    base_defense: 100,
+    base_health: 105
   )
 
 combatants[:helljung] =

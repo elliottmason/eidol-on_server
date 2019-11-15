@@ -21,10 +21,6 @@ class MatchCombatant < ApplicationRecord
   has_one :match,
           through: :player
 
-  # @!attribute [r] account
-  #   @return [Account]
-  delegate :account, to: :account_combatant
-
   DELEGATE_METHODS_TO_STATUS = %i[
     available?
     benched?
@@ -81,13 +77,19 @@ class MatchCombatant < ApplicationRecord
     ).where.not(mcs: { board_position_id: nil }).distinct
   end
 
+  # @!attribute [r] account
+  #   @return [Account]
+  delegate :account, to: :account_combatant
+
+  delegate :individual_power, to: :account_combatant
+
   # @return [Player]
   def player
     @player ||=
       Player.where(account: account, match: match).select(:id).first
   end
 
-  # @!attribute [r] player_id
+   # @!attribute [r] player_id
   #   @return [Integer]
   delegate :id, to: :player, prefix: true
 
@@ -98,6 +100,6 @@ class MatchCombatant < ApplicationRecord
 
   # @return [MatchCombatantStatus]
   def status
-    statuses.order('created_at DESC').first
+    statuses.order('id DESC').first
   end
 end

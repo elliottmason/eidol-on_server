@@ -4,6 +4,10 @@ module MoveTurnEffects
   # Calculate the damage output of a [MoveTurnEffect] based on its properties
   # and the attacking/defending [MatchCombatant]s
   class CalculateDamage < ApplicationService
+    include AccountCombatants::EffectiveLevel
+
+    MULTIPLIER = 10
+
     # @return [Integer]
     attr_reader :value
 
@@ -22,7 +26,10 @@ module MoveTurnEffects
 
     # @return [void]
     def perform
-      @value = (((level_quotient * power_quotient) + 2) * modifier).round
+      raw_value =
+       (MULTIPLIER * effective_level * effective_power / defense) *
+       rand(0.85..1)
+      @value = raw_value.round
     end
 
     # @return [Boolean]
@@ -43,18 +50,22 @@ module MoveTurnEffects
 
     # @return [Integer]
     def defense
-      source_combatant.defense
+      target_combatant.defense
+    end
+
+    # @return [Float]
+    def effective_power
+      power + (individual_power / 3.1)
+    end
+
+    # @return [Integer]
+    def individual_power
+      source_combatant.individual_power
     end
 
     # @return [Integer]
     def level
       source_combatant.level
-    end
-
-    # TODO: questionable semantics
-    # @return [Float]
-    def level_quotient
-      2 + ((2.0 * level) / 5.0)
     end
 
     # TODO: calculate modifier (in another service?)
@@ -66,11 +77,6 @@ module MoveTurnEffects
     # @return [Integer]
     def power
       move_turn_effect.power
-    end
-
-    # @return [Float]
-    def power_quotient
-      (power + 1.0) / (defense + 1.0)
     end
   end
 end

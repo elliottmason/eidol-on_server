@@ -2,7 +2,7 @@
 
 module AccountCombatants
   class CalculateHealth < ApplicationService
-    include LevelBonus
+    include EffectiveLevel
 
     MAX_BASE = AccountCombatant::MAX_BASE
     MAX_HEALTH = AccountCombatant::MAX_HEALTH
