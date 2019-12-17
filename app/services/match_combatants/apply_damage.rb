@@ -20,7 +20,7 @@ module MatchCombatants
     end
 
     def perform
-      remaining_health = new_status.remaining_health -= amount
+      new_status.remaining_health -= amount
       new_status.save!
     end
 
