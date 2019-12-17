@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMatchCombatantsMoves < ActiveRecord::Migration[6.0]
   def change
     create_table :match_combatants_moves do |t|

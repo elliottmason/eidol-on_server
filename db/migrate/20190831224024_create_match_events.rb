@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMatchEvents < ActiveRecord::Migration[6.0]
   def change
     create_table :match_events do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMoveTurnEffects < ActiveRecord::Migration[6.0]
   def change
     create_table :move_turn_effects do |t|
