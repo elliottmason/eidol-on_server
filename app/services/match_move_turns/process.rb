@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module MatchMoveTurns
+  # Calculate and apply the outcomes resultant from this [MatchMoveTurn]'s
+  # [MoveTurn]'s [MoveTurnEffect]s
   class Process < ApplicationService
     # @type [Hash<Symbol: ApplicationService>]
     ACTIONS_MAP = {
@@ -17,6 +19,7 @@ module MatchMoveTurns
     # @return [Array<MatchEvent>]
     def perform
       ActiveRecord::Base.transaction do
+        adjust_combatant_energy
         process_move_turn_effects
         match_move_turn.update!(processed_at: Time.now.utc)
         MatchCombatants::UpdateAvailability.for(match_combatant)
@@ -27,6 +30,14 @@ module MatchMoveTurns
 
     # @return [MatchMoveTurn]
     attr_reader :match_move_turn
+
+    # @return [void]
+    def adjust_combatant_energy
+      MatchCombatants::AdjustEnergy.with(
+        match_combatant: match_combatant,
+        move: move
+      )
+    end
 
     # @return [BoardPosition]
     def board_position
@@ -41,6 +52,11 @@ module MatchMoveTurns
     # @return [MatchTurn]
     def match_turn
       match_move_turn.match_turn
+    end
+
+    # @return [Move]
+    def move
+      move_turn.move
     end
 
     # @return [Array<MoveTurnEffect>]
@@ -60,7 +76,7 @@ module MatchMoveTurns
         # @type [Symbol]
         action_key = move_turn_effect.category.to_sym
         # @type [ApplicationService, nil]
-        if (service, = ACTIONS_MAP[action_key])
+        if (service = ACTIONS_MAP[action_key])
           process_move_turn_effect(move_turn_effect: move_turn_effect,
                                    service: service)
         end

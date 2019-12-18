@@ -66,6 +66,10 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.string "name", null: false
     t.integer "base_defense", null: false
     t.integer "base_health", null: false
+    t.integer "base_agility", null: false
+    t.integer "maximum_energy", null: false
+    t.integer "initial_remaining_energy", null: false
+    t.integer "energy_per_turn", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -74,6 +78,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.bigint "board_position_id"
     t.bigint "match_combatant_id", null: false
     t.bigint "match_event_id"
+    t.integer "remaining_energy", null: false
     t.integer "remaining_health", null: false
     t.string "availability", null: false
     t.datetime "created_at", precision: 6, null: false

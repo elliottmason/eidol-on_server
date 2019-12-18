@@ -8,7 +8,7 @@ def create_move_move(speed:)
         description: 'to another position on the board',
         range: 1,
         is_diagonal: true,
-        energy_cost: 1
+        energy_cost: 10
       )
 
     move_turn =
@@ -37,7 +37,7 @@ def create_bolt_move(speed: 70)
         description: 'Summon a lightning bolt from above',
         range: 1,
         is_diagonal: true,
-        energy_cost: 3
+        energy_cost: 25
       )
 
     move_turn =
@@ -66,7 +66,7 @@ def create_bite_move(speed: 75)
         description: 'Sink your teeth into your foe',
         range: 1,
         is_diagonal: true,
-        energy_cost: 2
+        energy_cost: 20
       )
 
     move_turn =
@@ -79,65 +79,22 @@ def create_bite_move(speed: 75)
     MoveTurnEffect.create!(
       move_turn: move_turn,
       category: 'damage',
-      power: 25,
+      power: 20,
       property: 'cutting'
     )
 
     MoveTurnEffect.create!(
       move_turn: move_turn,
       category: 'damage',
-      power: 25,
+      power: 20,
       property: 'crushing'
     )
 
     MoveTurnEffect.create!(
       move_turn: move_turn,
       category: 'status_effect_chance',
-      power: 25,
+      power: 15,
       property: 'poison'
-    )
-
-    move
-  end
-end
-
-def create_solarbeam_move
-  ActiveRecord::Base.transaction do
-    move =
-      Move.create!(
-        name: 'Solarbeam',
-        description: 'I stole this from Pokémon',
-        range: 4,
-        is_diagonal: false,
-        energy_cost: 2
-      )
-
-    move_turn_1 =
-      MoveTurn.create!(
-        move: move,
-        turn: 1,
-        speed: 50
-      )
-
-    MoveTurnEffect.create!(
-      move_turn: move_turn_1,
-      category: 'charge',
-      power: 25,
-      property: 'normal'
-    )
-
-    move_turn_2 =
-      MoveTurn.create!(
-        move: move,
-        turn: 2,
-        speed: 100
-      )
-
-    MoveTurnEffect.create!(
-      move_turn: move_turn_2,
-      category: 'damage',
-      power: 90,
-      property: 'cutting'
     )
 
     move
@@ -168,29 +125,45 @@ combatants = {}
 combatants[:ampul] =
   Combatant.create!(
     name: 'Ampul',
-    base_defense: 100,
-    base_health: 105
+    base_agility: 75,
+    base_defense: 130,
+    base_health: 115,
+    energy_per_turn: 25,
+    initial_remaining_energy: 15,
+    maximum_energy: 100
   )
 
 combatants[:helljung] =
   Combatant.create!(
     name: 'Helljung',
-    base_defense: 70,
-    base_health: 70
+    base_agility: 110,
+    base_defense: 75,
+    base_health: 90,
+    energy_per_turn: 25,
+    initial_remaining_energy: 15,
+    maximum_energy: 100
   )
 
 combatants[:mainx] =
   Combatant.create!(
     name: 'Mainx',
+    base_agility: 125,
     base_defense: 65,
-    base_health: 75
+    base_health: 90,
+    energy_per_turn: 25,
+    initial_remaining_energy: 25,
+    maximum_energy: 100
   )
 
 combatants[:panser] =
   Combatant.create!(
     name: 'Panser',
-    base_defense: 80,
-    base_health: 95
+    base_agility: 95,
+    base_defense: 95,
+    base_health: 95,
+    energy_per_turn: 20,
+    initial_remaining_energy: 15,
+    maximum_energy: 100
   )
 
 
@@ -219,8 +192,7 @@ account_combatants = {
 }
 
 account_combatants[:branden][:ampul].moves = [
-  create_move_move(speed: 35),
-  create_solarbeam_move
+  create_move_move(speed: 35)
 ]
 
 account_combatants[:branden][:panser].moves = [
@@ -234,7 +206,8 @@ account_combatants[:elliott][:helljung].moves = [
 ]
 
 account_combatants[:elliott][:mainx].moves = [
-  create_move_move(speed: 60)
+  create_move_move(speed: 60),
+  create_bite_move
 ]
 
 # @type [Matches::Create]

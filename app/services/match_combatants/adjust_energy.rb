@@ -12,10 +12,10 @@ module MatchCombatants
     end
 
     def perform
-      MatchCombatantStatus.create!(
-        match_combatant: match_combatant,
-        remaining_energy: remaining_energy
-      )
+      ActiveRecord::Base.transaction do
+        status.remaining_energy = remaining_energy
+        status.save!
+      end
     end
 
     private
@@ -26,9 +26,20 @@ module MatchCombatants
     # @return [Move]
     attr_reader :move
 
+    # @return [Combatant]
+    def combatant
+      match_combatant.combatant
+    end
+
     # @return [Integer]
     def remaining_energy
+      energy_difference = move.energy_cost - combatant.energy_per_turn
+      match_combatant.remaining_energy + energy_difference
+    end
 
+    # @return [MatchCombatantStatus]
+    def status
+      @status ||= match_combatant.status.dup
     end
   end
 end
