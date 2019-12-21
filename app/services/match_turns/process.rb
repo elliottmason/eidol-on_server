@@ -33,10 +33,14 @@ module MatchTurns
     # @return [MatchTurn]
     attr_reader :match_turn
 
+    # @return [Match]
     def match
       match_turn.match
     end
 
+    # We have to sort the turns each time because the outcome of the previous
+    # turn might change the precedence of the remaining turns, e.g. an effect
+    # that lowers a combatant's agility
     # @return [Array<MatchMoveTurn>]
     def sorted_unprocessed_match_move_turns
       unprocessed_match_move_turns.sort do |turn_a, turn_b|

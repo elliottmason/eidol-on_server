@@ -10,6 +10,9 @@ class MoveTurn < ApplicationRecord
   has_many :match_move_turns,
            dependent: :restrict_with_exception
 
+  # @!attribute [rw] move
+  #   @return [Move]
+
   # @!attribute [rw] turn
   #   @return [Integer]
 end
