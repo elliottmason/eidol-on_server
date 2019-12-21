@@ -67,12 +67,7 @@ module Matches
           if event.category == "damage" &&
              event.match_combatant.player != player
             amount =
-              (
-                (
-                  event.amount /
-                  event.match_combatant.health.to_f
-                ) * 100
-              ).round
+              ((event.amount / event.match_combatant.maximum_health.to_f) * 100).round
           else
             amount = event.amount
           end
@@ -135,31 +130,31 @@ module Matches
 
       if match_combatant.player == player
         remaining_health =
-          if status.remaining_health > 0
-            status.remaining_health
-          else
-            0
-          end
+          status.remaining_health > 0 ? status.remaining_health : 0
 
         return base.merge(
           availability: status.availability,
           defense: match_combatant.defense,
           isFriendly: true,
-          maximumHealth: match_combatant.health,
-          remainingHealth: remaining_health,
+          maximumEnergy: match_combatant.maximum_energy,
+          maximumHealth: match_combatant.maximum_health,
+          remainingEnergy: status.remaining_energy,
+          remainingHealth: remaining_health
         )
       else
         remaining_health =
           if status.remaining_health > 0
-            (status.remaining_health / match_combatant.health.to_f * 100).round
+            (status.remaining_health / match_combatant.maximum_health.to_f * 100).round
           else
             0
           end
 
         return base.merge(
           isFriendly: false,
+          maximumEnergy: 0,
           maximumHealth: 100,
-          remainingHealth: remaining_health,
+          remainingEnergy: 0,
+          remainingHealth: remaining_health
         )
       end
 

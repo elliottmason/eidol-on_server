@@ -92,8 +92,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.bigint "account_combatant_id", null: false
     t.bigint "player_id", null: false
     t.integer "defense", null: false
-    t.integer "health", null: false
     t.integer "level", null: false
+    t.integer "maximum_energy", null: false
+    t.integer "maximum_health", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_combatant_id"], name: "index_match_combatants_on_account_combatant_id"

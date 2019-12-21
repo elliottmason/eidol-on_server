@@ -41,8 +41,9 @@ module MatchCombatants
         MatchCombatant.create!(
           account_combatant: account_combatant,
           defense: defense,
-          health: health,
           level: level,
+          maximum_energy: energy,
+          maximum_health: health,
           player: player
         )
     end
@@ -65,11 +66,11 @@ module MatchCombatants
 
     # @return [MatchCombatantStatus]
     def create_combatant_status
-      health = match_combatant.health
+      remaining_health = match_combatant.maximum_health
       MatchCombatantStatus.create!(
         match_combatant: match_combatant,
         remaining_energy: remaining_energy,
-        remaining_health: health,
+        remaining_health: remaining_health,
         availability: 'benched'
       )
     end
@@ -77,6 +78,12 @@ module MatchCombatants
     # @return [Integer]
     def defense
       AccountCombatants::CalculateDefense.with(account_combatant).value
+    end
+
+    # TODO: should be calculated based on level
+    # @return [Integer]
+    def energy
+      combatant.maximum_energy
     end
 
     # @return [Integer]

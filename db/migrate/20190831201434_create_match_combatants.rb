@@ -6,8 +6,9 @@ class CreateMatchCombatants < ActiveRecord::Migration[6.0]
       t.belongs_to :account_combatant, null: false
       t.belongs_to :player, null: false
       t.integer :defense, null: false
-      t.integer :health, null: false
       t.integer :level, null: false
+      t.integer :maximum_energy, null: false
+      t.integer :maximum_health, null: false
       t.timestamps
     end
   end
