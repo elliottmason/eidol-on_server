@@ -19,8 +19,10 @@ module MatchMoveTurns
     # @return [Array<MatchEvent>]
     def perform
       ActiveRecord::Base.transaction do
-        adjust_combatant_energy
-        process_move_turn_effects
+        if match_combatant.remaining_energy >= move.energy_cost
+          adjust_combatant_energy
+          process_move_turn_effects
+        end
         match_move_turn.update!(processed_at: Time.now.utc)
         MatchCombatants::UpdateAvailability.for(match_combatant)
       end
@@ -33,7 +35,7 @@ module MatchMoveTurns
 
     # @return [void]
     def adjust_combatant_energy
-      MatchCombatants::AdjustEnergy.with(
+      MatchCombatants::AdjustEnergy.for(
         match_combatant: match_combatant,
         move: move
       )

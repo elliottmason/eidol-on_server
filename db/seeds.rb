@@ -128,8 +128,8 @@ combatants[:ampul] =
     base_agility: 75,
     base_defense: 130,
     base_health: 115,
-    energy_per_turn: 25,
-    initial_remaining_energy: 15,
+    energy_per_turn: 20,
+    initial_remaining_energy: 20,
     maximum_energy: 100
   )
 
@@ -139,8 +139,8 @@ combatants[:helljung] =
     base_agility: 110,
     base_defense: 75,
     base_health: 90,
-    energy_per_turn: 25,
-    initial_remaining_energy: 15,
+    energy_per_turn: 20,
+    initial_remaining_energy: 16,
     maximum_energy: 100
   )
 
@@ -161,7 +161,7 @@ combatants[:panser] =
     base_agility: 95,
     base_defense: 95,
     base_health: 95,
-    energy_per_turn: 20,
+    energy_per_turn: 25,
     initial_remaining_energy: 15,
     maximum_energy: 100
   )

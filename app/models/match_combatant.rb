@@ -93,10 +93,10 @@ class MatchCombatant < ApplicationRecord
   # @!method queued?()
   #   @return [Boolean]
 
-  # @!attribute [r] remaining_energy
+  # @!method remaining_energy
   #   @return [Integer]
 
-  # @!attribute [r] remaining_health
+  # @!method remaining_health
   #   @return [Integer]
 
   # @!method statuses()

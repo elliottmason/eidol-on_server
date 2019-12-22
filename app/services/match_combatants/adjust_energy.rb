@@ -22,7 +22,7 @@ module MatchCombatants
 
     # @return [MatchCombatant]
     attr_reader :match_combatant
-    
+
     # @return [Move]
     attr_reader :move
 
@@ -33,7 +33,7 @@ module MatchCombatants
 
     # @return [Integer]
     def remaining_energy
-      energy_difference = move.energy_cost - combatant.energy_per_turn
+      energy_difference = combatant.energy_per_turn - move.energy_cost
       match_combatant.remaining_energy + energy_difference
     end
 
