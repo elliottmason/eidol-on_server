@@ -5,8 +5,8 @@ module MatchCombatants
   # the [MoveTurn]
   class AdjustEnergy < ApplicationService
     # @param match_combatant [MatchCombatant]
-    # @param move [Move]
-    def initialize(match_combatant:, move:)
+    # @param move [Move, nil]
+    def initialize(match_combatant:, move: nil)
       @match_combatant = match_combatant
       @move = move
     end
@@ -32,9 +32,20 @@ module MatchCombatants
     end
 
     # @return [Integer]
+    def energy_cost
+      move ? move.energy_cost : 0
+    end
+
+    # @return [Integer]
+    def maximum_energy
+      match_combatant.maximum_energy
+    end
+
+    # @return [Integer]
     def remaining_energy
-      energy_difference = combatant.energy_per_turn - move.energy_cost
-      match_combatant.remaining_energy + energy_difference
+      energy_difference = combatant.energy_per_turn - energy_cost
+      potential_value = match_combatant.remaining_energy + energy_difference
+      potential_value < maximum_energy ? potential_value : maximum_energy
     end
 
     # @return [MatchCombatantStatus]
