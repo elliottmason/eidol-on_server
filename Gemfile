@@ -8,9 +8,6 @@ gem 'rails', '~> 6.0.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-# Use Jb for JSON templates
-gem 'jb', '~> 0.7'
-
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
@@ -23,6 +20,12 @@ gem 'rack-cors'
 group :development, :test do
   # Call 'byebug' anywhere in the code to get a debugger console
   gem 'byebug', platforms: %i[mingw mri x64_mingw]
+
+  # Use factory_bot in place of fixtures
+  gem 'factory_bot_rails'
+
+  # Use Faker to generate fake data for factories
+  gem 'faker'
 
   # Use RSpec as our testing framework
   gem 'rspec-rails', '~> 3.8'

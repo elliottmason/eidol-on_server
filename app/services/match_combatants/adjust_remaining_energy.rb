@@ -3,7 +3,7 @@
 module MatchCombatants
   # Decrease or increase the [MatchCombatant] energy based on the energy cost of
   # the [MoveTurn]
-  class AdjustEnergy < ApplicationService
+  class AdjustRemainingEnergy < ApplicationService
     # @param match_combatant [MatchCombatant]
     # @param move [Move, nil]
     def initialize(match_combatant:, move: nil)
@@ -12,10 +12,8 @@ module MatchCombatants
     end
 
     def perform
-      ActiveRecord::Base.transaction do
-        status.remaining_energy = remaining_energy
-        status.save!
-      end
+      status.remaining_energy = remaining_energy
+      status.save!
     end
 
     private

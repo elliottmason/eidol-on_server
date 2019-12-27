@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Matches
+module MoveTurnEffects
   # Processes a single [MoveTurnEffect] relative to the [MatchCombatant] that
   # it's coming from and which [BoardPosition] it targets
   class ProcessDamage < ApplicationService
@@ -30,22 +30,14 @@ module Matches
         # @param target_combatant [MatchCombatant]
         targets.each do |target_combatant|
           # @type [Integer]
-          amount ||=
-            MoveTurnEffects::CalculateDamage.for(
-              move_turn_effect: move_turn_effect,
-              source_combatant: source_combatant,
-              target_combatant: target_combatant
-            ).value
+          amount ||= 0 - calculate_damage(target_combatant)
 
-          MatchCombatants::ApplyDamage.with(
+          MatchCombatants::AdjustRemainingHealth.with(
             amount: amount,
-            combatant: target_combatant
+            match_combatant: target_combatant
           )
 
-          create_match_event(
-            amount: amount,
-            combatant: target_combatant
-          )
+          create_match_event(amount: amount, combatant: target_combatant)
         end
       end
     end
@@ -55,17 +47,15 @@ module Matches
     # @return [BoardPosition]
     attr_reader :board_position
 
-    # @return [Match]
-    attr_reader :match
-
-    # @return [MatchMoveTurn]
-    attr_reader :match_move_turn
-
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
-
-    # @return [MatchCombatant]
-    attr_reader :source_combatant
+    # @param target_combatant [MatchCombatant]
+    # @return [Integer]
+    def calculate_damage(target_combatant)
+      MoveTurnEffects::CalculateDamage.for(
+        move_turn_effect: move_turn_effect,
+        source_combatant: source_combatant,
+        target_combatant: target_combatant
+      ).value
+    end
 
     # @param amount [Integer]
     # @param combatant [MatchCombatant]
@@ -81,6 +71,18 @@ module Matches
         status: 'successful'
       )
     end
+
+    # @return [Match]
+    attr_reader :match
+
+    # @return [MatchMoveTurn]
+    attr_reader :match_move_turn
+
+    # @return [MoveTurnEffect]
+    attr_reader :move_turn_effect
+
+    # @return [MatchCombatant]
+    attr_reader :source_combatant
 
     # @return [ActiveRecord::Relation]
     def targets

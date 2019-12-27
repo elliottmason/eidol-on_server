@@ -26,10 +26,10 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
   create_table "account_combatants", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "combatant_id", null: false
+    t.integer "individual_agility", null: false
     t.integer "individual_defense", null: false
     t.integer "individual_health", null: false
     t.integer "individual_power", null: false
-    t.integer "individual_speed", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_account_combatants_on_account_id"
@@ -64,9 +64,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
 
   create_table "combatants", force: :cascade do |t|
     t.string "name", null: false
+    t.integer "base_agility", null: false
     t.integer "base_defense", null: false
     t.integer "base_health", null: false
-    t.integer "base_agility", null: false
     t.integer "maximum_energy", null: false
     t.integer "initial_remaining_energy", null: false
     t.integer "energy_per_turn", null: false
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
   create_table "match_combatants", force: :cascade do |t|
     t.bigint "account_combatant_id", null: false
     t.bigint "player_id", null: false
+    t.integer "agility", null: false
     t.integer "defense", null: false
     t.integer "level", null: false
     t.integer "maximum_energy", null: false
@@ -214,7 +215,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.bigint "account_id", null: false
     t.bigint "match_id", null: false
     t.string "name", null: false
-    t.integer "rank"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["account_id"], name: "index_players_on_account_id"

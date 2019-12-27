@@ -6,7 +6,6 @@ class CreatePlayers < ActiveRecord::Migration[6.0]
       t.belongs_to :account, null: false
       t.belongs_to :match, null: false
       t.string :name, null: false
-      t.integer :rank
       t.timestamps
     end
   end

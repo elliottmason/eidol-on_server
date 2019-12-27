@@ -20,10 +20,10 @@ class ApplicationService
 
     # @return [self]
     alias now with
-
-    # @!method for()
-    #   @return [ApplicationService]
   end
+
+  # @!method self.for()
+  #   @return [ApplicationService]
 
   # @return [void]
   def _perform

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module MatchCombatants
-  # This basically just K.O.'s [MatchCombatant]s and removes them from the board
-  # when their remaining_health drops too low by inserting a new status
+  # Conditionally inserts an updated [MatchCombatantStatus] based on changes
+  # to the [MatchCombatant]'s health or current capacity to queue moves
   class UpdateAvailability < ApplicationService
     # @param match_combatant [MatchCombatant]
     def initialize(match_combatant)

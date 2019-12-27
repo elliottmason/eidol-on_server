@@ -6,7 +6,7 @@ module MatchMoveTurns
   class Process < ApplicationService
     # @type [Hash<Symbol: ApplicationService>]
     ACTIONS_MAP = {
-      damage: Matches::ProcessDamage,
+      damage: MoveTurnEffects::ProcessDamage,
       relocation: Matches::ProcessRelocation,
       status_effect_chance: Matches::ProcessStatusEffectChance
     }.freeze
@@ -35,7 +35,7 @@ module MatchMoveTurns
 
     # @return [void]
     def adjust_combatant_energy
-      MatchCombatants::AdjustEnergy.for(
+      MatchCombatants::AdjustRemainingEnergy.for(
         match_combatant: match_combatant,
         move: move
       )

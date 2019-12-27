@@ -9,19 +9,13 @@ module MatchTurns
       @match_turn = match_turn
     end
 
-    # @return [Array<MatchEvent>]
-    def match_events
-      @match_events ||= []
-    end
-
     # @return [void]
     def perform
       ActiveRecord::Base.transaction do
         while unprocessed_match_move_turns.size.nonzero?
-          match_events <<
-            MatchMoveTurns::Process.for(
-              match_move_turn: next_unprocessed_match_move_turn
-            )
+          MatchMoveTurns::Process.for(
+            match_move_turn: next_unprocessed_match_move_turn
+          )
         end
 
         Matches::AdvanceTurn.for(match: match)

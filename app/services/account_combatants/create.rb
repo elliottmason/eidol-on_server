@@ -44,16 +44,16 @@ module AccountCombatants
     # @return [void]
     def copy_combatant
       individual_defense, individual_health, individual_power,
-        individual_speed = 4.times.map { self.class.random_iv }
+        individual_agility = 4.times.map { self.class.random_iv }
 
       @account_combatant =
         AccountCombatant.create!(
           account: account,
           combatant: combatant,
+          individual_agility: individual_agility,
           individual_defense: individual_defense,
           individual_health: individual_health,
-          individual_power: individual_power,
-          individual_speed: individual_speed
+          individual_power: individual_power
         )
     end
 
