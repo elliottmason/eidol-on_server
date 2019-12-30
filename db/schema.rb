@@ -195,8 +195,9 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.string "name", null: false
     t.string "description", null: false
     t.integer "energy_cost", null: false
-    t.integer "range", null: false
     t.boolean "is_diagonal", null: false
+    t.integer "speed", null: false
+    t.integer "range", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
