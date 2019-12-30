@@ -38,11 +38,14 @@ module MatchCombatants
     def adjusted_remaining_health
       return @adjusted_remaining_health if @adjusted_remaining_health
 
+      # @type [Integer]
       potential_remaining_health = new_status.remaining_health + amount
 
       if potential_remaining_health > maximum_health
         return @adjusted_remaining_health = maximum_health
-      elsif potential_remaining_health < 0
+      end
+
+      if potential_remaining_health.negative?
         return @adjusted_remaining_health = 0
       end
 
