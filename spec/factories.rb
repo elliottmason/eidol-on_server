@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 FactoryBot.define do
   factory :account do
     email_address { Faker::Internet.email }
@@ -8,21 +9,15 @@ FactoryBot.define do
 
   factory :account_combatant do
     account
-    combatant
+    combatant { Combatant.order('RANDOM()').first }
     individual_agility { 31 }
     individual_defense { 31 }
     individual_health { 31 }
     individual_power { 31 }
-  end
 
-  factory :combatant do
-    name { "#{Faker::Creature::Animal.name}-#{Faker::Creature::Animal.name}"}
-    base_agility { 100 }
-    base_defense { 100 }
-    base_health { 100 }
-    maximum_energy { 100 }
-    initial_remaining_energy { 15 }
-    energy_per_turn { 15 }
+    after :create do |account_combatant|
+      account_combatant.moves << Move.find_by_name('Move')
+    end
   end
 
   factory :match do
