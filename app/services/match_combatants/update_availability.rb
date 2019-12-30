@@ -15,8 +15,7 @@ module MatchCombatants
 
     def perform
       if combatant_out_of_health?
-        new_status.board_position = nil
-        new_status.knocked_out!
+        MatchCombatants::KnockOut.with(match_combatant)
       elsif combatant_now_queued?
         new_status.queued!
       elsif combatant_now_available?
