@@ -17,6 +17,9 @@ gem 'puma', '~> 3.11'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS)
 gem 'rack-cors'
 
+# Use Seedbank to structure our seed data
+gem 'seedbank'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to get a debugger console
   gem 'byebug', platforms: %i[mingw mri x64_mingw]
