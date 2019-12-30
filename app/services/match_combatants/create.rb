@@ -34,12 +34,17 @@ module MatchCombatants
     # @return [Player]
     attr_reader :player
 
+    def agility
+      AccountCombatants::CalculateAgility.with(account_combatant).value
+    end
+
     # TODO: These are fake stats tho
     # @return [MatchCombatant]
     def copy_account_combatant
       @match_combatant =
         MatchCombatant.create!(
           account_combatant: account_combatant,
+          agility: agility,
           defense: defense,
           level: level,
           maximum_energy: energy,
