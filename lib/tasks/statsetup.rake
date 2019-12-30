@@ -5,12 +5,15 @@ task stats: 'statsetup'
 task :statsetup do
   require 'rails/code_statistics'
 
-  STATS_DIRECTORIES = [
+  custom_directories = [
     %w[Channels app/channels],
     %w[Controllers app/controllers],
     %w[Models app/models],
-    %w[Services app/services]
+    %w[Services app/services],
+    ['Services specs', 'spec/services']
   ]
+  STATS_DIRECTORIES.replace(custom_directories)
 
-  # CodeStatistics::TEST_TYPES
+  custom_test_types = ["Service specs"]
+  CodeStatistics::TEST_TYPES.replace(custom_test_types)
 end
