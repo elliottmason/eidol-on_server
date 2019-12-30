@@ -30,17 +30,6 @@ module Matches
       @board = board_creator.board
     end
 
-    # @param player [Player]
-    # @return [Array<MatchCombatant>]
-    def create_match_combatants(player)
-      player.account.combatants.each do |account_combatant|
-        MatchCombatants::Create.with(
-          account_combatant: account_combatant,
-          player: player
-        )
-      end
-    end
-
     # @return [Match]
     def create_match
       @match = Match.create!.tap do |match|
@@ -57,7 +46,8 @@ module Matches
             match: match,
             name: account.username
           )
-        create_match_combatants(player)
+        service = Players::CreateMatchCombatants.for(player)
+        service.player
       end
     end
   end
