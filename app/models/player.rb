@@ -22,4 +22,7 @@ class Player < ApplicationRecord
 
   # @!method id()
   #   @return [Integer]
+
+  # @!method match()
+  #   @return [Match]
 end

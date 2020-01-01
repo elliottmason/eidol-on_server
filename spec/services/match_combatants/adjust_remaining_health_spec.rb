@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe MatchCombatants::AdjustRemainingHealth do
   let!(:match_combatant) { FactoryBot.create(:match_combatant) }
 
   context 'combatant is knocked out' do
-    let!(:match_combatant) {
+    let!(:match_combatant) do
       FactoryBot.create(:match_combatant, :knocked_out)
-    }
+    end
 
     it 'does not allow health to be added' do
       described_class.with(
@@ -48,3 +49,4 @@ RSpec.describe MatchCombatants::AdjustRemainingHealth do
     expect(match_combatant.knocked_out?).to be true
   end
 end
+# rubocop:enable Metrics/BlockLength
