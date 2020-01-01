@@ -3,12 +3,12 @@
 module MatchMoveTurns
   # Adds a Move's MoveTurns to the MatchMoveTurns queue to be processed
   class Queue < ApplicationService
-    # @param match_move_selection [MatchMoveSelection]
+    # @param match_move_selection [MatchMoveSelection, nil]
     # @param match_combatant [MatchCombatant]
     # @param match_turn [MatchTurn]
     # @param move [Move]
     def initialize(
-      match_move_selection:,
+      match_move_selection: nil,
       match_combatant:,
       match_turn:,
       move:
@@ -34,7 +34,7 @@ module MatchMoveTurns
     # @return [MatchCombatant]
     attr_reader :match_combatant
 
-    # @return [MatchMoveSelection]
+    # @return [MatchMoveSelection, nil]
     attr_reader :match_move_selection
 
     # @return [MatchTurn]
