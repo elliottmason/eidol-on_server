@@ -46,7 +46,7 @@ module Matches
             match: match,
             name: account.username
           )
-        service = Players::CreateMatchCombatants.for(player)
+        service = MatchCombatants::CreateForPlayer.for(player)
         service.player
       end
     end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module Players
+module MatchCombatants
   # Create some [MatchCombatant]s from the provided [Player]'s
   # [AccountCombatant]s
-  class CreateMatchCombatants < ApplicationService
+  class CreateForPlayer < ApplicationService
     # @return [Player]
     attr_reader :player
 
