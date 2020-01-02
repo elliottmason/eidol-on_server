@@ -26,6 +26,10 @@ module MoveTurnEffects
 
     # @return [void]
     def perform
+      if move_turn_effect.property == 'direct'
+        return @value = move_turn_effect.power
+      end
+
       raw_value =
        (MULTIPLIER * effective_level * effective_power / defense) *
        rand(0.85..1)

@@ -8,6 +8,7 @@ class MoveTurnEffect < ApplicationRecord
       damage: %i[
         cutting
         crushing
+        direct
         electric
       ],
       relocation: %i[
