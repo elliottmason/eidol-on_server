@@ -15,12 +15,12 @@ describe 'Knocked out combatants' do
       move: move
     ).first
   end
-  let(:target_match_combatants_move) do {
+  let(:target_match_combatants_move) do
     MatchCombatantsMove.where(
       match_combatant: target_combatant,
       move: move
     ).first
-  }
+  end
 
   let(:source_position) { match.board_positions.where(x: 2, y: 1).first}
   let(:target_position) { match.board_positions.where(x: 2, y: 2). first }
@@ -47,6 +47,7 @@ describe 'Knocked out combatants' do
       match_combatants_move: target_match_combatants_move
     )
     # which should cause the turn to be processed automatically?
+
     # at which point their respective attacks should run
     # and target_combatant should be KO'd
   end
