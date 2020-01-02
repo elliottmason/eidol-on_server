@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module MatchCombatants
+  # Inserts a new [MatchCombatantStatus] that assigns it a [BoardPosition]
+  # and makes it available to perform moves
   class Deploy < ApplicationService
     # @param board_position [BoardPosition]
     # @param match_combatant [MatchCombatant]
