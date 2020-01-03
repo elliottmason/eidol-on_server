@@ -46,15 +46,11 @@ module MatchTurns
         turn_a_speed = MatchMoveTurns::CalculateSpeed.for(turn_a).value
         turn_b_speed = MatchMoveTurns::CalculateSpeed.for(turn_b).value
 
-        puts turn_a_speed
-        puts turn_b_speed
-        puts '---'
-
         # @type [Integer]
-        result = turn_a_speed <=> turn_b_speed
+        result = turn_b_speed <=> turn_a_speed
 
         # perform a coin toss if speeds are identical
-        return result unless result.zero?
+        next result unless result.zero?
 
         [-1, 1].sample
       end
