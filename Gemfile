@@ -20,9 +20,6 @@ gem 'rack-cors'
 # Use Seedbank to structure our seed data
 gem 'seedbank'
 
-# Use Wisper for publishing and subscribing to events
-gem 'wisper', '~> 2.0.0'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to get a debugger console
   gem 'byebug', platforms: %i[mingw mri x64_mingw]

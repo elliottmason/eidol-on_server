@@ -8,7 +8,6 @@ task :statsetup do
   custom_directories = [
     %w[Channels app/channels],
     %w[Controllers app/controllers],
-    %w[Listeners app/listeners],
     %w[Models app/models],
     %w[Services app/services],
     ['Services specs', 'spec/services']
