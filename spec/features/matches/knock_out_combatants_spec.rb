@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
-describe 'Knocked out combatants' do
+describe 'Knocking out combatants' do
   let!(:account_a) { FactoryBot.create(:account, combatants: %i[helljung]) }
   let!(:account_b) { FactoryBot.create(:account, combatants: %i[ampul]) }
   let!(:match) { Matches::Create.for(accounts: [account_a, account_b]).match }
@@ -25,8 +25,8 @@ describe 'Knocked out combatants' do
     ).first
   end
 
-  let(:source_position) { match.board_positions.where(x: 2, y: 1).first }
-  let(:target_position) { match.board_positions.where(x: 2, y: 2).first }
+  let(:source_position) { match.board_positions.find_by(x: 2, y: 1) }
+  let(:target_position) { match.board_positions.find_by(x: 2, y: 2) }
 
   before do
     # Lower remaining_health of both combatantsb down to 1
@@ -60,7 +60,7 @@ describe 'Knocked out combatants' do
     )
   end
 
-  it 'moves are not processed or applied' do
+  it "prevents KO'd combatant's from being processed or applied" do
     expect(target_combatant).to be_knocked_out
     expect(target_combatant.remaining_health).to eq(0)
     expect(source_combatant).to_not be_knocked_out
