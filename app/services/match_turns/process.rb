@@ -43,8 +43,20 @@ module MatchTurns
     # @return [Array<MatchMoveTurn>]
     def sorted_unprocessed_match_move_turns
       unprocessed_match_move_turns.sort do |turn_a, turn_b|
-        MatchMoveTurns::CalculateSpeed.for(turn_b).value <=>
-          MatchMoveTurns::CalculateSpeed.for(turn_a).value
+        turn_a_speed = MatchMoveTurns::CalculateSpeed.for(turn_a).value
+        turn_b_speed = MatchMoveTurns::CalculateSpeed.for(turn_b).value
+
+        puts turn_a_speed
+        puts turn_b_speed
+        puts '---'
+
+        # @type [Integer]
+        result = turn_a_speed <=> turn_b_speed
+
+        # perform a coin toss if speeds are identical
+        return result unless result.zero?
+
+        [-1, 1].sample
       end
     end
 
@@ -55,7 +67,7 @@ module MatchTurns
 
     # @return [Array<MatchMoveTurn>]
     def unprocessed_match_move_turns
-      MatchMoveTurn.where(match_turn: match_turn, processed_at: nil).all
+      MatchMoveTurn.unprocessed.where(match_turn: match_turn).all
     end
   end
 end

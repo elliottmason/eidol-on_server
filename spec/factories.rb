@@ -3,23 +3,27 @@
 # rubocop:disable Metrics/BlockLength
 FactoryBot.define do
   factory :account do
-    trait :with_combatants do
-      after :create do |account|
-        create_list(:account_combatant, 2, account: account)
-      end
+    transient do
+      combatants { %i[] }
     end
 
     email_address { Faker::Internet.email }
     username { Faker::Internet.username }
+
+    after :create do |account, options|
+      options.combatants.each do |combatant_name|
+        create(:account_combatant, combatant_name.to_sym, account: account)
+      end
+    end
   end
 
   factory :account_combatant do
     trait :ampul do
-      combatant { Combatant.find_by_name('Ampul') }
+      combatant { Combatant.find_by(name: 'Ampul') }
     end
 
     trait :helljung do
-      combatant { Combatant.find_by_name('Helljung') }
+      combatant { Combatant.find_by(name: 'Helljung') }
     end
 
     account
@@ -32,8 +36,8 @@ FactoryBot.define do
     after :create do |account_combatant|
       create(:account_combatant_status, account_combatant: account_combatant)
 
-      account_combatant.moves << Move.find_by_name('Move')
-      account_combatant.moves << Move.find_by_name('Direct Hit')
+      account_combatant.moves << Move.find_by(name: 'Move')
+      account_combatant.moves << Move.find_by(name: 'Direct Hit')
     end
   end
 
@@ -94,3 +98,4 @@ FactoryBot.define do
     name { Faker::Name.first_name }
   end
 end
+# rubocop:enable Metrics/BlockLength
