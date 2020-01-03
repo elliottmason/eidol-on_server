@@ -14,14 +14,20 @@ module MatchMoveTurns
 
     # @return [Integer]
     def perform
-      @value =
-        match_move_turn.move_turn.speed +
-        match_move_turn.match_combatant.level
+      @value = move_turn.speed * match_combatant.agility
     end
 
     private
 
     # @return [MatchMoveTurn]
     attr_reader :match_move_turn
+
+    # @!method match_combatant()
+    #   @return [MatchCombatant]
+    delegate :match_combatant, to: :match_move_turn
+
+    # @!method move_turn()
+    #   @return [Integer]
+    delegate :move_turn, to: :match_move_turn
   end
 end
