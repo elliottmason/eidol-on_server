@@ -3,11 +3,20 @@
 # An [Account]'s unique instance of a [Combatant] with its own progression and
 # stats
 class AccountCombatant < ApplicationRecord
+  # @type [Float]
   MAX_BASE = 255.to_f
+
+  # @type [Float]
   MAX_IV = 31.to_f
-  MAX_LEVEL = 25.to_f
-  MAX_DEFENSE = 999.to_f
+
+  # @type [Float]
   MAX_HEALTH = 500.to_f
+
+  # @type [Float]
+  MAX_LEVEL = 50.to_f
+
+  # @type [Float]
+  MAX_STAT = 999.to_f
 
   belongs_to :account
   belongs_to :combatant
