@@ -4,22 +4,6 @@ class MatchMoveSelectionsController < ApplicationController
   # @return [void]
   def create
     MatchMoveSelections::CreateFromParamsArray.with(create_params)
-
-    # TODO: we can do better than this
-    # We need to determine if both players have submitted their selections so
-    # that we can process the match turn and update their clients
-    match = Match.last # TODO: this certainly won't hold up
-    available_combatants = match.combatants.available.all
-
-    match_turn = match.turn
-
-    if available_combatants.empty?
-      MatchTurns::Process.for(match_turn: match_turn)
-      Matches::Arbitrate.for(match)
-      MatchesChannel.broadcast_match(match)
-    else
-      Rails.logger.debug("#{available_combatants.size} combatants not queued")
-    end
   end
 
   private

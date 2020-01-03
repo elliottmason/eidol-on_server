@@ -9,6 +9,10 @@ module MatchTurns
       @match_turn = match_turn
     end
 
+    def allowed?
+      match_turn.unprocessed?
+    end
+
     # @return [void]
     def perform
       ActiveRecord::Base.transaction do
@@ -18,7 +22,8 @@ module MatchTurns
           )
         end
 
-        Matches::AdvanceTurn.for(match: match)
+        next_match_turn = Matches::AdvanceTurn.for(match: match).match_turn
+        MatchTurns::ConditionallyProcess.with(match_turn: next_match_turn)
       end
     end
 

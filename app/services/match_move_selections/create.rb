@@ -23,18 +23,13 @@ module MatchMoveSelections
     # @return [MatchMoveSelection]
     def perform
       ActiveRecord::Base.transaction do
-        selection =
-          MatchMoveSelection.create!(
-            board_position: board_position,
-            match_combatants_move: match_combatants_move,
-            match_turn: match_turn,
-            was_system_selected: was_system_selected?
-          )
+        create_selection
         MatchMoveTurns::QueueFromMoveSelection.for(
-          match_move_selection: selection,
+          match_move_selection: match_move_selection,
           match_turn: match_turn
         )
         MatchCombatants::UpdateAvailability.for(match_combatant)
+        MatchTurns::ConditionallyProcess.for(match_turn: match_turn)
       end
     end
 
@@ -43,11 +38,16 @@ module MatchMoveSelections
     # @return [BoardPosition, NilClass]
     attr_reader :board_position
 
-    # @return [MatchCombatantsMove]
-    attr_reader :match_combatants_move
-
-    # @return [Player, NilClass]
-    attr_reader :player
+    # @return [MatchMoveSelection]
+    def create_selection
+      @match_move_selection =
+        MatchMoveSelection.create!(
+          board_position: board_position,
+          match_combatants_move: match_combatants_move,
+          match_turn: match_turn,
+          was_system_selected: was_system_selected?
+        )
+    end
 
     # @return [Match]
     def match
@@ -59,10 +59,19 @@ module MatchMoveSelections
       @match_combatant ||= match_combatants_move.match_combatant
     end
 
+    # @return [MatchCombatantsMove]
+    attr_reader :match_combatants_move
+
+    # @return [MatchMoveSelection]
+    attr_reader :match_move_selection
+
     # @return [MatchTurn]
     def match_turn
       @match_turn ||= match.turn
     end
+
+    # @return [Player, NilClass]
+    attr_reader :player
 
     def was_system_selected?
       player.blank?

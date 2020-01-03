@@ -11,4 +11,9 @@ class MatchTurn < ApplicationRecord
            dependent: :restrict_with_exception
   has_many :match_events, through: :match_move_turns
   has_many :move_turns, through: :match_move_turns
+
+  # @return [Boolean]
+  def unprocessed?
+    processed_at.blank?
+  end
 end
