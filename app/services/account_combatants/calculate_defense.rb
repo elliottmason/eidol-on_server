@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module AccountCombatants
+  # This should be somewhat self-explanatory really.
   class CalculateDefense < ApplicationService
     include EffectiveLevel
 
     MAX_BASE = AccountCombatant::MAX_BASE
     MAX_IV = AccountCombatant::MAX_IV
-    MAX_DEFENSE = AccountCombatant::MAX_DEFENSE
+    MAX_DEFENSE = AccountCombatant::MAX_STAT
     MAX_LEVEL = AccountCombatant::MAX_LEVEL
-    MULTIPLIER =
-      (MAX_DEFENSE) / ((MAX_BASE + MAX_IV) * MAX_LEVEL)
+    MULTIPLIER = MAX_DEFENSE / ((MAX_BASE + MAX_IV) * MAX_LEVEL)
 
     # @return [Integer]
     attr_reader :value
@@ -21,8 +21,7 @@ module AccountCombatants
 
     # @return [void]
     def perform
-      @value =
-        (MULTIPLIER * effective_defense * effective_level).round
+      @value = (MULTIPLIER * effective_defense * effective_level).round
     end
 
     private
@@ -40,6 +39,7 @@ module AccountCombatants
       @combatant ||= account_combatant.combatant
     end
 
+    # @return [Integer]
     def effective_defense
       base_defense + individual_defense
     end
@@ -47,12 +47,6 @@ module AccountCombatants
     # @return [Integer]
     def individual_defense
       account_combatant.individual_defense
-    end
-
-    # @return [Integer]
-    def level
-      @level ||=
-        AccountCombatants::CalculateLevel.with(account_combatant).value
     end
   end
 end

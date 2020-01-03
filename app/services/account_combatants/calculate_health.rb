@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module AccountCombatants
+  # Gee, what do you think this service does?
   class CalculateHealth < ApplicationService
     include EffectiveLevel
 
@@ -48,12 +49,6 @@ module AccountCombatants
     # @return [Integer]
     def individual_health
       @individual_health ||= account_combatant.individual_health
-    end
-
-    # @return [Integer]
-    def level
-      @level ||=
-        AccountCombatants::CalculateLevel.with(account_combatant).value
     end
   end
 end
