@@ -2,6 +2,7 @@
 
 module Matches
   class AdvanceTurn < ApplicationService
+    # @return [MatchTurn]
     attr_reader :match_turn
 
     # @param match [Match]

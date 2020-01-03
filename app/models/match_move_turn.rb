@@ -28,4 +28,7 @@ class MatchMoveTurn < ApplicationRecord
 
   # @!attribute [rw] move_turn
   #   @return [MoveTurn]
+
+  # @!attribute [rw] processed_at
+  #   @return [DateTime, nil]
 end
