@@ -26,18 +26,20 @@ module Matches
       match_combatant_position = match_combatant.status.board_position
       x_coord = match_combatant_position.x
       y_coord = match_combatant_position.y
+      # @type [Integer]
       move_range = move_turn_effect.move_turn.move.range
       x_range = (x_coord - move_range)..(x_coord + move_range)
       y_range = (y_coord - move_range)..(y_coord + move_range)
 
+      # @type [BoardPosition]
       available_board_position =
         BoardPosition \
         .for_match(match) \
-        .where(id: board_position.id, x: x_range, y: y_range) \
-        .first
+        .find_by(id: board_position.id, x: x_range, y: y_range)
 
-      match_combatant.queued? &&
-        available_board_position&.occupants&.empty?
+      return false unless available_board_position
+
+      match_combatant.queued? && available_board_position.occupants.empty?
     end
 
     # @return [MatchEvent]

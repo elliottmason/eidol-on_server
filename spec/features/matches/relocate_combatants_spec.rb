@@ -60,10 +60,8 @@ RSpec.describe 'Relocating combatants' do
     end
 
     it 'places combatants at new positions' do
-      expect(combatant_a.position.x).to eq 2
-      expect(combatant_a.position.y).to eq 1
-      expect(combatant_b.position.x).to eq 2
-      expect(combatant_b.position.y).to eq 2
+      expect(combatant_a.position).to eq target_position_a
+      expect(combatant_b.position).to eq target_position_b
     end
   end
 
@@ -81,10 +79,8 @@ RSpec.describe 'Relocating combatants' do
     end
 
     it "does not change combatant's positions" do
-      expect(combatant_a.position.x).to eq 1
-      expect(combatant_a.position.y).to eq 2
-      expect(combatant_b.position.x).to eq 1
-      expect(combatant_b.position.y).to eq 1
+      expect(combatant_a.position).to eq initial_position_a
+      expect(combatant_b.position).to eq initial_position_b
     end
   end
 
@@ -96,13 +92,12 @@ RSpec.describe 'Relocating combatants' do
       )
 
       MatchMoveSelections::Create.with(
-        board_position: initial_position_a,
+        board_position: target_position_a,
         match_combatants_move: combatant_b_move
       )
     end
 
     it "places only the faster combatant to the target position" do
-
     end
   end
 end
