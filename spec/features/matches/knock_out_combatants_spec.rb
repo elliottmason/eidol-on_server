@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
-describe 'Knocking out combatants' do
+RSpec.describe 'Knocking out combatants' do
   let!(:account_a) { FactoryBot.create(:account, combatants: %i[helljung]) }
   let!(:account_b) { FactoryBot.create(:account, combatants: %i[ampul]) }
   let!(:match) { Matches::Create.for(accounts: [account_a, account_b]).match }
