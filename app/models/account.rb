@@ -13,6 +13,9 @@ class Account < ApplicationRecord
   # @!attribute [rw] combatants
   #   @return [ActiveRecord::Relation<AccountCombatant>]
 
+  # @!method id()
+  #   @return [Integer]
+
   # @!attribute [w] username
   #   @return [String, nil]
 

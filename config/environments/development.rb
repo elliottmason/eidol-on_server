@@ -52,10 +52,12 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins 'localhost:3000', 'eidol.localhost'
+      origins 'localhost:3000'
       resource '*', credentials: true,
                     headers: :any,
                     methods: %i[get options patch post put]
     end
   end
+
+  config.hosts = nil
 end
