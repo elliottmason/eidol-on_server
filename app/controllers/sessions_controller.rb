@@ -7,7 +7,9 @@ class SessionsController < ActionController::Base
   def create
     if (account = find_account_for_create)
       cookies.signed[:account_id] = { value: account.id, expires: 31.days }
-      render json: { account: { id: account.id.to_s, username: account.username } }
+      render json: {
+        account: { id: account.id.to_s, username: account.username }
+      }
     else
       head :unauthorized
     end
@@ -18,7 +20,9 @@ class SessionsController < ActionController::Base
   # @return [Account, nil]
   def find_account_for_create
     find_existing_session ||
-      Account.find_by(email_address: params_for_create[:email_address])
+      Account.find_or_create_by(
+        email_address: params_for_create[:email_address]
+      )
   end
 
   # @return [Account, nil]
