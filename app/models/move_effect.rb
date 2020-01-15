@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Represents the potentially multiple types of damage and status effects that
-# can occur as result of a single [MoveTurn]
-class MoveTurnEffect < ApplicationRecord
+# can occur as result of a single [Move]
+class MoveEffect < ApplicationRecord
   CATEGORIES =
     {
       damage: %i[
@@ -19,7 +19,7 @@ class MoveTurnEffect < ApplicationRecord
       ]
     }.freeze
 
-  belongs_to :move_turn
+  belongs_to :move
 
   # @!method category()
   #   @return [String]

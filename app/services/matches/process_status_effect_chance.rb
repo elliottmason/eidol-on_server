@@ -4,17 +4,17 @@ module Matches
   class ProcessStatusEffectChance < ApplicationService
     # @param board_position [BoardPosition]
     # @param match_combatant [MatchCombatant]
-    # @param match_move_turn [MatchMoveTurn]
-    # @param move_turn_effect [MoveTurnEffect]
+    # @param match_turns_move [MatchTurnsMove]
+    # @param move_effect [MoveEffect]
     def initialize(
       board_position:,
       match_combatant:,
-      match_move_turn:,
-      move_turn_effect:
+      match_turns_move:,
+      move_effect:
     )
       @board_position = board_position
-      @match_move_turn = match_move_turn
-      @move_turn_effect = move_turn_effect
+      @match_turns_move = match_turns_move
+      @move_effect = move_effect
       @source_combatant = match_combatant
     end
 
@@ -24,12 +24,12 @@ module Matches
 
     private
 
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
+    # @return [MoveEffect]
+    attr_reader :move_effect
 
     # @return [Integer]
     def status_effect_chance
-      move_turn_effect.power
+      move_effect.power
     end
   end
 end

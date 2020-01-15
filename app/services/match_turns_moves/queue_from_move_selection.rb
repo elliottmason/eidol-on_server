@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module MatchMoveTurns
+module MatchTurnsMoves
   class QueueFromMoveSelection < ApplicationService
     # @param match_move_selection [MatchMoveSelection]
     # @param match_turn [MatchTurn]
@@ -13,7 +13,7 @@ module MatchMoveTurns
     end
 
     def perform
-      MatchMoveTurns::Queue.with(
+      MatchTurnsMoves::Queue.with(
         match_combatant: match_combatant,
         match_move_selection: match_move_selection,
         match_turn: match_turn,

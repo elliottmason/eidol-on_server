@@ -34,12 +34,12 @@ module MatchCombatants
 
     # @return [Boolean]
     def combatant_now_available?
-      status.queued? && unprocessed_match_move_turns.blank?
+      status.queued? && unprocessed_match_turns_moves.blank?
     end
 
     # @return [Boolean]
     def combatant_now_queued?
-      unprocessed_match_move_turns.present?
+      unprocessed_match_turns_moves.present?
     end
 
     # @return [Boolean]
@@ -52,9 +52,9 @@ module MatchCombatants
       @new_status ||= status.dup
     end
 
-    # @return [ActiveRecord::Relation<MatchMoveTurn>]
-    def unprocessed_match_move_turns
-      match_combatant.match_move_turns.unprocessed
+    # @return [ActiveRecord::Relation<MatchTurnsMove>]
+    def unprocessed_match_turns_moves
+      match_combatant.match_turns_moves.unprocessed
     end
   end
 end

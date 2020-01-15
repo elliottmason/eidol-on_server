@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-module MoveTurnEffects
-  # Processes a single [MoveTurnEffect] relative to the [MatchCombatant] that
+module MoveEffects
+  # Processes a single [MoveEffect] relative to the [MatchCombatant] that
   # it's coming from and which [BoardPosition] it targets
   class ProcessDamage < ApplicationService
     # @param board_position [BoardPosition]
     # @param match_combatant [MatchCombatant]
-    # @param match_move_turn [MatchMoveTurn]
-    # @param move_turn_effect [MoveTurnEffect]
+    # @param match_turns_move [MatchTurnsMove]
+    # @param move_effect [MoveEffect]
     def initialize(
       board_position:,
       match_combatant:,
-      match_move_turn:,
-      move_turn_effect:
+      match_turns_move:,
+      move_effect:
     )
       @board_position = board_position
-      @match_move_turn = match_move_turn
-      @move_turn_effect = move_turn_effect
+      @match_turns_move = match_turns_move
+      @move_effect = move_effect
       @source_combatant = match_combatant
     end
 
@@ -50,8 +50,8 @@ module MoveTurnEffects
     # @param target_combatant [MatchCombatant]
     # @return [Integer]
     def calculate_damage(target_combatant)
-      MoveTurnEffects::CalculateDamage.for(
-        move_turn_effect: move_turn_effect,
+      MoveEffects::CalculateDamage.for(
+        move_effect: move_effect,
         source_combatant: source_combatant,
         target_combatant: target_combatant
       ).value
@@ -63,8 +63,8 @@ module MoveTurnEffects
     def create_match_event(amount:, combatant:)
       MatchEvent.create!(
         match_combatant: combatant,
-        match_move_turn: match_move_turn,
-        move_turn_effect: move_turn_effect,
+        match_turns_move: match_turns_move,
+        move_effect: move_effect,
         amount: amount,
         category: 'damage',
         property: 'normal',
@@ -75,11 +75,11 @@ module MoveTurnEffects
     # @return [Match]
     attr_reader :match
 
-    # @return [MatchMoveTurn]
-    attr_reader :match_move_turn
+    # @return [MatchTurnsMove]
+    attr_reader :match_turns_move
 
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
+    # @return [MoveEffect]
+    attr_reader :move_effect
 
     # @return [MatchCombatant]
     attr_reader :source_combatant

@@ -2,7 +2,7 @@
 
 module MatchCombatants
   # Decrease or increase the [MatchCombatant] energy based on the energy cost of
-  # the [MoveTurn]
+  # the [Move]
   class AdjustRemainingEnergy < ApplicationService
     # @param match_combatant [MatchCombatant]
     # @param move [Move, nil]

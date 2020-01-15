@@ -9,30 +9,24 @@ def create_bite_move
     is_diagonal: true,
     energy_cost: 20
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
       move: move,
-      turn: 1,
-      speed: 1
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        move_turn: move_turn,
-        category: 'damage',
-        power: 20,
-        property: 'cutting'
-      )
-      MoveTurnEffect.find_or_create_by!(
-        move_turn: move_turn,
-        category: 'damage',
-        power: 20,
-        property: 'crushing'
-      )
-      MoveTurnEffect.find_or_create_by!(
-        move_turn: move_turn,
-        category: 'status_effect_chance',
-        power: 15,
-        property: 'poison'
-      )
-    end
+      category: 'damage',
+      power: 20,
+      property: 'cutting'
+    )
+    MoveEffect.find_or_create_by!(
+      move: move,
+      category: 'damage',
+      power: 20,
+      property: 'crushing'
+    )
+    MoveEffect.find_or_create_by!(
+      move: move,
+      category: 'status_effect_chance',
+      power: 15,
+      property: 'poison'
+    )
   end
 end
 
@@ -45,18 +39,12 @@ def self.create_bolt
     range: 2,
     speed: 1
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
+      category: 'damage',
       move: move,
-      turn: 1,
-      speed: 1
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        category: 'damage',
-        move_turn: move_turn,
-        power: 25,
-        property: 'electric'
-      )
-    end
+      power: 25,
+      property: 'electric'
+    )
   end
 end
 
@@ -69,18 +57,12 @@ def self.create_direct_hit
     range: 1,
     speed: 1
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
+      category: 'damage',
       move: move,
-      turn: 1,
-      speed: 1,
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        category: 'damage',
-        move_turn: move_turn,
-        power: 25,
-        property: 'direct'
-      )
-    end
+      power: 25,
+      property: 'direct'
+    )
   end
 end
 
@@ -93,18 +75,12 @@ def self.create_move
     range: 1,
     speed: 1
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
+      category: 'relocation',
       move: move,
-      turn: 1,
-      speed: 1,
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        category: 'relocation',
-        move_turn: move_turn,
-        power: 0,
-        property: 'normal'
-      )
-    end
+      power: 0,
+      property: 'normal'
+    )
   end
 end
 
@@ -117,18 +93,12 @@ def self.create_scratch
     range: 1,
     speed: 2
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
+      category: 'damage',
       move: move,
-      turn: 1,
-      speed: 2
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        category: 'damage',
-        move_turn: move_turn,
-        power: 25,
-        property: 'cutting'
-      )
-    end
+      power: 25,
+      property: 'cutting'
+    )
   end
 end
 
@@ -141,18 +111,12 @@ def self.create_water_hose
     range: 2,
     speed: 1
   ).tap do |move|
-    MoveTurn.find_or_create_by!(
+    MoveEffect.find_or_create_by!(
+      category: 'damage',
       move: move,
-      turn: 1,
-      speed: 1
-    ).tap do |move_turn|
-      MoveTurnEffect.find_or_create_by!(
-        category: 'damage',
-        move_turn: move_turn,
-        power: 25,
-        property: 'water'
-      )
-    end
+      power: 25,
+      property: 'water'
+    )
   end
 end
 # rubocop:enable Metrics/MethodLength

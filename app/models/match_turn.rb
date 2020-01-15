@@ -7,10 +7,13 @@ class MatchTurn < ApplicationRecord
   has_many :move_selections,
            class_name: 'MatchMoveSelection',
            dependent: :restrict_with_exception
-  has_many :match_move_turns,
+  has_many :match_turns_moves,
            dependent: :restrict_with_exception
-  has_many :match_events, through: :match_move_turns
-  has_many :move_turns, through: :match_move_turns
+  has_many :match_events, through: :match_turns_moves
+  has_many :moves, through: :match_turns_moves
+
+  # !@attribute [rw] processed_at
+  #   @return [DateTime, nil]
 
   # @return [Boolean]
   def unprocessed?

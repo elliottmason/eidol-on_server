@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module MoveTurnEffects
-  # Calculate the damage output of a [MoveTurnEffect] based on its properties
+module MoveEffects
+  # Calculate the damage output of a [MoveEffect] based on its properties
   # and the attacking/defending [MatchCombatant]s
   class CalculateDamage < ApplicationService
     include AccountCombatants::EffectiveLevel
@@ -11,23 +11,23 @@ module MoveTurnEffects
     # @return [Integer]
     attr_reader :value
 
-    # @param move_turn_effect [MoveTurnEffect]
+    # @param move_effect [MoveEffect]
     # @param source_combatant [MatchCombatant]
     # @param target_combatant [MatchCombatant]
     def initialize(
-      move_turn_effect:,
+      move_effect:,
       source_combatant:,
       target_combatant:
     )
-      @move_turn_effect = move_turn_effect
+      @move_effect = move_effect
       @source_combatant = source_combatant
       @target_combatant = target_combatant
     end
 
     # @return [void]
     def perform
-      if move_turn_effect.property == 'direct'
-        return @value = move_turn_effect.power
+      if move_effect.property == 'direct'
+        return @value = move_effect.power
       end
 
       raw_value =
@@ -43,8 +43,8 @@ module MoveTurnEffects
 
     private
 
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
+    # @return [MoveEffect]
+    attr_reader :move_effect
 
     # @return [MatchCombatant]
     attr_reader :source_combatant
@@ -80,7 +80,7 @@ module MoveTurnEffects
 
     # @return [Integer]
     def power
-      move_turn_effect.power
+      move_effect.power
     end
   end
 end

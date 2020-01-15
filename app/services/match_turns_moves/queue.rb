@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module MatchMoveTurns
-  # Adds a Move's MoveTurns to the MatchMoveTurns queue to be processed
+module MatchTurnsMoves
+  # Adds a [Move] to the [MatchTurnsMove]s queue to be processed
   class Queue < ApplicationService
     # @param match_move_selection [MatchMoveSelection, nil]
     # @param match_combatant [MatchCombatant]
@@ -19,14 +19,9 @@ module MatchMoveTurns
       @move = move
     end
 
-    # @return [Array<MatchMoveTurn>]
+    # @return [void]
     def perform
-      ActiveRecord::Base.transaction do
-        # @param move_turn [MoveTurn]
-        move_turns.each do |move_turn|
-          create_match_move_turn(move_turn)
-        end
-      end
+      create_match_turns_move(move)
     end
 
     private
@@ -43,29 +38,24 @@ module MatchMoveTurns
     # @return [Move]
     attr_reader :move
 
-    # @param move_turn [MoveTurn]
-    # @return [MatchMoveTurn]
-    def create_match_move_turn(move_turn)
+    # @param move [Move]
+    # @return [MatchTurnsMove]
+    def create_match_turns_move(move)
       match_turn =
-        MatchTurns::FindOrCreateForMoveTurn \
-        .for(match: match, move_turn: move_turn).match_turn
+        MatchTurns::FindOrCreateForMove \
+        .for(match: match, move: move).match_turn
 
-      MatchMoveTurn.create!(
+      MatchTurnsMove.create!(
         match_combatant: match_combatant,
         match_move_selection: match_move_selection,
         match_turn: match_turn,
-        move_turn: move_turn
+        move: move
       )
     end
 
     # @return [Match]
     def match
       match_turn.match
-    end
-
-    # @return [Array<MoveTurn>]
-    def move_turns
-      move.turns.all
     end
   end
 end

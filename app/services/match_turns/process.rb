@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module MatchTurns
-  # Queue the [MatchMoveTurn[s based on this [MatchTurn]'s [MatchMoveSelection]s
-  # Sort and consecutively handle each [MatchMoveTurn]
+  # Queue the [MatchTurnsMove]s based on this [MatchTurn]'s [MatchMoveSelection]s
+  # Sort and consecutively handle each [MatchTurnsMove]
   class Process < ApplicationService
     # @param match_turn [MatchTurn]
     def initialize(match_turn:)
@@ -16,9 +16,9 @@ module MatchTurns
     # @return [void]
     def perform
       ActiveRecord::Base.transaction do
-        while unprocessed_match_move_turns.size.nonzero?
-          MatchMoveTurns::Process.for(
-            match_move_turn: next_unprocessed_match_move_turn
+        while unprocessed_match_turns_moves.size.nonzero?
+          MatchTurnsMoves::Process.for(
+            match_turns_move: next_unprocessed_match_turns_move
           )
         end
 
@@ -40,11 +40,11 @@ module MatchTurns
     # We have to sort the turns each time because the outcome of the previous
     # turn might change the precedence of the remaining turns, e.g. an effect
     # that lowers a combatant's agility
-    # @return [Array<MatchMoveTurn>]
-    def sorted_unprocessed_match_move_turns
-      unprocessed_match_move_turns.sort do |turn_a, turn_b|
-        turn_a_speed = MatchMoveTurns::CalculateSpeed.for(turn_a).value
-        turn_b_speed = MatchMoveTurns::CalculateSpeed.for(turn_b).value
+    # @return [Array<MatchTurnsMove>]
+    def sorted_unprocessed_match_turns_moves
+      unprocessed_match_turns_moves.sort do |turn_a, turn_b|
+        turn_a_speed = MatchTurnsMoves::CalculateSpeed.for(turn_a).value
+        turn_b_speed = MatchTurnsMoves::CalculateSpeed.for(turn_b).value
 
         # @type [Integer]
         result = turn_b_speed <=> turn_a_speed
@@ -56,14 +56,14 @@ module MatchTurns
       end
     end
 
-    # @return [MatchMoveTurn]
-    def next_unprocessed_match_move_turn
-      sorted_unprocessed_match_move_turns.first
+    # @return [MatchTurnsMove]
+    def next_unprocessed_match_turns_move
+      sorted_unprocessed_match_turns_moves.first
     end
 
-    # @return [Array<MatchMoveTurn>]
-    def unprocessed_match_move_turns
-      MatchMoveTurn.unprocessed.where(match_turn: match_turn).all
+    # @return [Array<MatchTurnsMove>]
+    def unprocessed_match_turns_moves
+      MatchTurnsMove.unprocessed.where(match_turn: match_turn).all
     end
   end
 end

@@ -9,7 +9,7 @@ class MatchCombatant < ApplicationRecord
            through: :statuses
   has_many :match_combatants_moves,
            dependent: :restrict_with_exception
-  has_many :match_move_turns,
+  has_many :match_turns_moves,
            dependent: :restrict_with_exception
   has_many :moves,
            through: :match_combatants_moves

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MatchMoveSelections
-  # Create a [MatchMoveSelection] record and queue up the [MatchMoveTurn]s from
+  # Create a [MatchMoveSelection] record and queue up the [MatchTurnsMove]s from
   # the associated [Move]
   class Create < ApplicationService
     # @param board_position [BoardPosition, NilClass]
@@ -24,7 +24,7 @@ module MatchMoveSelections
     def perform
       ActiveRecord::Base.transaction do
         create_selection
-        MatchMoveTurns::QueueFromMoveSelection.for(
+        MatchTurnsMoves::QueueFromMoveSelection.for(
           match_move_selection: match_move_selection,
           match_turn: match_turn
         )

@@ -114,8 +114,8 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
   create_table "match_events", force: :cascade do |t|
     t.bigint "board_position_id"
     t.bigint "match_combatant_id", null: false
-    t.bigint "match_move_turn_id", null: false
-    t.bigint "move_turn_effect_id", null: false
+    t.bigint "match_turns_move_id", null: false
+    t.bigint "move_effect_id", null: false
     t.string "category", null: false
     t.string "property", null: false
     t.integer "amount"
@@ -124,8 +124,8 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["board_position_id"], name: "index_match_events_on_board_position_id"
     t.index ["match_combatant_id"], name: "index_match_events_on_match_combatant_id"
-    t.index ["match_move_turn_id"], name: "index_match_events_on_match_move_turn_id"
-    t.index ["move_turn_effect_id"], name: "index_match_events_on_move_turn_effect_id"
+    t.index ["match_turns_move_id"], name: "index_match_events_on_match_turns_move_id"
+    t.index ["move_effect_id"], name: "index_match_events_on_move_effect_id"
   end
 
   create_table "match_move_selections", force: :cascade do |t|
@@ -143,20 +143,6 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.index ["player_id"], name: "index_match_move_selections_on_player_id"
   end
 
-  create_table "match_move_turns", force: :cascade do |t|
-    t.bigint "match_combatant_id", null: false
-    t.bigint "match_move_selection_id"
-    t.bigint "match_turn_id", null: false
-    t.bigint "move_turn_id", null: false
-    t.datetime "processed_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["match_combatant_id"], name: "index_match_move_turns_on_match_combatant_id"
-    t.index ["match_move_selection_id"], name: "index_match_move_turns_on_match_move_selection_id"
-    t.index ["match_turn_id"], name: "index_match_move_turns_on_match_turn_id"
-    t.index ["move_turn_id"], name: "index_match_move_turns_on_move_turn_id"
-  end
-
   create_table "match_turns", force: :cascade do |t|
     t.bigint "match_id", null: false
     t.integer "turn", null: false
@@ -166,29 +152,34 @@ ActiveRecord::Schema.define(version: 2019_11_11_062002) do
     t.index ["match_id"], name: "index_match_turns_on_match_id"
   end
 
+  create_table "match_turns_moves", force: :cascade do |t|
+    t.bigint "match_combatant_id", null: false
+    t.bigint "match_move_selection_id"
+    t.bigint "match_turn_id", null: false
+    t.bigint "move_id", null: false
+    t.datetime "processed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["match_combatant_id"], name: "index_match_turns_moves_on_match_combatant_id"
+    t.index ["match_move_selection_id"], name: "index_match_turns_moves_on_match_move_selection_id"
+    t.index ["match_turn_id"], name: "index_match_turns_moves_on_match_turn_id"
+    t.index ["move_id"], name: "index_match_turns_moves_on_move_id"
+  end
+
   create_table "matches", force: :cascade do |t|
     t.datetime "ended_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "move_turn_effects", force: :cascade do |t|
-    t.bigint "move_turn_id", null: false
+  create_table "move_effects", force: :cascade do |t|
+    t.bigint "move_id", null: false
     t.string "category", null: false
     t.string "property", null: false
     t.integer "power", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["move_turn_id"], name: "index_move_turn_effects_on_move_turn_id"
-  end
-
-  create_table "move_turns", force: :cascade do |t|
-    t.bigint "move_id", null: false
-    t.integer "turn", null: false
-    t.integer "speed", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["move_id"], name: "index_move_turns_on_move_id"
+    t.index ["move_id"], name: "index_move_effects_on_move_id"
   end
 
   create_table "moves", force: :cascade do |t|

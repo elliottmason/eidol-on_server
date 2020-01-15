@@ -7,18 +7,18 @@ module Matches
   class ProcessRelocation < ApplicationService
     # @param board_position [BoardPosition]
     # @param match_combatant [MatchCombatant]
-    # @param match_move_turn [MatchMoveTurn]
-    # @param move_turn_effect [MoveTurnEffect]
+    # @param match_turns_move [MatchTurnsMove]
+    # @param move_effect [MoveEffect]
     def initialize(
       board_position:,
       match_combatant:,
-      match_move_turn:,
-      move_turn_effect:
+      match_turns_move:,
+      move_effect:
     )
       @board_position = board_position
       @match_combatant = match_combatant
-      @match_move_turn = match_move_turn
-      @move_turn_effect = move_turn_effect
+      @match_turns_move = match_turns_move
+      @move_effect = move_effect
     end
 
     # @return [Boolean]
@@ -27,7 +27,7 @@ module Matches
       x_coord = match_combatant_position.x
       y_coord = match_combatant_position.y
       # @type [Integer]
-      move_range = move_turn_effect.move_turn.move.range
+      move_range = move_effect.move.range
       x_range = (x_coord - move_range)..(x_coord + move_range)
       y_range = (y_coord - move_range)..(y_coord + move_range)
 
@@ -72,11 +72,11 @@ module Matches
     # @return [MatchEvent]
     attr_reader :match_event
 
-    # @return [MatchMoveTurn]
-    attr_reader :match_move_turn
+    # @return [MatchTurnsMove]
+    attr_reader :match_turns_move
 
-    # @return [MoveTurnEffect]
-    attr_reader :move_turn_effect
+    # @return [MoveEffect]
+    attr_reader :move_effect
 
     # @param status [String]
     # @return [MatchEvent]
@@ -85,8 +85,8 @@ module Matches
         MatchEvent.create!(
           board_position: board_position,
           match_combatant: match_combatant,
-          match_move_turn: match_move_turn,
-          move_turn_effect: move_turn_effect,
+          match_turns_move: match_turns_move,
+          move_effect: move_effect,
           category: 'relocation',
           property: 'normal',
           status: status

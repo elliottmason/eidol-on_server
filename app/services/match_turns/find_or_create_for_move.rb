@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module MatchTurns
-  class FindOrCreateForMoveTurn < ApplicationService
+  class FindOrCreateForMove < ApplicationService
     # @return [MatchTurn, nil]
     attr_reader :match_turn
 
     # @param match [Match]
-    # @param move_turn [MoveTurn]
-    def initialize(match:, move_turn:)
+    # @param move [Move]
+    def initialize(match:, move:)
       @match = match
-      @move_turn = move_turn
+      @move = move
     end
 
     # @return [MatchTurn]
@@ -23,12 +23,12 @@ module MatchTurns
     # @return [Match]
     attr_reader :match
 
-    # @return [MoveTurn]
-    attr_reader :move_turn
+    # @return [Move]
+    attr_reader :move
 
     # @return [Integer]
     def turn_number
-      match.turn.turn + move_turn.turn - 1
+      match.turn.turn + 1
     end
   end
 end
