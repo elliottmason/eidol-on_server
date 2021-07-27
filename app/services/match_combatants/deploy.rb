@@ -4,8 +4,6 @@ module MatchCombatants
   # Inserts a new [MatchCombatantStatus] that assigns it a [BoardPosition]
   # and makes it available to perform moves
   class Deploy < ApplicationService
-    # @param board_position [BoardPosition]
-    # @param match_combatant [MatchCombatant]
     def initialize(
       board_position:,
       match_combatant:
@@ -14,7 +12,6 @@ module MatchCombatants
       @match_combatant = match_combatant
     end
 
-    # @return [Boolean]
     def allowed?
       match_combatant.benched?
     end
@@ -31,10 +28,8 @@ module MatchCombatants
 
     private
 
-    # @return [BoardPosition]
     attr_reader :board_position
 
-    # @return [MatchCombatant]
     attr_reader :match_combatant
   end
 end

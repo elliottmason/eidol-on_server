@@ -6,24 +6,18 @@ module AccountCombatants
   module EffectiveLevel
     MAX_LEVEL = AccountCombatant::MAX_LEVEL
 
-    # @!method account_combatant()
-    #   @return [AccountCombatant]
-
     # Use this value in most calculations involving level to avoid multiplying
     # or dividing by 0
-    # @return [Float]
     def effective_level
       level + level_bonus
     end
 
-    # @return [Integer]
     def level
       @level ||=
         AccountCombatants::CalculateLevel.with(account_combatant).value
     end
 
     # Level 0 combatants +1, Level 25 combatants +0
-    # @return [Float]
     def level_bonus
       (MAX_LEVEL - level) / MAX_LEVEL
     end

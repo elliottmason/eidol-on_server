@@ -9,16 +9,4 @@ class Account < ApplicationRecord
            dependent: :restrict_with_exception
   has_many :matches,
            through: :players
-
-  # @!attribute [rw] combatants
-  #   @return [ActiveRecord::Relation<AccountCombatant>]
-
-  # @!method id()
-  #   @return [Integer]
-
-  # @!attribute [w] username
-  #   @return [String, nil]
-
-  # @!method username()
-  #   @return [String, nil]
 end

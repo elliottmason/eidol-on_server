@@ -20,7 +20,4 @@ class MoveEffect < ApplicationRecord
     }.freeze
 
   belongs_to :move
-
-  # @!method category()
-  #   @return [String]
 end

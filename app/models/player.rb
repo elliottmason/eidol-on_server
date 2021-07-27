@@ -10,19 +10,4 @@ class Player < ApplicationRecord
   has_many :statuses,
            class_name: 'PlayerStatus',
            dependent: :restrict_with_exception
-
-  # @!attribute [rw] account
-  #   @return [Account]
-
-  # @!attribute [rw] combatants
-  #   @return [ActiveRecord::Relation<MatchCombatant>]
-
-  # @!attribute [w] id
-  #   @return [Integer]
-
-  # @!method id()
-  #   @return [Integer]
-
-  # @!method match()
-  #   @return [Match]
 end

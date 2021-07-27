@@ -63,73 +63,26 @@ class MatchCombatant < ApplicationRecord
   delegate(*DELEGATE_METHODS_TO_ACCOUNT_COMBATANT, to: :account_combatant)
   delegate(*DELEGATE_METHODS_TO_STATUS, to: :status)
 
-  # @!attribute [r] account
-  #   @return [Account]
-
-  # @!method available?()
-  #   @return [Boolean]
-
-  # @!method benched?()
-  #   @return [Boolean]
-
-  # @!method deployed?()
-  #   @return [Boolean]
-
-  # @!attribute [r] individual_power
-  #   @return [Integer]
-
-  # @!method knocked_out?()
-  #   @return [Boolean]
-
-  # @!attribute [rw] match
-  #   @return [Match]
-
-  # @!method match_combatants_moves()
-  #   @return [ActiveRecord::Relation<MatchCombatantsMove>]
-
-  # @!attribute [rw] maximum_health
-  #   @return [Integer]
-
-  # @!method queued?()
-  #   @return [Boolean]
-
-  # @!method remaining_energy
-  #   @return [Integer]
-
-  # @!method remaining_health
-  #   @return [Integer]
-
-  # @!method statuses()
-  #   @return [ActiveRecord::Relation<MatchCombatantStatus>]
-
-  # @return [ActiveRecord::Relation<MatchCombatant>]
   def self.available
     availability = 'available'
 
     joins(AVAILABLE_JOIN).where(mcs: { availability: availability }).distinct
   end
 
-  # @return [ActiveRecord::Relation<MatchCombatant>]
   def self.deployed
     joins(DEPLOYED_JOIN).where.not(mcs: { board_position_id: nil }).distinct
   end
 
-  # @return [Player]
   def player
     @player ||= Player.where(account: account, match: match).select(:id).first
   end
 
-  # @!attribute [r] player_id
-  #   @return [Integer]
-
   delegate :id, to: :player, prefix: true
 
-  # @return [BoardPosition]
   def position
     status.board_position
   end
 
-  # @return [MatchCombatantStatus]
   def status
     statuses.order('id DESC').first
   end

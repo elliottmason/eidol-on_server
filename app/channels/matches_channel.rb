@@ -2,10 +2,7 @@
 
 # Communicates changes in the match to the Match component of the client
 class MatchesChannel < ApplicationCable::Channel
-  # @param match [Match]
-  # @return [NilClass]
   def self.broadcast_match(match)
-    # @param player [Player]
     match.players.each do |player|
       broadcasting = "match_#{match.id}_player_#{player.id}"
       match_json =
@@ -17,10 +14,8 @@ class MatchesChannel < ApplicationCable::Channel
 
   def subscribed
     Rails.logger.debug(params.inspect)
-    # @type [Match]
     return unless (match = Match.find(params['room']))
 
-    # @type [Player]
     player = Player.where(match: match, account: account).first
 
     broadcasting = "match_#{match.id}_player_#{player.id}"

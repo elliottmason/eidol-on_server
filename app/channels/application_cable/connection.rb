@@ -10,7 +10,6 @@ module ApplicationCable
 
     protected
 
-    # @return [Account]
     def find_account
       Account.find(cookies.signed[:account_id])
     rescue ActiveRecord::RecordNotFound

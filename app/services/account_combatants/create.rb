@@ -3,20 +3,15 @@
 module AccountCombatants
   class Create < ApplicationService
     class << self
-      # @return [Integer]
       def random_individual_value
         rand(0..31)
       end
 
-      # @return [Integer]
       alias random_iv random_individual_value
     end
 
-    # @return [AccountCombatant]
     attr_reader :account_combatant
 
-    # @param account [Account]
-    # @param combatant [Combatant]
     def initialize(
       account:,
       combatant:
@@ -35,13 +30,10 @@ module AccountCombatants
 
     private
 
-    # @return [Account]
     attr_reader :account
 
-    # @return [Combatant]
     attr_reader :combatant
 
-    # @return [void]
     def copy_combatant
       individual_defense, individual_health, individual_power,
         individual_agility = 4.times.map { self.class.random_iv }
@@ -57,7 +49,6 @@ module AccountCombatants
         )
     end
 
-    # @return [void]
     def create_combatant_status
       AccountCombatantStatus.create!(
         account_combatant: account_combatant,

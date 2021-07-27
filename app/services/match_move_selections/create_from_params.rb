@@ -2,8 +2,6 @@
 
 module MatchMoveSelections
   class CreateFromParams < ApplicationService
-    # @param board_position_id [Integer, String]
-    # @param match_combatants_move_id [Integer, String]
     def initialize(
       board_position_id:,
       match_combatants_move_id:
@@ -12,7 +10,6 @@ module MatchMoveSelections
       @match_combatants_move_id = match_combatants_move_id.to_i
     end
 
-    # @return [MatchMoveSelections::Create]
     def perform
       MatchMoveSelections::Create.with(
         board_position: board_position,
@@ -22,18 +19,14 @@ module MatchMoveSelections
 
     private
 
-    # @return [Integer
     attr_reader :board_position_id
 
-    # @return [Integer]
     attr_reader :match_combatants_move_id
 
-    # @return [BoardPosition]
     def board_position
       @board_position ||= BoardPosition.find_by(id: board_position_id)
     end
 
-    # @return [MatchCombatantsMove]
     def match_combatants_move
       @match_combatants_move ||=
         MatchCombatantsMove.find_by(id: match_combatants_move_id)

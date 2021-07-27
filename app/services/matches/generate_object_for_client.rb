@@ -4,10 +4,8 @@ module Matches
   # Contains the logic for assembling an object representing the entire state of
   # a [Match] to the client
   class GenerateObjectForClient < ApplicationService
-    # @return [Hash, NilClass]
     attr_reader :object
 
-    # @param player [Player]
     def initialize(player:)
       @player = player
     end
@@ -25,18 +23,13 @@ module Matches
 
     private
 
-    # @return [Player]
     attr_reader :player
 
-    # @return [Account]
     def account
       player.account
     end
 
-    # @return [Hash]
     def board_positions
-
-      # @param position [BoardPosition]
       @match.board_positions.map do |position|
         {
           id: position.id.to_s,
@@ -46,10 +39,8 @@ module Matches
       end
     end
 
-    # @return [Array]
     def combatants
       @combatants ||=
-        # @param combatant [MatchCombatant]
         match.combatants.map do |combatant|
           {
             id: combatant.id.to_s,
@@ -62,7 +53,6 @@ module Matches
 
     def events
       @events ||=
-        # @param event [MatchEvent]
         match.events.order('id ASC').map do |event|
           if event.category == "damage" &&
              event.match_combatant.player != player
@@ -87,24 +77,18 @@ module Matches
         end
     end
 
-    # @return [String]
     def id
       match.id.to_s
     end
 
-    # @return [Match]
     def match
       @match ||= player.match
     end
 
-    # @param match_combatant [MatchCombatant]
-    # @return [Array<Hash>]
     def match_combatant_moves(match_combatant)
       return [] unless match_combatant.account == account
 
-      # @param match_combatants_move [MatchCombatantsMove]
       match_combatant.match_combatants_moves.map do |match_combatants_move|
-        # @type [Move]
         move = match_combatants_move.move
         {
           id: match_combatants_move.id.to_s,
@@ -117,8 +101,6 @@ module Matches
       end
     end
 
-    # @param match_combatant [MatchCombatant]
-    # @return [Hash]
     def match_combatant_status(match_combatant)
       status = match_combatant.status
 
@@ -163,10 +145,8 @@ module Matches
       )
     end
 
-    # @return [Array]
     def players
       @players ||=
-        # @param player [Player]
         match.players.map do |match_player|
           is_local_player = match_player.account_id == player.account_id
 

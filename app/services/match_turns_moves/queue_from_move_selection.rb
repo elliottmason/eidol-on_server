@@ -2,8 +2,6 @@
 
 module MatchTurnsMoves
   class QueueFromMoveSelection < ApplicationService
-    # @param match_move_selection [MatchMoveSelection]
-    # @param match_turn [MatchTurn]
     def initialize(
       match_move_selection:,
       match_turn:
@@ -23,18 +21,14 @@ module MatchTurnsMoves
 
     private
 
-    # @return [MatchMoveSelection]
     attr_reader :match_move_selection
 
-    # @return [MatchTurn]
     attr_reader :match_turn
 
-    # @return [MatchCombatant]
     def match_combatant
       match_move_selection.match_combatant
     end
 
-    # @return [Move]
     def move
       match_move_selection.move
     end

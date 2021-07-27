@@ -14,43 +14,6 @@ class MatchCombatantStatus < ApplicationRecord
     queued: 'queued'
   }
 
-  # @!attribute [rw] availability
-  #   @return [String]
-
-  # @!attribute [rw] board_position
-  #   @return [BoardPosition, nil]
-
-  # @!attribute [rw] board_position_id
-  #   @return [Integer]
-
-  # @!attribute [rw] remaining_health
-  #   @return [Integer]
-
-  # @!method available!
-  #   @return [Boolean]
-
-  # @!method available?
-  #   @return [Boolean]
-
-  # @!method benched!
-  #   @return [Boolean]
-
-  # @!method benched?
-  #   @return [Boolean]
-
-  # @!method knocked_out!
-  #   @return [Boolean]
-
-  # @!method knocked_out?
-  #   @return [Boolean]
-
-  # @!method queued!
-  #   @return [Boolean]
-
-  # @!method queued?
-  #   @return [Boolean]
-
-  # @return [Boolean]
   def deployed?
     board_position_id.present?
   end

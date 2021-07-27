@@ -4,8 +4,6 @@ module MatchCombatants
   # Insert a new [MatchCombatantStatus] for the given [MatchCombatant] that has
   # a #remaining_health value added to the provided amount
   class AdjustRemainingHealth < ApplicationService
-    # @param amount [Integer]
-    # @param match_combatant [MatchCombatant]
     def initialize(
       amount:,
       match_combatant:
@@ -18,7 +16,6 @@ module MatchCombatants
       !match_combatant.knocked_out?
     end
 
-    # @return [void]
     def perform
       ActiveRecord::Base.transaction do
         new_status.update!(remaining_health: adjusted_remaining_health)
@@ -28,17 +25,13 @@ module MatchCombatants
 
     private
 
-    # @return [Integer]
     attr_reader :amount
 
-    # @return [MatchCombatant]
     attr_reader :match_combatant
 
-    # @return [Integer]
     def adjusted_remaining_health
       return @adjusted_remaining_health if @adjusted_remaining_health
 
-      # @type [Integer]
       potential_remaining_health = new_status.remaining_health + amount
 
       if potential_remaining_health > maximum_health
@@ -52,12 +45,10 @@ module MatchCombatants
       @adjusted_remaining_health = potential_remaining_health
     end
 
-    # @return [Integer]
     def maximum_health
       match_combatant.maximum_health
     end
 
-    # @return [MatchCombatantStatus]
     def new_status
       @new_status ||= match_combatant.status.dup
     end

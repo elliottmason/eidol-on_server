@@ -16,19 +16,6 @@ class Match < ApplicationRecord
            through: :match_turns_moves,
            source: :match_events
 
-  # @!attribute [rw] combatants
-  #   @return [ActiveRecord::Relation<MatchCombatant>]
-
-  # @!attribute [r] id
-  #   @return [Integer]
-
-  # @!attribute [rw] players
-  #   @return [ActiveRecord::Relation<Player>]
-
-  # @!attribute [rw] turns
-  #   @return [ActiveRecord::Relation<MatchTurn>]
-
-  # @return [MatchTurn, nil]
   def turn
     turns.where(processed_at: nil).order('turn ASC').first
   end

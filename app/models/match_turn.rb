@@ -12,10 +12,6 @@ class MatchTurn < ApplicationRecord
   has_many :match_events, through: :match_turns_moves
   has_many :moves, through: :match_turns_moves
 
-  # !@attribute [rw] processed_at
-  #   @return [DateTime, nil]
-
-  # @return [Boolean]
   def unprocessed?
     processed_at.blank?
   end

@@ -2,10 +2,8 @@
 
 module Matches
   class AdvanceTurn < ApplicationService
-    # @return [MatchTurn]
     attr_reader :match_turn
 
-    # @param match [Match]
     def initialize(match:)
       @match = match
     end
@@ -20,15 +18,12 @@ module Matches
 
     private
 
-    # @return [Match]
     attr_reader :match
 
-    # @return [MatchTurn]
     def current_turn
       match.turn
     end
 
-    # @return [Integer]
     def next_turn_number
       current_turn.turn + 1
     end

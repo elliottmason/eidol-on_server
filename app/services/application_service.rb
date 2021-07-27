@@ -8,18 +8,14 @@ class ApplicationService
   define_callbacks :failure
 
   class << self
-    # @return [self]
     def with(*args)
       new(*args).tap(&:perform_with_callbacks)
     end
 
-    # @return [self]
     alias between with
 
-    # @return [self]
     alias for with
 
-    # @return [self]
     alias now with
 
     def after_perform(*args, &block)
@@ -33,10 +29,6 @@ class ApplicationService
     end
   end
 
-  # @!method self.for()
-  #   @return [ApplicationService]
-
-  # @return [void]
   def perform_with_callbacks
     run_callbacks :perform do
       break unless allowed?
@@ -53,16 +45,13 @@ class ApplicationService
 
   def initialize(*_args); end
 
-  # @return [void]
   def perform; end
 
   def successful?
     @successful || false
   end
 
-  # @return [void]
   def after_failure; end
 
-  # @return [void]
   def after_success; end
 end

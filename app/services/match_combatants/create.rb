@@ -4,11 +4,8 @@ module MatchCombatants
   # Creates a copy of an [Account]'s [Combatant] that can be manipulated in the
   # context of a Match
   class Create < ApplicationService
-    # @return [MatchCombatant]
     attr_reader :match_combatant
 
-    # @param account_combatant [AccountCombatant]
-    # @param player [Player]
     def initialize(
       account_combatant:,
       player:
@@ -28,10 +25,8 @@ module MatchCombatants
 
     private
 
-    # @return [AccountCombatant]
     attr_reader :account_combatant
 
-    # @return [Player]
     attr_reader :player
 
     def agility
@@ -39,7 +34,6 @@ module MatchCombatants
     end
 
     # TODO: These are fake stats tho
-    # @return [MatchCombatant]
     def copy_account_combatant
       @match_combatant =
         MatchCombatant.create!(
@@ -54,7 +48,6 @@ module MatchCombatants
     end
 
     # TODO: could this be its own service?
-    # @return [Array<MatchCombatantsMove>]
     def copy_moves
       account_combatant.moves.map do |move|
         MatchCombatantsMove.create!(
@@ -64,12 +57,10 @@ module MatchCombatants
       end
     end
 
-    # @return [Combatant]
     def combatant
       account_combatant.combatant
     end
 
-    # @return [MatchCombatantStatus]
     def create_combatant_status
       remaining_health = match_combatant.maximum_health
       MatchCombatantStatus.create!(
@@ -80,33 +71,27 @@ module MatchCombatants
       )
     end
 
-    # @return [Integer]
     def defense
       AccountCombatants::CalculateDefense.with(account_combatant).value
     end
 
     # TODO: should be calculated based on level
-    # @return [Integer]
     def energy
       combatant.maximum_energy
     end
 
-    # @return [Integer]
     def health
       AccountCombatants::CalculateHealth.with(account_combatant).value
     end
 
-    # @return [Integer]
     def level
       AccountCombatants::CalculateLevel.with(account_combatant).value
     end
 
-    # @return [Match]
     def match
       player.match
     end
 
-    # @return [Integer]
     def remaining_energy
       combatant.initial_remaining_energy
     end

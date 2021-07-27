@@ -3,20 +3,11 @@
 # An [Account]'s unique instance of a [Combatant] with its own progression and
 # stats
 class AccountCombatant < ApplicationRecord
-  # @type [Float]
-  MAX_BASE = 255.to_f
-
-  # @type [Float]
-  MAX_IV = 31.to_f
-
-  # @type [Float]
-  MAX_HEALTH = 500.to_f
-
-  # @type [Float]
-  MAX_LEVEL = 50.to_f
-
-  # @type [Float]
-  MAX_STAT = 999.to_f
+  MAX_BASE = 255.0
+  MAX_IV = 31.0
+  MAX_HEALTH = 500.0
+  MAX_LEVEL = 50.0
+  MAX_STAT = 999.0
 
   belongs_to :account
   belongs_to :combatant
@@ -27,10 +18,6 @@ class AccountCombatant < ApplicationRecord
            class_name: 'AccountCombatantStatus',
            dependent: :restrict_with_exception
 
-  # @!method statuses()
-  #   @return [ActiveRecord::Relation<AccountCombatantStatus>]
-
-  # @return [AccountCombatantStatus]
   def status
     statuses.order('created_at DESC').first
   end

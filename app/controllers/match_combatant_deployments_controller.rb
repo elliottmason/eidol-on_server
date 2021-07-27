@@ -19,9 +19,7 @@ class MatchCombatantDeploymentsController < ApplicationController
     end
   end
 
-  # @return [ActionController::Parameters]
   def create_params
-    # @param param [ActionController::Parameters]
     params.require(:match_combatant_deployments).map do |param|
       param.permit(:board_position_id, :match_combatant_id)
     end

@@ -3,10 +3,8 @@
 module Matches
   # Creates a new [Match] between two (or more?) [Account]s
   class Create < ApplicationService
-    # @return [Match]
     attr_reader :match
 
-    # @param accounts [Array<Account>]
     def initialize(accounts:)
       @accounts = accounts
     end
@@ -21,23 +19,19 @@ module Matches
 
     private
 
-    # @return [Array<Account>]
     attr_reader :accounts
 
-    # @return [Array<BoardPosition>]
     def create_board
       board_creator = Boards::Create.for(match: match)
       @board = board_creator.board
     end
 
-    # @return [Match]
     def create_match
       @match = Match.create!.tap do |match|
         MatchTurn.create!(match: match, turn: 0)
       end
     end
 
-    # @return [Array<Player>]
     def create_players
       accounts.map do |account|
         player =
